@@ -1,0 +1,7 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"pluggableauth-desc": "{{desc|name=Pluggable Auth|url=http://www.mediawiki.org/wiki/Extension:PluggableAuth}}",
+	"pluggableauthnotauthorized": "HTML to display when user is not authorized"
+}
