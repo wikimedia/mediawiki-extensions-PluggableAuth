@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Nike"
+		]
+	},
+	"pluggableauthnotauthorized": "{{GENDER:$1|Käyttäjää}} $1 ei ole valtuutettu."
+}

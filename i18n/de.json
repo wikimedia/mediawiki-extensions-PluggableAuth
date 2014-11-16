@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Metalhead64"
+		]
+	},
+	"pluggableauth-desc": "Ergänzt ein Framework zur steckbaren Authentifikation und Autorisierung",
+	"pluggableauthnotauthorized": "{{GENDER:$1|Der Benutzer|Die Benutzerin}} $1 ist nicht berechtigt."
+}

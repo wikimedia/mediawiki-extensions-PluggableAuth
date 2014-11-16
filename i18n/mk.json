@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Bjankuloski06"
+		]
+	},
+	"pluggableauth-desc": "Дава рамка за приклучна заверка и овластување",
+	"pluggableauthnotauthorized": "{{GENDER:$1|Корисникот}} $1 не е овластен."
+}
