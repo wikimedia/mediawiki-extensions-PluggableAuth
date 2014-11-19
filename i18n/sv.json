@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Lokal Profil"
+		]
+	},
+	"pluggableauthnotauthorized": "{{GENDER:$1|Användare}} $1 är inte auktoriserad."
+}
