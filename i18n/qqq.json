@@ -5,5 +5,5 @@
 		]
 	},
 	"pluggableauth-desc": "{{desc|name=Pluggable Auth|url=http://www.mediawiki.org/wiki/Extension:PluggableAuth}}",
-	"pluggableauthnotauthorized": "HTML to display when user is not authorized\n* $1 is just a username with GENDER support."
+	"pluggableauthnotauthorized": "HTML to display when user is not authorized. Parameters:\n* $1 - a username with GENDER support."
 }
