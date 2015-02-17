@@ -1,6 +1,8 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"cicalese"
+		]
 	},
 	"pluggableauth-desc": "Provides framework for pluggable authentication and authorization",
 	"pluggableauthnotauthorized": "{{GENDER:$1|User}} $1 not authorized."

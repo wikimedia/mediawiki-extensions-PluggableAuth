@@ -1,9 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
+			"cicalese",
 			"Liuxinyu970226"
 		]
 	},
 	"pluggableauth-desc": "{{desc|name=Pluggable Auth|url=http://www.mediawiki.org/wiki/Extension:PluggableAuth}}",
-	"pluggableauthnotauthorized": "HTML to display when user is not authorized. Parameters:\n* $1 - a username with GENDER support."
+	"pluggableauthnotauthorized": "HTML to display when an authorization hook indicates that the user is not authorized to log in. Parameters:\n* $1 - a username with GENDER support."
 }
