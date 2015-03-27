@@ -53,8 +53,20 @@ abstract class PluggableAuth {
 			if ( isset( $_SESSION['LAST_ACTIVITY'] ) &&
 				( $time - $_SESSION['LAST_ACTIVITY'] >
 					$GLOBALS['PluggableAuth_Timeout'] ) ) {
-				session_unset();
-				session_destroy();
+				$session_variable = wfWikiID() . "_userid";
+				if ( array_key_exists( $session_variable, $_SESSION ) ) {
+					$user->mId = $_SESSION[$session_variable];
+					if ( $user->loadFromDatabase() ) {
+						$user->saveToCache();
+						self::logout( $user );
+					} else{
+						session_unset();
+						session_destroy();
+					}
+				} else {
+					session_unset();
+					session_destroy();
+				}
 				wfDebug( "Session timed out." );
 			}
 			$_SESSION['LAST_ACTIVITY'] = $time;

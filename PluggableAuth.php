@@ -29,7 +29,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 $GLOBALS['wgExtensionCredits']['other'][] = array (
 	'path' => __FILE__,
 	'name' => 'PluggableAuth',
-	'version' => '1.0',
+	'version' => '1.1',
 	'author' => array(
 		'[https://www.mediawiki.org/wiki/User:Cindy.cicalese Cindy Cicalese]'
 	),
