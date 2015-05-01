@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2014 The MITRE Corporation
+ * Copyright (c) 2015 The MITRE Corporation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 $GLOBALS['wgExtensionCredits']['other'][] = array (
 	'path' => __FILE__,
 	'name' => 'PluggableAuth',
-	'version' => '1.1',
+	'version' => '1.2',
 	'author' => array(
 		'[https://www.mediawiki.org/wiki/User:Cindy.cicalese Cindy Cicalese]'
 	),

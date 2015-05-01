@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2014 The MITRE Corporation
+ * Copyright (c) 2015 The MITRE Corporation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -67,7 +67,7 @@ abstract class PluggableAuth {
 					session_unset();
 					session_destroy();
 				}
-				wfDebug( "Session timed out." );
+				wfDebug( "Session timed out." . PHP_EOL );
 			}
 			$_SESSION['LAST_ACTIVITY'] = $time;
 
@@ -77,7 +77,7 @@ abstract class PluggableAuth {
 					$GLOBALS['PluggableAuth_Timeout'] ) {
 				session_regenerate_id( true );
 				$_SESSION['CREATED'] = $time;
-				wfDebug( "Session regenerated." );
+				wfDebug( "Session regenerated." . PHP_EOL );
 			}
 
 		}
@@ -213,18 +213,16 @@ abstract class PluggableAuth {
 					$user->mEmail = $email;
 					$user->mEmailAuthenticated = wfTimestamp();
 					$user->mTouched = wfTimestamp();
-					$user->addToDatabase();
-					$instance->saveExtraAttributes( $id );
-					wfDebug( "Authenticated/created new user: " . $username );
+					$new_user = true;
+					wfDebug( "Authenticated new user: " . $username . PHP_EOL );
 				} else {
 					$user->mId = $id;
-					$user->loadFromDatabase();
-					self::updateUser( $user, $realname, $email );
-					$user->saveToCache();
-					wfDebug( "Authenticated existing user: " . $user->mName );
+					$user->loadFromId();
+					$new_user = false;
+					wfDebug( "Authenticated existing user: " . $user->mName . PHP_EOL );
 				}
 			} else {
-				wfDebug( "Authentication failure." );
+				wfDebug( "Authentication failure." . PHP_EOL );
 				return false;
 			}
 		} else {
@@ -237,6 +235,14 @@ abstract class PluggableAuth {
 		$returnto = null;
 		$params = null;
 		if ( $authorized ) {
+			if ( $new_user ) {
+				$user->addToDatabase();
+				$instance->saveExtraAttributes( $id );
+				wfDebug( "Added new user: " . $username . PHP_EOL );
+			} else {
+				self::updateUser( $user, $realname, $email );
+				wfDebug( "Updated existing user: " . $user->mName . PHP_EOL );
+			}
 			if ( session_id() == '' ) {
 				wfSetupSession();
 			}
@@ -316,7 +322,7 @@ abstract class PluggableAuth {
 				'PluggableAuth' ) ) {
 			return new $GLOBALS['PluggableAuth_Class'];
 		}
-		wfDebug( "Could not get authentication plugin instance." );
+		wfDebug( "Could not get authentication plugin instance." . PHP_EOL );
 		return false;
 
 	}
