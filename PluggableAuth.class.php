@@ -237,7 +237,7 @@ abstract class PluggableAuth {
 		if ( $authorized ) {
 			if ( $new_user ) {
 				$user->addToDatabase();
-				$instance->saveExtraAttributes( $id );
+				$instance->saveExtraAttributes( $user->mId );
 				wfDebug( "Added new user: " . $username . PHP_EOL );
 			} else {
 				self::updateUser( $user, $realname, $email );
