@@ -329,17 +329,27 @@ abstract class PluggableAuth {
 
 	private static function updateUser( $user, $realname, $email ) {
 		if ( $user->mRealName != $realname || $user->mEmail != $email ) {
-			$user->mRealName = $realname;
-			$user->mEmail = $email;
-			$dbw = wfGetDB( DB_MASTER );
-			$dbw->update( 'user',
-				array( // SET
-					'user_real_name' => $realname,
-					'user_email' => $email
-				), array( // WHERE
-					'user_id' => $user->mId
-				), __METHOD__
-			);
+			$rights = $user->getRights();
+			if ( in_array( "editmyprivateinfo", $rights ) ) {
+				wfDebug( "updateUser(): User has editmyprivateinfo right." . PHP_EOL );
+				wfDebug( "updateUser(): Did not save updated real name and email address." . PHP_EOL );
+			} else {
+				wfDebug( "updateUser(): User does not have editmyprivateinfo right." . PHP_EOL );
+				$user->mRealName = $realname;
+				$user->mEmail = $email;
+				$dbw = wfGetDB( DB_MASTER );
+				$dbw->update( 'user',
+					array( // SET
+						'user_real_name' => $realname,
+						'user_email' => $email
+					), array( // WHERE
+						'user_id' => $user->mId
+					), __METHOD__
+				);
+				wfDebug( "updateUser(): Saved updated real name and email address." . PHP_EOL );
+			}
+		} else {
+				wfDebug( "updateUser(): Real name and email address did not change." . PHP_EOL );
 		}
 	}
 
