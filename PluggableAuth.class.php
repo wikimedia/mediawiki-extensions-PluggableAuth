@@ -230,7 +230,7 @@ abstract class PluggableAuth {
 		}
 
 		$authorized = true;
-		wfRunHooks( 'PluggableAuthUserAuthorization', array( $user,
+		Hooks::run( 'PluggableAuthUserAuthorization', array( $user,
 			&$authorized ) );
 		$returnto = null;
 		$params = null;
@@ -253,7 +253,7 @@ abstract class PluggableAuth {
 				$returnto = $_SESSION[$session_variable];
 				unset( $_SESSION[$session_variable] );
 			}
-			wfRunHooks( 'UserLoginComplete', array( &$user, &$injected_html ) );
+			Hooks::run( 'UserLoginComplete', array( &$user, &$injected_html ) );
 		} else {
 			$returnto = 'Special:PluggableAuthNotAuthorized';
 			$params = array( 'name' => $user->mName );

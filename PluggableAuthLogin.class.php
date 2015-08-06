@@ -42,7 +42,7 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 				$returnto = $_SESSION[$session_variable];
 				unset( $_SESSION[$session_variable] );
 			}
-			wfRunHooks( 'UserLoginComplete', array( &$user, &$injected_html ) );
+			Hooks::run( 'UserLoginComplete', array( &$user, &$injected_html ) );
 			PluggableAuth::redirect( $returnto );
 		} else {
 			if ( !array_key_exists( $session_variable, $_SESSION ) ||
