@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Wladek92"
+		]
+	},
+	"pluggableauth-desc": "Fournit le framework pour les greffons d'authentication et d'autorisation",
+	"pluggableauthnotauthorized": "{{GENDER:$1|Utilisateur}} $1 non autorisé."
+}
