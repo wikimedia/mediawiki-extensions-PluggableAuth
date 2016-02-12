@@ -287,7 +287,9 @@ abstract class PluggableAuth {
 				$url .= $key . '=' . $value;
 			}
 		}
-		$GLOBALS['wgOut']->redirect( $url );
+		if ( Hooks::run( 'PluggableAuthRedirect', array( &$url ) ) ) {
+			$GLOBALS['wgOut']->redirect( $url );
+		}
 	}
 
 	/**
