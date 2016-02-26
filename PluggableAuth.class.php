@@ -56,8 +56,7 @@ abstract class PluggableAuth {
 				$session_variable = wfWikiID() . "_userid";
 				if ( array_key_exists( $session_variable, $_SESSION ) ) {
 					$user->mId = $_SESSION[$session_variable];
-					if ( $user->loadFromDatabase() ) {
-						$user->saveToCache();
+					if ( $user->loadFromId() ) {
 						self::logout( $user );
 					} else{
 						session_unset();
@@ -89,8 +88,7 @@ abstract class PluggableAuth {
 		$session_variable = wfWikiID() . "_userid";
 		if ( array_key_exists( $session_variable, $_SESSION ) ) {
 			$user->mId = $_SESSION[$session_variable];
-			if ( $user->loadFromDatabase() ) {
-				$user->saveToCache();
+			if ( $user->loadFromId() ) {
 				$result = true;
 				return false;
 			}
