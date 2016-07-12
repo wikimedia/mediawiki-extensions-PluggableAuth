@@ -219,6 +219,7 @@ abstract class PluggableAuth {
 					$new_user = false;
 					wfDebug( "Authenticated existing user: " . $user->mName . PHP_EOL );
 				}
+				$user->setCookies();
 			} else {
 				wfDebug( "Authentication failure." . PHP_EOL );
 				return false;
