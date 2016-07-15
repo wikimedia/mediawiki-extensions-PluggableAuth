@@ -1,0 +1,48 @@
+{
+	"name": "PluggableAuth",
+	"version": "2.0",
+	"author": [
+		"[https://www.mediawiki.org/wiki/User:Cindy.cicalese Cindy Cicalese]"
+	],
+	"url": "https://www.mediawiki.org/wiki/Extension:PluggableAuth",
+	"descriptionmsg": "pluggableauth-desc",
+	"type": "other",
+	"SpecialPages": {
+		"PluggableAuthLogin": "PluggableAuthLogin",
+		"PluggableAuthNotAuthorized": "PluggableAuthNotAuthorized"
+	},
+	"MessagesDirs": {
+		"PluggableAuth": [
+			"i18n"
+		]
+	},
+	"AutoloadClasses": {
+		"PluggableAuth": "PluggableAuth.php",
+		"PluggableAuthPrimaryAuthenticationProvider": "PluggableAuthPrimaryAuthenticationProvider.php",
+		"PluggableAuthBeginAuthenticationRequest": "PluggableAuthBeginAuthenticationRequest.php",
+		"PluggableAuthContinueAuthenticationRequest": "PluggableAuthContinueAuthenticationRequest.php",
+		"PluggableAuthLogin": "PluggableAuthLogin.php",
+		"PluggableAuthNotAuthorized": "PluggableAuthNotAuthorized.php"
+	},
+	"AuthManagerConfig": {
+		"primaryauth": {
+			"PluggableAuthPrimaryAuthenticationProvider": {
+				"class": "PluggableAuthPrimaryAuthenticationProvider",
+				"authoritative": true,
+				"sort": 0
+			}
+		}
+	},
+	"Hooks": {
+		"UserLogout": "PluggableAuth::logout",
+		"PersonalUrls": "PluggableAuth::modifyLoginURLs",
+		"SpecialPage_initList": "PluggableAuth::modifyLoginSpecialPages"
+	},
+	"config": {
+		"WhitelistRead": [
+			"Special:PluggableAuthNotAuthorized"
+		],
+		"PluggableAuth_AutoLogin": false
+	},
+	"manifest_version": 1
+}
