@@ -5,5 +5,5 @@
 		]
 	},
 	"pluggableauth-desc": "Proporciona el marco para anexar autenticación y autorización",
-	"pluggableauthnotauthorized": "{{GENDER:$1|El usuario|La usuaria}} $1 no está {{GENDER:$1|autorizado|autorizada}}."
+	"pluggableauth-not-authorized": "{{GENDER:$1|El usuario|La usuaria}} $1 no está {{GENDER:$1|autorizado|autorizada}}."
 }

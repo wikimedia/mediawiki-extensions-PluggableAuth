@@ -5,5 +5,5 @@
 		]
 	},
 	"pluggableauth-desc": "提供框架用于插接式身份认证和授权",
-	"pluggableauthnotauthorized": "{{GENDER:$1|用户}}$1未获授权。"
+	"pluggableauth-not-authorized": "{{GENDER:$1|用户}}$1未获授权。"
 }

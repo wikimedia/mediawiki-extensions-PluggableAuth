@@ -5,5 +5,5 @@
 		]
 	},
 	"pluggableauth-desc": "Ufre un marcu p'autenticación y autorización coneutable",
-	"pluggableauthnotauthorized": "{{GENDER:$1|L'usuariu|La usuaria}} $1 nun ta {{GENDER:$1|autorizáu|autorizada}}."
+	"pluggableauth-not-authorized": "{{GENDER:$1|L'usuariu|La usuaria}} $1 nun ta {{GENDER:$1|autorizáu|autorizada}}."
 }

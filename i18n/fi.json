@@ -4,5 +4,5 @@
 			"Nike"
 		]
 	},
-	"pluggableauthnotauthorized": "{{GENDER:$1|Käyttäjää}} $1 ei ole valtuutettu."
+	"pluggableauth-not-authorized": "{{GENDER:$1|Käyttäjää}} $1 ei ole valtuutettu."
 }

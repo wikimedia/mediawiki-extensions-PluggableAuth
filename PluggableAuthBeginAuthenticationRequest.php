@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2014 The MITRE Corporation
+ * Copyright (c) 2016 The MITRE Corporation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -22,19 +22,16 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-class PluggableAuthNotAuthorized extends UnlistedSpecialPage {
+use \MediaWiki\Auth\ButtonAuthenticationRequest;
+
+class PluggableAuthBeginAuthenticationRequest extends ButtonAuthenticationRequest {
 
 	public function __construct() {
-		parent::__construct( 'PluggableAuthNotAuthorized' );
+		parent::__construct(
+			'pluggableauthlogin',
+			wfMessage('pluggableauth-loginbutton-label'),
+			wfMessage('pluggableauth-loginbutton-help'),
+			true);
 	}
 
-	public function execute( $param ) {
-		$name = htmlentities(
-			$this->getRequest()->getVal( 'name', '<missing name>' ),
-			ENT_QUOTES );
-		$this->getOutput()->
-			addHTML( wfMessage( 'pluggableauthnotauthorized', $name )->
-			text() );
-	}
 }
-
