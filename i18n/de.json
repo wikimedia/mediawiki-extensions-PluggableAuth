@@ -5,5 +5,5 @@
 		]
 	},
 	"pluggableauth-desc": "Ergänzt ein Framework zur Authentifikation und Autorisierung",
-	"pluggableauthnotauthorized": "{{GENDER:$1|Der Benutzer|Die Benutzerin}} $1 ist nicht berechtigt."
+	"pluggableauth-not-authorized": "{{GENDER:$1|Der Benutzer|Die Benutzerin}} $1 ist nicht berechtigt."
 }

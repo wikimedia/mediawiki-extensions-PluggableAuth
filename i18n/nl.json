@@ -5,5 +5,5 @@
 		]
 	},
 	"pluggableauth-desc": "Biedt een kader voor pluggable authenticatie en autorisatie",
-	"pluggableauthnotauthorized": "{{GENDER:$1|Gebruikers}} $1 niet toegestaan."
+	"pluggableauth-not-authorized": "{{GENDER:$1|Gebruikers}} $1 niet toegestaan."
 }

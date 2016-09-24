@@ -1,0 +1,63 @@
+{
+	"name": "PluggableAuth",
+	"version": "2.0",
+	"author": [
+		"[https://www.mediawiki.org/wiki/User:Cindy.cicalese Cindy Cicalese]"
+	],
+	"url": "https://www.mediawiki.org/wiki/Extension:PluggableAuth",
+	"descriptionmsg": "pluggableauth-desc",
+	"type": "other",
+	"SpecialPages": {
+		"PluggableAuthLogin": "PluggableAuthLogin"
+	},
+	"MessagesDirs": {
+		"PluggableAuth": [
+			"i18n"
+		]
+	},
+	"AutoloadClasses": {
+		"PluggableAuth": "PluggableAuth.php",
+		"PluggableAuthHooks": "PluggableAuthHooks.php",
+		"PluggableAuthPrimaryAuthenticationProvider": "PluggableAuthPrimaryAuthenticationProvider.php",
+		"PluggableAuthBeginAuthenticationRequest": "PluggableAuthBeginAuthenticationRequest.php",
+		"PluggableAuthContinueAuthenticationRequest": "PluggableAuthContinueAuthenticationRequest.php",
+		"PluggableAuthLogin": "PluggableAuthLogin.php"
+	},
+	"ResourceModules": {
+		"ext.PluggableAuthAutoLogin" : {
+			"scripts": [
+				"ext.PluggableAuthAutoLogin.js"
+			],
+			"position": "top",
+			"targets": [
+				"desktop",
+				"mobile"
+			]
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteExtPath": "PluggableAuth"
+	},
+	"callback": "PluggableAuthHooks::onRegistration",
+	"Hooks": {
+		"UserLogoutComplete": "PluggableAuthHooks::deauthenticate",
+		"AuthChangeFormFields": "PluggableAuthHooks::onAuthChangeFormFields",
+		"BeforePageDisplay": "PluggableAuthHooks::autoLoginInit",
+		"PersonalUrls": "PluggableAuthHooks::modifyLoginURLs",
+		"ResourceLoaderGetConfigVars": "PluggableAuthHooks::onResourceLoaderGetConfigVars"
+	},
+	"AuthManagerAutoConfig": {
+		"primaryauth": {
+			"PluggableAuthPrimaryAuthenticationProvider": {
+				"class": "PluggableAuthPrimaryAuthenticationProvider",
+				"sort": 0
+			}
+		}
+	},
+	"config": {
+		"PluggableAuth_EnableAutoLogin": false,
+		"PluggableAuth_EnableLocalLogin": false
+	},
+	"manifest_version": 1
+}

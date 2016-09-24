@@ -5,5 +5,5 @@
 		]
 	},
 	"pluggableauth-desc": "플러그 가능한 식별과 인증을 위한 프레임워크 제공",
-	"pluggableauthnotauthorized": "$1 {{GENDER:$1|사용자}}가 인증되지 않았습니다."
+	"pluggableauth-not-authorized": "$1 {{GENDER:$1|사용자}}가 인증되지 않았습니다."
 }

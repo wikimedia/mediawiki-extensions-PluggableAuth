@@ -4,5 +4,5 @@
 			"Robby"
 		]
 	},
-	"pluggableauthnotauthorized": "{{GENDER:$1|De Benotzer}} $1 ass net autoriséiert."
+	"pluggableauth-not-authorized": "{{GENDER:$1|De Benotzer}} $1 ass net autoriséiert."
 }
