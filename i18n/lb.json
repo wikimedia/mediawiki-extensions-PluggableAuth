@@ -4,5 +4,7 @@
 			"Robby"
 		]
 	},
-	"pluggableauth-not-authorized": "{{GENDER:$1|De Benotzer}} $1 ass net autoriséiert."
+	"pluggableauth-not-authorized": "{{GENDER:$1|De Benotzer}} $1 ass net autoriséiert.",
+	"pluggableauth-loginbutton-label": "Mat PluggableAuth aloggen",
+	"pluggableauth-loginbutton-help": "Authentifizéiert Iech mat PluggableAuth"
 }
