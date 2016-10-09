@@ -1,8 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
-			"Lokal Profil"
+			"Lokal Profil",
+			"WikiPhoenix"
 		]
 	},
-	"pluggableauth-not-authorized": "{{GENDER:$1|Användare}} $1 är inte auktoriserad."
+	"pluggableauth-not-authorized": "{{GENDER:$1|Användare}} $1 är inte auktoriserad.",
+	"pluggableauth-loginbutton-label": "Logga in med PluggableAuth"
 }

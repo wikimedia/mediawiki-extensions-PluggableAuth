@@ -5,5 +5,9 @@
 		]
 	},
 	"pluggableauth-desc": "Ergänzt ein Framework zur Authentifikation und Autorisierung",
-	"pluggableauth-not-authorized": "{{GENDER:$1|Der Benutzer|Die Benutzerin}} $1 ist nicht berechtigt."
+	"pluggableauth-not-authorized": "{{GENDER:$1|Der Benutzer|Die Benutzerin}} $1 ist nicht berechtigt.",
+	"pluggableauth-authentication-failure": "Authentifikations- oder Autorisierungsfehler.",
+	"pluggableauth-authentication-workflow-failure": "Authentifikations-Workflow-Fehler.",
+	"pluggableauth-loginbutton-label": "Mit PluggableAuth anmelden",
+	"pluggableauth-loginbutton-help": "Authentifiziert dich mit PluggableAuth"
 }
