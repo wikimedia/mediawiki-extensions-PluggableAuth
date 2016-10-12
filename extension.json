@@ -41,11 +41,11 @@
 	},
 	"callback": "PluggableAuthHooks::onRegistration",
 	"Hooks": {
+		"TitleReadWhitelist": "PluggableAuthHooks::onTitleReadWhitelist",
 		"UserLogoutComplete": "PluggableAuthHooks::deauthenticate",
 		"AuthChangeFormFields": "PluggableAuthHooks::onAuthChangeFormFields",
 		"BeforePageDisplay": "PluggableAuthHooks::autoLoginInit",
-		"PersonalUrls": "PluggableAuthHooks::modifyLoginURLs",
-		"ResourceLoaderGetConfigVars": "PluggableAuthHooks::onResourceLoaderGetConfigVars"
+		"PersonalUrls": "PluggableAuthHooks::modifyLoginURLs"
 	},
 	"AuthManagerAutoConfig": {
 		"primaryauth": {
@@ -55,6 +55,9 @@
 			}
 		}
 	},
+	"PluggableAuthLoginSpecialPages": [
+		"PluggableAuthLogin"
+	],
 	"config": {
 		"PluggableAuth_EnableAutoLogin": false,
 		"PluggableAuth_EnableLocalLogin": false
