@@ -21,56 +21,35 @@
  */
 
 ( function ( mw ) {
-	// Are we already logged in?
-	if ( mw.config.get( 'wgUserName' ) !== null ) {
-		return;
-	}
-
-	var pageName = mw.config.get( 'wgPageName' );
-	var namespace = mw.config.get( 'wgCanonicalNamespace' );
-	if ( namespace === 'Special' ) {
-		var specialPageName = mw.config.get( 'wgCanonicalSpecialPageName' );
-		if ( specialPageName === 'Userlogin' || pageName === 'Special:UserLogin' ) {
-			return;
-		} else if ( specialPageName === 'Badtitle' || pageName === 'Special:Badtitle' ) {
-			pageName = null;
-		} else {
-			pageName = namespace + ':' + specialPageName;
-		}
-	}
-
-	// Is this page whitelisted?
-	var whitelist = mw.config.get( 'wgWhitelistRead' );
-	for ( i = 0; i < whitelist.length; i++ ) {
-		if ( whitelist[i] === pageName ) {
-			return;
-		}
-	}
-
-	// Redirect to Special:UserLogin
 	mw.loader.using( [ 'mediawiki.Uri', 'mediawiki.Title' ], function () {
+		var pageName = mw.config.get( 'wgPageName' );
 		var uri = new mw.Uri();
-		if ( pageName === null ) {
-			if ( uri.query.title === undefined ) {
-				var articlePath = mw.config.get( 'wgArticlePath' );
-				articlePath = articlePath.replace( '$1', '(.*)' );
-				var re = new RegExp( articlePath );
-				var path = uri.path;
-				var matches = path.match( re );
-				if ( matches.length > 1 ) {
-					pageName = matches[1];
+		if ( mw.config.get( 'wgCanonicalNamespace' ) === 'Special' ) {
+			var specialPageName = mw.config.get( 'wgCanonicalSpecialPageName' );
+			if ( specialPageName === 'Userlogin' ) {
+				return;
+			} else if ( specialPageName === 'Badtitle' ) {
+				if ( uri.query.title === undefined ) {
+					var articlePath = mw.config.get( 'wgArticlePath' );
+					articlePath = articlePath.replace( '$1', '(.*)' );
+					var re = new RegExp( articlePath );
+					var path = uri.path;
+					var matches = path.match( re );
+					if ( matches.length > 1 ) {
+						pageName = matches[1];
+					} else {
+						pageName = mw.config.get( 'wgMainPageName' );
+					}
 				} else {
-					pageName = mw.config.get( 'wgMainPageName' );
+					pageName = uri.query.title;
 				}
-			} else {
-				pageName = uri.query.title;
 			}
 		}
 		delete uri.query.title;
 		var query = uri.getQueryString();
-		var loginPageName = "Special:Userlogin";
-		var loginUrl = new mw.Title( loginPageName ).getUrl(
-			{ returnto: pageName, returntoquery: query } );
+		var namespace = mw.config.get( 'wgNamespaceIds' ).special;
+		var title = mw.Title.makeTitle( namespace, 'Userlogin' );
+		var loginUrl = title.getUrl( { returnto: pageName, returntoquery: query } );
 		window.location = loginUrl;
 	} );
 }( mediaWiki ) );

@@ -27,15 +27,12 @@ class PluggableAuthHooks {
 	/**
 	 * Implements extension registration callback.
 	 * See https://www.mediawiki.org/wiki/Manual:Extension_registration#Customizing_registration
+	 * Removes password providers if local login is not enabled.
 	 *
 	 * @since 2.0
 	 *
 	 */
 	public static function onRegistration() {
-		if ( !$GLOBALS['wgWhitelistRead'] ) {
-			$GLOBALS['wgWhitelistRead'] = [];
-		}
-		$GLOBALS['wgWhitelistRead'][] = 'Special:PluggableAuthLogin';
 		if ( $GLOBALS['wgPluggableAuth_EnableLocalLogin'] ) {
 			return;
 		}
@@ -56,8 +53,30 @@ class PluggableAuthHooks {
 
 	/**
 	 *
+	 * Implements TitleReadWhitelist hook.
+	 * See https://www.mediawiki.org/wiki/Manual:Hooks/TitleReadWhitelist
+	 * Adds PluggableAuth login special pages to whitelist.
+	 *
+	 * @since 2.0
+	 *
+	 */
+	public static function onTitleReadWhitelist( $title, $user, &$whitelisted ) {
+		$loginSpecialPages = ExtensionRegistry::getInstance()->getAttribute(
+			'PluggableAuthLoginSpecialPages' );
+		foreach ( $loginSpecialPages as $page ) {
+			if ( $title->isSpecial( $page ) ) {
+				$whitelisted = true;
+				return true;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 *
 	 * Implements AuthChangeFormFields hook.
 	 * See https://www.mediawiki.org/wiki/Manual:Hooks/AuthChangeFormFields
+	 * Moves login button to bottom of form.
 	 *
 	 * @since 2.0
 	 *
@@ -76,6 +95,7 @@ class PluggableAuthHooks {
 	/**
 	 * Implements UserLogoutComplete hook.
 	 * See https://www.mediawiki.org/wiki/Manual:Hooks/UserLogoutComplete
+	 * Calls deauthenticate hook in authentication plugin.
 	 *
 	 * @since 2.0
 	 *
@@ -100,6 +120,15 @@ class PluggableAuthHooks {
 
 	/**
 	 * Implements BeforePageDisplay hook.
+	 * Adds auto login JavaScript module if all of the following are true:
+	 * - auto login is enabled
+	 * - no user is already logged in
+	 * - the current page is not a PluggableAuth login special page (which would
+	 *   cause an infinite loop)
+	 * - if the wiki requires login to read, the current page is whitelisted (in
+	 *   other words, users than cannot login to a wiki that requires login to
+	 *   read will still be able to read whitelisted pages, since those pages
+	 *   will not trigger auto login).
 	 *
 	 * @since 2.0
 	 *
@@ -107,15 +136,31 @@ class PluggableAuthHooks {
 	 * @param Skin $skin
 	 */
 	public static function autoLoginInit( &$out, &$skin ) {
-		if ( $GLOBALS['wgPluggableAuth_EnableAutoLogin'] ) {
-			$out->addModules( 'ext.PluggableAuthAutoLogin' );
+		if ( !$GLOBALS['wgPluggableAuth_EnableAutoLogin'] ) {
+			return true;
 		}
+		if ( !$out->getUser()->isAnon() ) {
+			return true;
+		}
+		$loginSpecialPages = ExtensionRegistry::getInstance()->getAttribute(
+			'PluggableAuthLoginSpecialPages' );
+		$title = $out->getTitle();
+		foreach ( $loginSpecialPages as $page ) {
+			if ( $title->isSpecial( $page ) ) {
+				return true;
+			}
+		}
+		if ( !User::isEveryoneAllowed( 'read' ) && $title->userCan( 'read' ) ) {
+			return true;
+		}
+		$out->addModules( 'ext.PluggableAuthAutoLogin' );
 		return true;
 	}
 
 	/**
 	 * Implements PersonalUrls hook.
 	 * See https://www.mediawiki.org/wiki/Manual:Hooks/PersonalUrls
+	 * Removes logout link from skin if auto login is enabled.
 	 *
 	 * @since 1.0
 	 *
@@ -129,17 +174,5 @@ class PluggableAuthHooks {
 			unset( $personal_urls['logout'] );
 		}
 		return true;
-	}
-
-	/**
-	 * Implements ResourceLoaderGetConfigVars hook.
-	 * See https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderGetConfigVars
-	 *
-	 * @since 2.0
-	 *
-	 * @param array &$vars
-	 */
-	public static function onResourceLoaderGetConfigVars( array &$vars ) {
-		$vars['wgWhitelistRead'] = $GLOBALS['wgWhitelistRead'];
 	}
 }
