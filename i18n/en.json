@@ -8,7 +8,6 @@
 	"pluggableauth-not-authorized": "{{GENDER:$1|User}} $1 not authorized.",
 	"pluggableauth-authentication-failure": "User cannot be authenticated.",
 	"pluggableauth-authentication-workflow-failure": "Authentication workflow failure.",
-	"pluggableauth-authentication-failure": "Authentication or authorization failure.",
 	"pluggableauth-loginbutton-label": "Log in with PluggableAuth",
 	"pluggableauth-loginbutton-help": "Authenticates you with PluggableAuth"
 }
