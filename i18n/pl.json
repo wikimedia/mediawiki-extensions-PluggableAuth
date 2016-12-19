@@ -4,5 +4,5 @@
 			"Chrumps"
 		]
 	},
-	"pluggableauth-authentication-failure": "Uwierzytelnienie lub brak uwierzytelnienia."
+	"pluggableauth-authentication-failure": "Użytkownik nie może być uwierzytelniony."
 }

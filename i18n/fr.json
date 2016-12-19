@@ -7,7 +7,7 @@
 	},
 	"pluggableauth-desc": "Fournit le framework pour les greffons d'authentication et d'autorisation",
 	"pluggableauth-not-authorized": "{{GENDER:$1|Utilisateur}} $1 non autorisé.",
-	"pluggableauth-authentication-failure": "Échec d’authentification ou d’autorisation.",
+	"pluggableauth-authentication-failure": "L’utilisateur n’a pas pu être authentifié.",
 	"pluggableauth-authentication-workflow-failure": "Échec du processus d’authentification.",
 	"pluggableauth-loginbutton-label": "Se connecter avec PluggableAuth",
 	"pluggableauth-loginbutton-help": "Vous authentifie avec PluggableAuth"
