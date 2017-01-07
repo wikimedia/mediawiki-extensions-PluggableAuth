@@ -5,5 +5,6 @@
 		]
 	},
 	"pluggableauth-desc": "Забясьпечвае структуру для зьменнай аўтэнтыфікацыі і аўтарызацыі",
-	"pluggableauth-not-authorized": "{{GENDER:$1|Удзельнік|Удзельніца}} $1 не {{GENDER:$1|аўтарызаваны|аўтарызаваная}}."
+	"pluggableauth-not-authorized": "{{GENDER:$1|Удзельнік|Удзельніца}} $1 не {{GENDER:$1|аўтарызаваны|аўтарызаваная}}.",
+	"pluggableauth-authentication-failure": "Удзельнік ня можа быць аўтэнтыфікаваны."
 }
