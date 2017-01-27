@@ -1,6 +1,6 @@
 {
 	"name": "PluggableAuth",
-	"version": "2.0",
+	"version": "2.1",
 	"author": [
 		"[https://www.mediawiki.org/wiki/User:Cindy.cicalese Cindy Cicalese]"
 	],
@@ -16,7 +16,7 @@
 		]
 	},
 	"AutoloadClasses": {
-		"PluggableAuth": "PluggableAuth.php",
+		"PluggableAuth": "PluggableAuth.class.php",
 		"PluggableAuthHooks": "PluggableAuthHooks.php",
 		"PluggableAuthPrimaryAuthenticationProvider": "PluggableAuthPrimaryAuthenticationProvider.php",
 		"PluggableAuthBeginAuthenticationRequest": "PluggableAuthBeginAuthenticationRequest.php",
