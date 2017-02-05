@@ -15,6 +15,9 @@
 			"i18n"
 		]
 	},
+	"ExtensionMessagesFiles": {
+		"PluggableAuthAlias": "PluggableAuth.alias.php"
+	},
 	"AutoloadClasses": {
 		"PluggableAuth": "PluggableAuth.class.php",
 		"PluggableAuthHooks": "PluggableAuthHooks.php",
