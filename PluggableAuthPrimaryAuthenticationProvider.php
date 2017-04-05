@@ -85,7 +85,10 @@ class PluggableAuthPrimaryAuthenticationProvider extends
 			} else {
 				wfDebug( 'User does not have editmyprivateinfo right or has just been created.' );
 				$user->mRealName = $realname;
-				$user->mEmail = $email;
+				if ( $email && Sanitizer::validateEmail( $email ) ) {
+					$user->mEmail = $email;
+					$user->confirmEmail();
+				}
 				$user->saveSettings();
 				wfDebug( 'Saved updated real name and email address.' );
 			}
