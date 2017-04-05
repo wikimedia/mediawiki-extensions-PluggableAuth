@@ -37,9 +37,7 @@ class PluggableAuthPrimaryAuthenticationProvider extends
 		if ( !$request ) {
 			return AuthenticationResponse::newAbstain();
 		}
-		$params = "";
-		wfRunHooks( "PluggableAuth_Params", [ &$params ] );
-		$url = Title::newFromText( 'Special:PluggableAuthLogin' )->getFullURL( $params );
+		$url = Title::newFromText( 'Special:PluggableAuthLogin' )->getFullURL();
 		$this->manager->setAuthenticationSessionData(
 			PluggableAuthLogin::RETURNURL_SESSION_KEY, $request->returnToUrl );
 
