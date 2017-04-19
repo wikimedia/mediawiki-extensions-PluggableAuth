@@ -42,7 +42,8 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 		$pluggableauth = PluggableAuth::singleton();
 		$error = null;
 		if ( $pluggableauth ) {
-			if ( $pluggableauth->authenticate( $id, $username, $realname, $email ) ) {
+			if ( $pluggableauth->authenticate( $id, $username, $realname, $email,
+					$error ) ) {
 				if ( is_null( $id ) ) {
 					$user->loadDefaults( $username );
 					$user->mName = $username;
@@ -72,7 +73,14 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 				}
 			} else {
 				wfDebug( 'Authentication failure.' );
-				$error = wfMessage( 'pluggableauth-authentication-failure')->text();
+				if ( is_null( $error ) ) {
+					$error = wfMessage( 'pluggableauth-authentication-failure')->text();
+				} else {
+					if ( !is_string( $error ) ) {
+						$error = strval( $error );
+					}
+					wfDebug( 'ERROR: ' . $error );
+				}
 			}
 		}
 		if ( !is_null( $error ) ) {

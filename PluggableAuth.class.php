@@ -31,9 +31,10 @@ abstract class PluggableAuth {
 	 * @param &$username
 	 * @param &$realname
 	 * @param &$email
+	 * @param &$errorMessage
 	 */
 	abstract public function authenticate( &$id, &$username, &$realname,
-		&$email );
+		&$email, &$errorMessage );
 
 	/**
 	 * @since 1.0
