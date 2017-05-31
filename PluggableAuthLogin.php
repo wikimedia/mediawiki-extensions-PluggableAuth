@@ -26,7 +26,9 @@ use \MediaWiki\Auth\AuthManager;
 
 class PluggableAuthLogin extends UnlistedSpecialPage {
 
-	const RETURNURL_SESSION_KEY = 'PluggableAuthLoginReturnToUrl';
+	const RETURNTOURL_SESSION_KEY = 'PluggableAuthLoginReturnToUrl';
+	const RETURNTOPAGE_SESSION_KEY = 'PluggableAuthLoginReturnToPage';
+	const RETURNTOQUERY_SESSION_KEY = 'PluggableAuthLoginReturnToQuery';
 	const USERNAME_SESSION_KEY = 'PluggableAuthLoginUsername';
 	const REALNAME_SESSION_KEY = 'PluggableAuthLoginRealname';
 	const EMAIL_SESSION_KEY = 'PluggableAuthLoginEmail';
@@ -88,7 +90,7 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 				$error );
 		}
 		$returnToUrl = $authManager->getAuthenticationSessionData(
-			self::RETURNURL_SESSION_KEY );
+			self::RETURNTOURL_SESSION_KEY );
 		$this->getOutput()->redirect( $returnToUrl );
 	}
 }

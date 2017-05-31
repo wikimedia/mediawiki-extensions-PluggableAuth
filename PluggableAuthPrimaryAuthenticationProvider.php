@@ -39,7 +39,11 @@ class PluggableAuthPrimaryAuthenticationProvider extends
 		}
 		$url = Title::newFromText( 'Special:PluggableAuthLogin' )->getFullURL();
 		$this->manager->setAuthenticationSessionData(
-			PluggableAuthLogin::RETURNURL_SESSION_KEY, $request->returnToUrl );
+			PluggableAuthLogin::RETURNTOURL_SESSION_KEY, $request->returnToUrl );
+		$this->manager->setAuthenticationSessionData(
+			PluggableAuthLogin::RETURNTOPAGE_SESSION_KEY, $_GET['returnto']);
+		$this->manager->setAuthenticationSessionData(
+			PluggableAuthLogin::RETURNTOQUERY_SESSION_KEY, $_GET['returntoquery'] );
 
 		return AuthenticationResponse::newRedirect( [
 			new PluggableAuthContinueAuthenticationRequest()
