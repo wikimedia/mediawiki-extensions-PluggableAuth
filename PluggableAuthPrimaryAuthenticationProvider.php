@@ -40,10 +40,20 @@ class PluggableAuthPrimaryAuthenticationProvider extends
 		$url = Title::newFromText( 'Special:PluggableAuthLogin' )->getFullURL();
 		$this->manager->setAuthenticationSessionData(
 			PluggableAuthLogin::RETURNTOURL_SESSION_KEY, $request->returnToUrl );
+		if ( isset( $_GET['returnto'] ) ) {
+			$returnto = $_GET['returnto'];
+		} else {
+			$returnto = '';
+		}
 		$this->manager->setAuthenticationSessionData(
-			PluggableAuthLogin::RETURNTOPAGE_SESSION_KEY, $_GET['returnto']);
+			PluggableAuthLogin::RETURNTOPAGE_SESSION_KEY, $returnto );
+		if ( isset( $_GET['returntoquery'] ) ) {
+			$returntoquery = $_GET['returntoquery'];
+		} else {
+			$returntoquery = '';
+		}
 		$this->manager->setAuthenticationSessionData(
-			PluggableAuthLogin::RETURNTOQUERY_SESSION_KEY, $_GET['returntoquery'] );
+			PluggableAuthLogin::RETURNTOQUERY_SESSION_KEY, $returntoquery );
 
 		return AuthenticationResponse::newRedirect( [
 			new PluggableAuthContinueAuthenticationRequest()
