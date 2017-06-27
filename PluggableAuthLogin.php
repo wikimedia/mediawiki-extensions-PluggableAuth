@@ -59,6 +59,7 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 					$user->loadFromId();
 					wfDebug( 'Authenticated existing user: ' . $user->mName );
 				}
+				Hooks::run( 'PluggableAuthPopulateGroups', [ $user ] );
 				$authorized = true;
 				Hooks::run( 'PluggableAuthUserAuthorization', [ $user, &$authorized ] );
 				if ( $authorized ) {
