@@ -35,7 +35,7 @@
 					var re = new RegExp( articlePath );
 					var path = uri.path;
 					var matches = path.match( re );
-					if ( matches.length > 1 ) {
+					if ( matches && matches.length > 1 ) {
 						pageName = matches[1];
 					} else {
 						pageName = mw.config.get( 'wgMainPageName' );
