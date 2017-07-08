@@ -82,6 +82,10 @@ class PluggableAuthPrimaryAuthenticationProvider extends
 		return AuthenticationResponse::newPass( $username );
 	}
 
+	public function providerAllowsPropertyChange( $property ) {
+		return $GLOBALS['wgPluggableAuth_EnableLocalProperties'];
+	}
+
 	private function updateUserRealNameAndEmail( $user, $force = false ) {
 		$realname = $this->manager->getAuthenticationSessionData(
 			PluggableAuthLogin::REALNAME_SESSION_KEY );
@@ -92,12 +96,11 @@ class PluggableAuthPrimaryAuthenticationProvider extends
 		$this->manager->removeAuthenticationSessionData(
 			PluggableAuthLogin::EMAIL_SESSION_KEY );
 		if ( $user->mRealName != $realname || $user->mEmail != $email ) {
-			$rights = $user->getRights();
-			if ( in_array( 'editmyprivateinfo', $rights ) && !$force) {
-				wfDebug( 'User has editmyprivateinfo right.' );
+			if ( $GLOBALS['wgPluggableAuth_EnableLocalProperties'] && !$force ) {
+				wfDebug( 'Local properties enabled.' );
 				wfDebug( 'Did not save updated real name and email address.' );
 			} else {
-				wfDebug( 'User does not have editmyprivateinfo right or has just been created.' );
+				wfDebug( 'Local properties disabled or has just been created.' );
 				$user->mRealName = $realname;
 				if ( $email && Sanitizer::validateEmail( $email ) ) {
 					$user->mEmail = $email;

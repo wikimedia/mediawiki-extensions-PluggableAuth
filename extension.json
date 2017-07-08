@@ -1,6 +1,6 @@
 {
 	"name": "PluggableAuth",
-	"version": "4.2",
+	"version": "5.0",
 	"author": [
 		"[https://www.mediawiki.org/wiki/User:Cindy.cicalese Cindy Cicalese]"
 	],
@@ -63,7 +63,8 @@
 	],
 	"config": {
 		"PluggableAuth_EnableAutoLogin": false,
-		"PluggableAuth_EnableLocalLogin": false
+		"PluggableAuth_EnableLocalLogin": false,
+		"PluggableAuth_EnableLocalProperties": false
 	},
 	"manifest_version": 1
 }

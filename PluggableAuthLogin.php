@@ -91,6 +91,10 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 		}
 		$returnToUrl = $authManager->getAuthenticationSessionData(
 			self::RETURNTOURL_SESSION_KEY );
-		$this->getOutput()->redirect( $returnToUrl );
+		if ( is_null( $returnToUrl) || count( $returnToUrl ) === 0 ) {
+			wfDebug( 'ERROR: return to URL is null or empty' );
+		} else {
+			$this->getOutput()->redirect( $returnToUrl );
+		}
 	}
 }
