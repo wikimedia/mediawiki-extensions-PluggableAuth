@@ -120,24 +120,22 @@ class PluggableAuthHooks {
 	}
 
 	/**
-	 * Implements BeforePageDisplay hook.
-	 * See https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
-	 * Adds auto login JavaScript module if all of the following are true:
-	 * - auto login is enabled
-	 * - no user is already logged in
-	 * - the current page is not a PluggableAuth login special page (which would
-	 *   cause an infinite loop)
-	 * - if the wiki requires login to read, the current page is whitelisted (in
-	 *   other words, users than cannot login to a wiki that requires login to
-	 *   read will still be able to read whitelisted pages, since those pages
-	 *   will not trigger auto login).
+	 * Grab the page request early
+	 * See https://www.mediawiki.org/wiki/Manual:Hooks/BeforeInitialize
+	 * Redirects ASAP to login
+	 * @param Title &$title being used for request
+	 * @param null $article unused
+	 * @param OutputPage $out object
+	 * @param User $user current user
+	 * @param WebRequest $request why we're here
+	 * @param MediaWiki $mw object
 	 *
-	 * @since 2.0
-	 *
-	 * @param OutputPage &$out output page obj
-	 * @param Skin &$skin will be used to generate the page
+	 * Note that $title has to be passed by ref so we can replace it.
 	 */
-	public static function autoLoginInit( &$out, &$skin ) {
+	public static function doBeforeInitialize(
+		Title &$title, $article, OutputPage $out, User $user,
+		WebRequest $request, MediaWiki $mw
+	) {
 		if ( !$GLOBALS['wgPluggableAuth_EnableAutoLogin'] ) {
 			return;
 		}
@@ -148,14 +146,20 @@ class PluggableAuthHooks {
 			return;
 		}
 		$loginSpecialPages = ExtensionRegistry::getInstance()->getAttribute(
-			'PluggableAuthLoginSpecialPages' );
-		$title = $out->getTitle();
+			'PluggableAuthLoginSpecialPages'
+		);
 		foreach ( $loginSpecialPages as $page ) {
 			if ( $title->isSpecial( $page ) ) {
 				return;
 			}
 		}
-		$out->addModules( 'ext.PluggableAuthAutoLogin' );
+
+		$oldTitle = $title;
+		$title = Title::newFromText( "UserLogin", NS_SPECIAL );
+		$out->redirect( $title->getFullURL( [
+			'returnto' => $oldTitle,
+			'returntoquery' => $request->getRawQueryString()
+		] ) );
 	}
 
 	/**

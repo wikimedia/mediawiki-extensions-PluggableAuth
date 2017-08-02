@@ -1,6 +1,6 @@
 {
 	"name": "PluggableAuth",
-	"version": "5.1",
+	"version": "5.2",
 	"author": [
 		"[https://www.mediawiki.org/wiki/User:Cindy.cicalese Cindy Cicalese]"
 	],
@@ -47,8 +47,8 @@
 		"TitleReadWhitelist": "PluggableAuthHooks::onTitleReadWhitelist",
 		"UserLogoutComplete": "PluggableAuthHooks::deauthenticate",
 		"AuthChangeFormFields": "PluggableAuthHooks::onAuthChangeFormFields",
-		"BeforePageDisplay": "PluggableAuthHooks::autoLoginInit",
-		"PersonalUrls": "PluggableAuthHooks::modifyLoginURLs"
+		"PersonalUrls": "PluggableAuthHooks::modifyLoginURLs",
+		"BeforeInitialize": "PluggableAuthHooks::doBeforeInitialize"
 	},
 	"AuthManagerAutoConfig": {
 		"primaryauth": {
@@ -59,7 +59,8 @@
 		}
 	},
 	"PluggableAuthLoginSpecialPages": [
-		"PluggableAuthLogin"
+		"PluggableAuthLogin",
+		"Userlogin"
 	],
 	"config": {
 		"PluggableAuth_EnableAutoLogin": false,
