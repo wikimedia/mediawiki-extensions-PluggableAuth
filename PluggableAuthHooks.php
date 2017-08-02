@@ -52,41 +52,43 @@ class PluggableAuthHooks {
 	}
 
 	/**
-	 *
 	 * Implements TitleReadWhitelist hook.
 	 * See https://www.mediawiki.org/wiki/Manual:Hooks/TitleReadWhitelist
 	 * Adds PluggableAuth login special pages to whitelist.
 	 *
 	 * @since 2.0
-	 *
+	 * @param Title $title being checked
+	 * @param User $user Current user
+	 * @param bool &$whitelisted whether this title is whitelisted
 	 */
-	public static function onTitleReadWhitelist( $title, $user, &$whitelisted ) {
+	public static function onTitleReadWhitelist(
+		Title $title, User $user, &$whitelisted
+	) {
 		$loginSpecialPages = ExtensionRegistry::getInstance()->getAttribute(
 			'PluggableAuthLoginSpecialPages' );
 		foreach ( $loginSpecialPages as $page ) {
 			if ( $title->isSpecial( $page ) ) {
 				$whitelisted = true;
-				return true;
+				return;
 			}
 		}
-		return true;
 	}
 
 	/**
-	 *
 	 * Implements AuthChangeFormFields hook.
 	 * See https://www.mediawiki.org/wiki/Manual:Hooks/AuthChangeFormFields
 	 * Moves login button to bottom of form.
 	 *
 	 * @since 2.0
-	 *
-	 * @param array $requests
-	 * @param array $fieldInfo
-	 * @param array $formDescriptor
-	 * @param $action
+	 * @param array $requests AuthenticationRequests the fields are created from
+	 * @param array $fieldInfo union of AuthenticationRequest::getFieldInfo()
+	 * @param HTMLForm &$formDescriptor The special key weight can be set to
+	 *        change the order of the fields.
+	 * @param int $action one of the AuthManager::ACTION_* constants.
 	 */
-	public static function onAuthChangeFormFields( array $requests,
-		array $fieldInfo, array &$formDescriptor, $action) {
+	public static function onAuthChangeFormFields(
+		array $requests, array $fieldInfo, array &$formDescriptor, $action
+	) {
 		if ( isset( $formDescriptor['pluggableauthlogin'] ) ) {
 			$formDescriptor['pluggableauthlogin']['weight'] = 101;
 		}
@@ -98,16 +100,16 @@ class PluggableAuthHooks {
 	 * Calls deauthenticate hook in authentication plugin.
 	 *
 	 * @since 2.0
-	 *
-	 * @param User $user
-	 * @param $inject_html
-	 * @param $old_name
+	 * @param User $user User after logout (won't have name, ID, etc.)
+	 * @param string $inject_html Any HTML to inject after the logout message.
+	 * @param string $old_name The text of the username that just logged out.
 	 */
-	public static function deauthenticate( User &$user, $inject_html,
-		$old_name ) {
+	public static function deauthenticate(
+		User $user, $inject_html, $old_name
+	) {
 		$old_user = User::newFromName( $old_name );
 		if ( $old_user === false ) {
-			return true;
+			return;
 		}
 		wfDebug( 'Deauthenticating ' . $old_name );
 		$pluggableauth = PluggableAuth::singleton();
@@ -115,11 +117,11 @@ class PluggableAuthHooks {
 			$pluggableauth->deauthenticate( $old_user );
 		}
 		wfDebug( 'Deauthenticated ' . $old_name );
-		return true;
 	}
 
 	/**
 	 * Implements BeforePageDisplay hook.
+	 * See https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
 	 * Adds auto login JavaScript module if all of the following are true:
 	 * - auto login is enabled
 	 * - no user is already logged in
@@ -132,29 +134,28 @@ class PluggableAuthHooks {
 	 *
 	 * @since 2.0
 	 *
-	 * @param OutputPage $out
-	 * @param Skin $skin
+	 * @param OutputPage &$out output page obj
+	 * @param Skin &$skin will be used to generate the page
 	 */
 	public static function autoLoginInit( &$out, &$skin ) {
 		if ( !$GLOBALS['wgPluggableAuth_EnableAutoLogin'] ) {
-			return true;
+			return;
 		}
 		if ( !$out->getUser()->isAnon() ) {
-			return true;
+			return;
+		}
+		if ( !User::isEveryoneAllowed( 'read' ) && $title->userCan( 'read' ) ) {
+			return;
 		}
 		$loginSpecialPages = ExtensionRegistry::getInstance()->getAttribute(
 			'PluggableAuthLoginSpecialPages' );
 		$title = $out->getTitle();
 		foreach ( $loginSpecialPages as $page ) {
 			if ( $title->isSpecial( $page ) ) {
-				return true;
+				return;
 			}
 		}
-		if ( !User::isEveryoneAllowed( 'read' ) && $title->userCan( 'read' ) ) {
-			return true;
-		}
 		$out->addModules( 'ext.PluggableAuthAutoLogin' );
-		return true;
 	}
 
 	/**
@@ -164,15 +165,15 @@ class PluggableAuthHooks {
 	 *
 	 * @since 1.0
 	 *
-	 * @param array &$personal_urls
-	 * @param Title $title
-	 * @param SkinTemplate $skin
+	 * @param array &$personal_urls urls sto modify
+	 * @param Title $title current title
+	 * @param SkinTemplate $skin template for vars
 	 */
-	public static function modifyLoginURLs( array &$personal_urls,
-		Title $title = null, SkinTemplate $skin = null ) {
+	public static function modifyLoginURLs(
+		array &$personal_urls, Title $title = null, SkinTemplate $skin = null
+	) {
 		if ( $GLOBALS['wgPluggableAuth_EnableAutoLogin'] ) {
 			unset( $personal_urls['logout'] );
 		}
-		return true;
 	}
 }
