@@ -26,22 +26,6 @@
 		"PluggableAuthContinueAuthenticationRequest": "PluggableAuthContinueAuthenticationRequest.php",
 		"PluggableAuthLogin": "PluggableAuthLogin.php"
 	},
-	"ResourceModules": {
-		"ext.PluggableAuthAutoLogin" : {
-			"scripts": [
-				"ext.PluggableAuthAutoLogin.js"
-			],
-			"position": "top",
-			"targets": [
-				"desktop",
-				"mobile"
-			]
-		}
-	},
-	"ResourceFileModulePaths": {
-		"localBasePath": "",
-		"remoteExtPath": "PluggableAuth"
-	},
 	"callback": "PluggableAuthHooks::onRegistration",
 	"Hooks": {
 		"TitleReadWhitelist": "PluggableAuthHooks::onTitleReadWhitelist",
