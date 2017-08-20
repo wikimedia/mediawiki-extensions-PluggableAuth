@@ -157,7 +157,7 @@ class PluggableAuthHooks {
 		$oldTitle = $title;
 		$title = Title::newFromText( "UserLogin", NS_SPECIAL );
 		$out->redirect( $title->getFullURL( [
-			'returnto' => $oldTitle,
+			'returnto' => urlencode( $oldTitle ),
 			'returntoquery' => $request->getRawQueryString()
 		] ) );
 	}
