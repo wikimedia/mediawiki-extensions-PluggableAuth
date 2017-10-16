@@ -19,12 +19,12 @@
 		"PluggableAuthAlias": "PluggableAuth.alias.php"
 	},
 	"AutoloadClasses": {
-		"PluggableAuth": "PluggableAuth.class.php",
-		"PluggableAuthHooks": "PluggableAuthHooks.php",
-		"PluggableAuthPrimaryAuthenticationProvider": "PluggableAuthPrimaryAuthenticationProvider.php",
-		"PluggableAuthBeginAuthenticationRequest": "PluggableAuthBeginAuthenticationRequest.php",
-		"PluggableAuthContinueAuthenticationRequest": "PluggableAuthContinueAuthenticationRequest.php",
-		"PluggableAuthLogin": "PluggableAuthLogin.php"
+		"PluggableAuth": "includes/PluggableAuth.php",
+		"PluggableAuthHooks": "includes/PluggableAuthHooks.php",
+		"PluggableAuthPrimaryAuthenticationProvider": "includes/PluggableAuthPrimaryAuthenticationProvider.php",
+		"PluggableAuthBeginAuthenticationRequest": "includes/PluggableAuthBeginAuthenticationRequest.php",
+		"PluggableAuthContinueAuthenticationRequest": "includes/PluggableAuthContinueAuthenticationRequest.php",
+		"PluggableAuthLogin": "includes/PluggableAuthLogin.php"
 	},
 	"callback": "PluggableAuthHooks::onRegistration",
 	"Hooks": {

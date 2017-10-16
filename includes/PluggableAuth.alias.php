@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Aliases for special pages
  *
@@ -7,9 +8,9 @@
  */
 // @codingStandardsIgnoreFile
 
-$specialPageAliases = array();
+$specialPageAliases = [];
 
 /** English (English) */
-$specialPageAliases['en'] = array(
-	'PluggableAuthLogin' => array( 'PluggableAuthLogin' ),
-);
+$specialPageAliases['en'] = [
+	'PluggableAuthLogin' => ['PluggableAuthLogin'],
+];
