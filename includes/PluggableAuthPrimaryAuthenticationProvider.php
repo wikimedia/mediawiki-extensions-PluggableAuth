@@ -15,9 +15,17 @@ class PluggableAuthPrimaryAuthenticationProvider extends
 		if ( !$request ) {
 			return AuthenticationResponse::newAbstain();
 		}
+		$extraLoginFields = [];
+		foreach ( $GLOBALS['wgPluggableAuth_ExtraLoginFields'] as $key => $value ) {
+			if ( isset( $request, $key ) ) {
+				$extraLoginFields[$key] = $request->$key;
+			}
+		}
 		$url = Title::newFromText( 'Special:PluggableAuthLogin' )->getFullURL();
 		$this->manager->setAuthenticationSessionData(
 			PluggableAuthLogin::RETURNTOURL_SESSION_KEY, $request->returnToUrl );
+		$this->manager->setAuthenticationSessionData(
+			PluggableAuthLogin::EXTRALOGINFIELDS_SESSION_KEY, $extraLoginFields );
 		if ( isset( $_GET['returnto'] ) ) {
 			$returnto = $_GET['returnto'];
 		} else {
@@ -124,7 +132,7 @@ class PluggableAuthPrimaryAuthenticationProvider extends
 		switch ( $action ) {
 			case AuthManager::ACTION_LOGIN:
 				return [
-					 new PluggableAuthBeginAuthenticationRequest()
+					new PluggableAuthBeginAuthenticationRequest()
 				];
 			default:
 				return [];

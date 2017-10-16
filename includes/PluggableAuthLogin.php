@@ -7,6 +7,7 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 	const RETURNTOURL_SESSION_KEY = 'PluggableAuthLoginReturnToUrl';
 	const RETURNTOPAGE_SESSION_KEY = 'PluggableAuthLoginReturnToPage';
 	const RETURNTOQUERY_SESSION_KEY = 'PluggableAuthLoginReturnToQuery';
+	const EXTRALOGINFIELDS_SESSION_KEY = 'PluggableAuthLoginExtraLoginFields';
 	const USERNAME_SESSION_KEY = 'PluggableAuthLoginUsername';
 	const REALNAME_SESSION_KEY = 'PluggableAuthLoginRealname';
 	const EMAIL_SESSION_KEY = 'PluggableAuthLoginEmail';

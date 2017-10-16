@@ -1,8 +1,10 @@
 <?php
 
 use \MediaWiki\Auth\ButtonAuthenticationRequest;
+use \MediaWiki\Auth\AuthManager;
 
-class PluggableAuthBeginAuthenticationRequest extends ButtonAuthenticationRequest {
+class PluggableAuthBeginAuthenticationRequest extends
+	ButtonAuthenticationRequest {
 
 	public function __construct() {
 		parent::__construct(
@@ -12,4 +14,11 @@ class PluggableAuthBeginAuthenticationRequest extends ButtonAuthenticationReques
 			true);
 	}
 
+	public function getFieldInfo() {
+		if ( $this->action !== AuthManager::ACTION_LOGIN ) {
+			return [];
+		}
+		return array_merge( $GLOBALS['wgPluggableAuth_ExtraLoginFields'],
+			parent::getFieldInfo() );
+	}
 }
