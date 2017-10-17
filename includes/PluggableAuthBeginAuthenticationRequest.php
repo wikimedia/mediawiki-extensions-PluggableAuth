@@ -7,9 +7,16 @@ class PluggableAuthBeginAuthenticationRequest extends
 	ButtonAuthenticationRequest {
 
 	public function __construct() {
+		if ( isset( $GLOBALS['wgPluggableAuth_ButtonLabelMessage'] ) ) {
+			$label = wfMessage( $GLOBALS['wgPluggableAuth_ButtonLabelMessage'] );
+		} elseif ( $GLOBALS['wgPluggableAuth_ButtonLabel'] ) {
+			$label = new RawMessage( $GLOBALS['wgPluggableAuth_ButtonLabel'] );
+		} else {
+			$label = wfMessage( 'pluggableauth-loginbutton-label' );
+		}
 		parent::__construct(
 			'pluggableauthlogin',
-			wfMessage( 'pluggableauth-loginbutton-label' ),
+			$label,
 			wfMessage( 'pluggableauth-loginbutton-help' ),
 			true );
 	}
