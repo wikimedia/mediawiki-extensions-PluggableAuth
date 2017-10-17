@@ -16,7 +16,7 @@
 		]
 	},
 	"ExtensionMessagesFiles": {
-		"PluggableAuthAlias": "PluggableAuth.alias.php"
+		"PluggableAuthAlias": "includes/PluggableAuth.alias.php"
 	},
 	"AutoloadClasses": {
 		"PluggableAuth": "includes/PluggableAuth.php",
