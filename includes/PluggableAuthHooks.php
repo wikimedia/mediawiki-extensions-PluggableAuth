@@ -158,4 +158,20 @@ class PluggableAuthHooks {
 			unset( $personal_urls['logout'] );
 		}
 	}
+
+	/**
+	 * Populate groups after the local user is created
+	 * See https://www.mediawiki.org/wiki/Manual:Hooks/LocalUserCreated
+	 * Called immediately after a local user has been created and saved to the database
+	 *
+	 * @param User $user current user
+	 * @param bool $autocreated whether the user was autocreated
+	 */
+	public static function onLocalUserCreated(
+		User $user, $autocreated
+	) {
+		if ( $autocreated ) {
+			Hooks::run( 'PluggableAuthPopulateGroups', [ $user ] );
+		}
+	}
 }

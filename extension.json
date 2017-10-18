@@ -32,7 +32,8 @@
 		"UserLogoutComplete": "PluggableAuthHooks::deauthenticate",
 		"AuthChangeFormFields": "PluggableAuthHooks::onAuthChangeFormFields",
 		"PersonalUrls": "PluggableAuthHooks::modifyLoginURLs",
-		"BeforeInitialize": "PluggableAuthHooks::doBeforeInitialize"
+		"BeforeInitialize": "PluggableAuthHooks::doBeforeInitialize",
+		"LocalUserCreated": "PluggableAuthHooks::onLocalUserCreated"
 	},
 	"AuthManagerAutoConfig": {
 		"primaryauth": {
