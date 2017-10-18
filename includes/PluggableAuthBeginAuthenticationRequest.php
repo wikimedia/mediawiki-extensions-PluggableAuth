@@ -9,9 +9,9 @@ class PluggableAuthBeginAuthenticationRequest extends
 	public function __construct() {
 		parent::__construct(
 			'pluggableauthlogin',
-			wfMessage('pluggableauth-loginbutton-label'),
-			wfMessage('pluggableauth-loginbutton-help'),
-			true);
+			wfMessage( 'pluggableauth-loginbutton-label' ),
+			wfMessage( 'pluggableauth-loginbutton-help' ),
+			true );
 	}
 
 	public function getFieldInfo() {

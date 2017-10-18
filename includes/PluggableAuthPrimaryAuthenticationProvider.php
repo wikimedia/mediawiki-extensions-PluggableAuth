@@ -54,7 +54,7 @@ class PluggableAuthPrimaryAuthenticationProvider extends
 				wfMessage( 'pluggableauth-authentication-workflow-failure' ) );
 		}
 		$error = $this->manager->getAuthenticationSessionData(
-			PluggableAuthLogin::ERROR_SESSION_KEY ) ;
+			PluggableAuthLogin::ERROR_SESSION_KEY );
 		if ( !is_null( $error ) ) {
 			$this->manager->removeAuthenticationSessionData(
 				PluggableAuthLogin::ERROR_SESSION_KEY );

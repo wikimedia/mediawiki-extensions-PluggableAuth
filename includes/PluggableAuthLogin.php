@@ -56,7 +56,7 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 			} else {
 				wfDebug( 'Authentication failure.' );
 				if ( is_null( $error ) ) {
-					$error = wfMessage( 'pluggableauth-authentication-failure')->text();
+					$error = wfMessage( 'pluggableauth-authentication-failure' )->text();
 				} else {
 					if ( !is_string( $error ) ) {
 						$error = strval( $error );
@@ -71,7 +71,7 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 		}
 		$returnToUrl = $authManager->getAuthenticationSessionData(
 			self::RETURNTOURL_SESSION_KEY );
-		if ( is_null( $returnToUrl) || count( $returnToUrl ) === 0 ) {
+		if ( is_null( $returnToUrl ) || count( $returnToUrl ) === 0 ) {
 			wfDebug( 'ERROR: return to URL is null or empty' );
 		} else {
 			$this->getOutput()->redirect( $returnToUrl );
