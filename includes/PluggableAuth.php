@@ -5,11 +5,12 @@ abstract class PluggableAuth {
 	/**
 	 * @since 1.0
 	 *
-	 * @param int &$id
-	 * @param string &$username
-	 * @param string &$realname
-	 * @param string &$email
-	 * @param string &$errorMessage
+	 * @param int &$id The user's user ID
+	 * @param string &$username The user's user name
+	 * @param string &$realname The user's real name
+	 * @param string &$email The user's email address
+	 * @param string &$errorMessage Returns a descritive message if
+	 *                              there's an error
 	 */
 	abstract public function authenticate( &$id, &$username, &$realname,
 		&$email, &$errorMessage );
@@ -17,14 +18,14 @@ abstract class PluggableAuth {
 	/**
 	 * @since 1.0
 	 *
-	 * @param User &$user
+	 * @param User &$user The user
 	 */
 	abstract public function deauthenticate( User &$user );
 
 	/**
 	 * @since 1.0
 	 *
-	 * @param int $id
+	 * @param int $id The user's user ID
 	 */
 	abstract public function saveExtraAttributes( $id );
 
@@ -32,6 +33,7 @@ abstract class PluggableAuth {
 
 	/**
 	 * @since 2.0
+	 * @return PluggableAuth a PluggableAuth object
 	 */
 	public static function singleton() {
 		if ( !is_null( self::$instance ) ) {

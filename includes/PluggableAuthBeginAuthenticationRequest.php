@@ -21,6 +21,10 @@ class PluggableAuthBeginAuthenticationRequest extends
 			true );
 	}
 
+	/**
+	 * Returns field information.
+	 * @return array field information
+	 */
 	public function getFieldInfo() {
 		if ( $this->action !== AuthManager::ACTION_LOGIN ) {
 			return [];

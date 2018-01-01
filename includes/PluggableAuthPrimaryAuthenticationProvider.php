@@ -9,6 +9,10 @@ use \MediaWiki\Auth\AuthenticationResponse;
 class PluggableAuthPrimaryAuthenticationProvider extends
 	AbstractPrimaryAuthenticationProvider {
 
+	/**
+	 * Start an authentication flow
+	 * @inheritDoc
+	 */
 	public function beginPrimaryAuthentication( array $reqs ) {
 		$request = ButtonAuthenticationRequest::getRequestByName( $reqs,
 			'pluggableauthlogin' );
@@ -26,6 +30,7 @@ class PluggableAuthPrimaryAuthenticationProvider extends
 			PluggableAuthLogin::RETURNTOURL_SESSION_KEY, $request->returnToUrl );
 		$this->manager->setAuthenticationSessionData(
 			PluggableAuthLogin::EXTRALOGINFIELDS_SESSION_KEY, $extraLoginFields );
+		// @codingStandardsIgnoreStart
 		if ( isset( $_GET['returnto'] ) ) {
 			$returnto = $_GET['returnto'];
 		} else {
@@ -38,6 +43,7 @@ class PluggableAuthPrimaryAuthenticationProvider extends
 		} else {
 			$returntoquery = '';
 		}
+		// @codingStandardsIgnoreEnd
 		$this->manager->setAuthenticationSessionData(
 			PluggableAuthLogin::RETURNTOQUERY_SESSION_KEY, $returntoquery );
 
@@ -46,6 +52,10 @@ class PluggableAuthPrimaryAuthenticationProvider extends
 		], $url );
 	}
 
+	/**
+	 * Continue an authentication flow
+	 * @inheritDoc
+	 */
 	public function continuePrimaryAuthentication( array $reqs ) {
 		$request = AuthenticationRequest::getRequestByClass( $reqs,
 			PluggableAuthContinueAuthenticationRequest::class );
@@ -68,6 +78,10 @@ class PluggableAuthPrimaryAuthenticationProvider extends
 		return AuthenticationResponse::newPass( $username );
 	}
 
+	/**
+	 * Determine whether a property can change
+	 * @inheritDoc
+	 */
 	public function providerAllowsPropertyChange( $property ) {
 		return $GLOBALS['wgPluggableAuth_EnableLocalProperties'];
 	}
@@ -100,6 +114,9 @@ class PluggableAuthPrimaryAuthenticationProvider extends
 		}
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function autoCreatedAccount( $user, $source ) {
 		$this->updateUserRealNameAndEmail( $user, true );
 		$pluggableauth = PluggableAuth::singleton();
@@ -108,26 +125,49 @@ class PluggableAuthPrimaryAuthenticationProvider extends
 		}
 	}
 
+	/**
+	 * Test whether the named user exists
+	 * @inheritDoc
+	 */
 	public function testUserExists( $username, $flags = User::READ_NORMAL ) {
 		return false;
 	}
 
+	/**
+	 * Validate a change of authentication data (e.g. passwords)
+	 * @inheritDoc
+	 */
 	public function providerAllowsAuthenticationDataChange(
 		AuthenticationRequest $req, $checkData = true ) {
 		return StatusValue::newGood( 'ignored' );
 	}
 
+	/**
+	 * Fetch the account-creation type
+	 * @inheritDoc
+	 */
 	public function accountCreationType() {
 		return self::TYPE_LINK;
 	}
 
+	/**
+	 * Start an account creation flow
+	 * @inheritDoc
+	 */
 	public function beginPrimaryAccountCreation( $user, $creator, array $reqs ) {
 		return AuthenticationResponse::newAbstain();
 	}
 
+	/**
+	 * Change or remove authentication data (e.g. passwords)
+	 * @inheritDoc
+	 */
 	public function providerChangeAuthenticationData( AuthenticationRequest $req ) {
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function getAuthenticationRequests( $action, array $options ) {
 		switch ( $action ) {
 			case AuthManager::ACTION_LOGIN:

@@ -5,10 +5,19 @@ use \MediaWiki\Auth\AuthManager;
 
 class PluggableAuthContinueAuthenticationRequest extends AuthenticationRequest {
 
+	/**
+	 * Returns field information.
+	 * @return array field information
+	 */
 	public function getFieldInfo() {
 		return [];
 	}
 
+	/**
+	 * Load from submission.
+	 * @param array $data data (ignored)
+	 * @return bool success
+	 */
 	public function loadFromSubmission( array $data ) {
 		$authManager = AuthManager::singleton();
 		$error = $authManager->getAuthenticationSessionData(

@@ -17,6 +17,9 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 		parent::__construct( 'PluggableAuthLogin' );
 	}
 
+	/**
+	 * @param string|null $param parameters (ignored)
+	 */
 	public function execute( $param ) {
 		$authManager = AuthManager::singleton();
 		$user = $this->getUser();
