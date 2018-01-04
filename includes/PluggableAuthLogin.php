@@ -21,6 +21,7 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 	 * @param string|null $param parameters (ignored)
 	 */
 	public function execute( $param ) {
+		wfDebugLog( 'PluggableAuth', 'In execute()' );
 		$authManager = AuthManager::singleton();
 		$user = $this->getUser();
 		$pluggableauth = PluggableAuth::singleton();
@@ -35,11 +36,11 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 					$user->mEmail = $email;
 					$user->mEmailAuthenticated = wfTimestamp();
 					$user->mTouched = wfTimestamp();
-					wfDebug( 'Authenticated new user: ' . $username );
+					wfDebugLog( 'PluggableAuth', 'Authenticated new user: ' . $username );
 				} else {
 					$user->mId = $id;
 					$user->loadFromId();
-					wfDebug( 'Authenticated existing user: ' . $user->mName );
+					wfDebugLog( 'PluggableAuth', 'Authenticated existing user: ' . $user->mName );
 				}
 				Hooks::run( 'PluggableAuthPopulateGroups', [ $user ] );
 				$authorized = true;
@@ -51,20 +52,20 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 						self::REALNAME_SESSION_KEY, $realname );
 					$authManager->setAuthenticationSessionData(
 						self::EMAIL_SESSION_KEY, $email );
-					wfDebug( 'User is authorized.' );
+					wfDebugLog( 'PluggableAuth', 'User is authorized.' );
 				} else {
-					wfDebug( 'Authorization failure.' );
+					wfDebugLog( 'PluggableAuth', 'Authorization failure.' );
 					$error = wfMessage( 'pluggableauth-not-authorized', $username )->text();
 				}
 			} else {
-				wfDebug( 'Authentication failure.' );
+				wfDebugLog( 'PluggableAuth', 'Authentication failure.' );
 				if ( is_null( $error ) ) {
 					$error = wfMessage( 'pluggableauth-authentication-failure' )->text();
 				} else {
 					if ( !is_string( $error ) ) {
 						$error = strval( $error );
 					}
-					wfDebug( 'ERROR: ' . $error );
+					wfDebugLog( 'PluggableAuth', 'ERROR: ' . $error );
 				}
 			}
 		}
@@ -75,7 +76,7 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 		$returnToUrl = $authManager->getAuthenticationSessionData(
 			self::RETURNTOURL_SESSION_KEY );
 		if ( is_null( $returnToUrl ) || count( $returnToUrl ) === 0 ) {
-			wfDebug( 'ERROR: return to URL is null or empty' );
+			wfDebugLog( 'PluggableAuth', 'ERROR: return to URL is null or empty' );
 		} else {
 			$this->getOutput()->redirect( $returnToUrl );
 		}

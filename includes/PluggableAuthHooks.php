@@ -89,12 +89,12 @@ class PluggableAuthHooks {
 		if ( $old_user === false ) {
 			return;
 		}
-		wfDebug( 'Deauthenticating ' . $old_name );
+		wfDebugLog( 'PluggableAuth', 'Deauthenticating ' . $old_name );
 		$pluggableauth = PluggableAuth::singleton();
 		if ( $pluggableauth ) {
 			$pluggableauth->deauthenticate( $old_user );
 		}
-		wfDebug( 'Deauthenticated ' . $old_name );
+		wfDebugLog( 'PluggableAuth', 'Deauthenticated ' . $old_name );
 	}
 
 	/**

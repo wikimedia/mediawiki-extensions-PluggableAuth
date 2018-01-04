@@ -36,7 +36,10 @@ abstract class PluggableAuth {
 	 * @return PluggableAuth a PluggableAuth object
 	 */
 	public static function singleton() {
+		wfDebugLog( 'PluggableAuth', 'Getting PluggableAuth singleton' );
+		wfDebugLog( 'PluggableAuth', 'Class name: ' .  $GLOBALS['wgPluggableAuth_Class'] );
 		if ( !is_null( self::$instance ) ) {
+			wfDebugLog( 'PluggableAuth', 'Singleton already exists' );
 			return self::$instance;
 		} elseif ( isset( $GLOBALS['wgPluggableAuth_Class'] ) &&
 			class_exists( $GLOBALS['wgPluggableAuth_Class'] ) &&
@@ -45,7 +48,7 @@ abstract class PluggableAuth {
 			self::$instance = new $GLOBALS['wgPluggableAuth_Class'];
 			return self::$instance;
 		}
-		wfDebug( 'Could not get authentication plugin instance.' );
+		wfDebugLog( 'PluggableAuth', 'Could not get authentication plugin instance.' );
 		return false;
 	}
 }

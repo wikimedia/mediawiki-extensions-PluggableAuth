@@ -97,20 +97,20 @@ class PluggableAuthPrimaryAuthenticationProvider extends
 			PluggableAuthLogin::EMAIL_SESSION_KEY );
 		if ( $user->mRealName != $realname || $user->mEmail != $email ) {
 			if ( $GLOBALS['wgPluggableAuth_EnableLocalProperties'] && !$force ) {
-				wfDebug( 'Local properties enabled.' );
-				wfDebug( 'Did not save updated real name and email address.' );
+				wfDebugLog( 'PluggableAuth', 'Local properties enabled.' );
+				wfDebugLog( 'PluggableAuth', 'Did not save updated real name and email address.' );
 			} else {
-				wfDebug( 'Local properties disabled or has just been created.' );
+				wfDebugLog( 'PluggableAuth', 'Local properties disabled or has just been created.' );
 				$user->mRealName = $realname;
 				if ( $email && Sanitizer::validateEmail( $email ) ) {
 					$user->mEmail = $email;
 					$user->confirmEmail();
 				}
 				$user->saveSettings();
-				wfDebug( 'Saved updated real name and email address.' );
+				wfDebugLog( 'PluggableAuth', 'Saved updated real name and email address.' );
 			}
 		} else {
-			wfDebug( 'Real name and email address did not change.' );
+			wfDebugLog( 'PluggableAuth', 'Real name and email address did not change.' );
 		}
 	}
 
