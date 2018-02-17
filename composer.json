@@ -22,7 +22,6 @@
 		"jakub-onderka/php-console-highlighter": "0.3.2",
 		"mediawiki/minus-x": "0.2.1",
 		"mediawiki/mediawiki-codesniffer": "16.0.0",
-		"phpunit/phpunit": "4.8.36",
 		"phpmd/phpmd": "~2.1"
 	},
 	"scripts": {
