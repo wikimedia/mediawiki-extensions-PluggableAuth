@@ -1,0 +1,4 @@
+{
+	"@metadata": [],
+	"pluggableauth-not-authorized": "{{GENDER:$1|用戶}} $1 未取得授權。"
+}
