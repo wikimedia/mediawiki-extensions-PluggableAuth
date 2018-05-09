@@ -1,0 +1,13 @@
+{
+	"@metadata": {
+		"authors": [
+			"ديفيد"
+		]
+	},
+	"pluggableauth-desc": "يوفر إطارا للتوثيق والتخويل القابل للتوصيل",
+	"pluggableauth-not-authorized": "{{GENDER:$1|المستخدم غير مخول|المستخدمة غير مخولة}} $1.",
+	"pluggableauth-authentication-failure": "لا يمكن مصادقة المستخدم.",
+	"pluggableauth-authentication-workflow-failure": "فشل سير عمل المصادقة.",
+	"pluggableauth-loginbutton-label": "تسجيل الدخول باستخدام PluggableAuth",
+	"pluggableauth-loginbutton-help": "يصادق عليك باستخدام PluggableAuth"
+}
