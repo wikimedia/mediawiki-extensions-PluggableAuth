@@ -148,8 +148,8 @@ class PluggableAuthHooks {
 	 * @since 1.0
 	 *
 	 * @param array &$personal_urls urls sto modify
-	 * @param Title $title current title
-	 * @param SkinTemplate $skin template for vars
+	 * @param Title|null $title current title
+	 * @param SkinTemplate|null $skin template for vars
 	 */
 	public static function modifyLoginURLs(
 		array &$personal_urls, Title $title = null, SkinTemplate $skin = null
