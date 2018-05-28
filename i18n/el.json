@@ -4,5 +4,6 @@
 			"Nikosgranturismogt"
 		]
 	},
+	"pluggableauth-not-authorized": "Ο {{GENDER:$1|Χρήστης}} $1 δεν είναι εξουσιοδοτημένος.",
 	"pluggableauth-loginbutton-label": "Συνδεθείτε με το PluggableAuth"
 }
