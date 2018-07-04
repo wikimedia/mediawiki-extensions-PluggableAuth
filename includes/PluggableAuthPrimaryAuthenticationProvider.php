@@ -74,7 +74,6 @@ class PluggableAuthPrimaryAuthenticationProvider extends
 		$user = User::newFromName( $username );
 		if ( $user && $user->getId() !== 0 ) {
 			$this->updateUserRealnameAndEmail( $user );
-			Hooks::run( 'PluggableAuthPopulateGroups', [ $user ] );
 		}
 		return AuthenticationResponse::newPass( $username );
 	}

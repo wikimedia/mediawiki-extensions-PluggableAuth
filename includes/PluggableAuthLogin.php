@@ -41,6 +41,7 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 					$user->mId = $id;
 					$user->loadFromId();
 					wfDebugLog( 'PluggableAuth', 'Authenticated existing user: ' . $user->mName );
+					Hooks::run( 'PluggableAuthPopulateGroups', [ $user ] );
 				}
 				$authorized = true;
 				Hooks::run( 'PluggableAuthUserAuthorization', [ $user, &$authorized ] );

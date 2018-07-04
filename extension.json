@@ -1,6 +1,6 @@
 {
 	"name": "PluggableAuth",
-	"version": "5.4",
+	"version": "5.5",
 	"author": [
 		"[https://www.mediawiki.org/wiki/User:Cindy.cicalese Cindy Cicalese]"
 	],
@@ -32,7 +32,8 @@
 		"UserLogoutComplete": "PluggableAuthHooks::deauthenticate",
 		"AuthChangeFormFields": "PluggableAuthHooks::onAuthChangeFormFields",
 		"PersonalUrls": "PluggableAuthHooks::modifyLoginURLs",
-		"BeforeInitialize": "PluggableAuthHooks::doBeforeInitialize"
+		"BeforeInitialize": "PluggableAuthHooks::doBeforeInitialize",
+		"LocalUserCreated": "PluggableAuthHooks::onLocalUserCreated"
 	},
 	"AuthManagerAutoConfig": {
 		"primaryauth": {
