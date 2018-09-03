@@ -133,11 +133,12 @@ class PluggableAuthHooks {
 		}
 
 		$oldTitle = $title;
-		$title = Title::newFromText( "UserLogin", NS_SPECIAL );
-		$out->redirect( $title->getFullURL( [
-			'returnto' => urlencode( $oldTitle ),
+		$title = SpecialPage::getTitleFor( 'Userlogin' );
+		header( 'Location: ' . $title->getFullURL( [
+			'returnto' => $oldTitle,
 			'returntoquery' => $request->getRawQueryString()
 		] ) );
+		exit;
 	}
 
 	/**

@@ -25,7 +25,7 @@ class PluggableAuthPrimaryAuthenticationProvider extends
 				$extraLoginFields[$key] = $request->$key;
 			}
 		}
-		$url = Title::newFromText( 'Special:PluggableAuthLogin' )->getFullURL();
+		$url = SpecialPage::getTitleFor( 'PluggableAuthLogin' )->getFullURL();
 		$this->manager->setAuthenticationSessionData(
 			PluggableAuthLogin::RETURNTOURL_SESSION_KEY, $request->returnToUrl );
 		$this->manager->setAuthenticationSessionData(
