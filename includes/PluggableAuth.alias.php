@@ -6,11 +6,10 @@
  * @file
  * @ingroup Extensions
  */
-// @codingStandardsIgnoreFile
 
 $specialPageAliases = [];
 
 /** English (English) */
 $specialPageAliases['en'] = [
-	'PluggableAuthLogin' => ['PluggableAuthLogin'],
+	'PluggableAuthLogin' => [ 'PluggableAuthLogin' ],
 ];
