@@ -9,5 +9,6 @@
 	"pluggableauth-authentication-failure": "Удзельнік ня можа быць аўтэнтыфікаваны.",
 	"pluggableauth-authentication-workflow-failure": "Памылка працэсу аўтэнтыфікацыі.",
 	"pluggableauth-loginbutton-label": "Увайсьці ў сыстэму з дапамогай PluggableAuth",
-	"pluggableauth-loginbutton-help": "Аўтэнтыфікуе вас з дапамогай PluggableAuth"
+	"pluggableauth-loginbutton-help": "Аўтэнтыфікуе вас з дапамогай PluggableAuth",
+	"pluggableauth-fatal-error": "Фатальная памылка пры аўтэнтыфікацыі ўдезльніка."
 }

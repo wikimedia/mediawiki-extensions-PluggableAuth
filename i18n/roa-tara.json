@@ -9,5 +9,6 @@
 	"pluggableauth-authentication-failure": "L'utende non ge pò essere autendicate.",
 	"pluggableauth-authentication-workflow-failure": "'U flusse de autendicazione ave fallite.",
 	"pluggableauth-loginbutton-label": "Tràse cu PluggableAuth",
-	"pluggableauth-loginbutton-help": "Autendicate cu PluggableAuth"
+	"pluggableauth-loginbutton-help": "Autendicate cu PluggableAuth",
+	"pluggableauth-fatal-error": "Errore fatale sus a l'autendicazione de l'utende."
 }
