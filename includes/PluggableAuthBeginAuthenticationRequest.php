@@ -3,8 +3,7 @@
 use \MediaWiki\Auth\ButtonAuthenticationRequest;
 use \MediaWiki\Auth\AuthManager;
 
-class PluggableAuthBeginAuthenticationRequest extends
-	ButtonAuthenticationRequest {
+class PluggableAuthBeginAuthenticationRequest extends ButtonAuthenticationRequest {
 
 	public function __construct() {
 		if ( isset( $GLOBALS['wgPluggableAuth_ButtonLabelMessage'] ) ) {

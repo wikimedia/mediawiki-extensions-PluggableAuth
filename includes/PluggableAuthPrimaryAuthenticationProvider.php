@@ -6,8 +6,7 @@ use \MediaWiki\Auth\AbstractPrimaryAuthenticationProvider;
 use \MediaWiki\Auth\AuthManager;
 use \MediaWiki\Auth\AuthenticationResponse;
 
-class PluggableAuthPrimaryAuthenticationProvider extends
-	AbstractPrimaryAuthenticationProvider {
+class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvider {
 
 	/**
 	 * Start an authentication flow
