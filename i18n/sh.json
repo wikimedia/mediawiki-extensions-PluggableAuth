@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Vlad5250"
+		]
+	},
+	"pluggableauth-not-authorized": "{{GENDER:$1|Korisnik}} $1 nije ovlašten.",
+	"pluggableauth-loginbutton-label": "Prijava preko PluggableAuth"
+}
