@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jon Harald Søby"
+		]
+	},
+	"pluggableauth-desc": "Gir et rammeverk for pluggbar autentisering og autorisering",
+	"pluggableauth-not-authorized": "{{GENDER:$1|Brukeren}} $1 er ikke autorisert.",
+	"pluggableauth-authentication-failure": "Brukeren kan ikke autentiseres.",
+	"pluggableauth-authentication-workflow-failure": "Feil under autentiseringsarbeidsflyt.",
+	"pluggableauth-loginbutton-label": "Logg inn med PluggableAuth",
+	"pluggableauth-loginbutton-help": "Autentiserer deg med PluggableAuth",
+	"pluggableauth-fatal-error": "Kritisk feil under autentisering av bruker."
+}
