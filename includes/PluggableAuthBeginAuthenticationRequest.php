@@ -1,7 +1,7 @@
 <?php
 
-use \MediaWiki\Auth\ButtonAuthenticationRequest;
-use \MediaWiki\Auth\AuthManager;
+use MediaWiki\Auth\ButtonAuthenticationRequest;
+use MediaWiki\Auth\AuthManager;
 
 class PluggableAuthBeginAuthenticationRequest extends ButtonAuthenticationRequest {
 

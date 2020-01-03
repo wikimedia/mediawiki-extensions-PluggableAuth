@@ -1,6 +1,6 @@
 <?php
 
-use \MediaWiki\Auth\AuthManager;
+use MediaWiki\Auth\AuthManager;
 
 class PluggableAuthLogin extends UnlistedSpecialPage {
 

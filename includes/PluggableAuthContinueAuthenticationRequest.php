@@ -1,7 +1,7 @@
 <?php
 
-use \MediaWiki\Auth\AuthenticationRequest;
-use \MediaWiki\Auth\AuthManager;
+use MediaWiki\Auth\AuthenticationRequest;
+use MediaWiki\Auth\AuthManager;
 
 class PluggableAuthContinueAuthenticationRequest extends AuthenticationRequest {
 

@@ -1,10 +1,10 @@
 <?php
 
-use \MediaWiki\Auth\AuthenticationRequest;
-use \MediaWiki\Auth\ButtonAuthenticationRequest;
-use \MediaWiki\Auth\AbstractPrimaryAuthenticationProvider;
-use \MediaWiki\Auth\AuthManager;
-use \MediaWiki\Auth\AuthenticationResponse;
+use MediaWiki\Auth\AuthenticationRequest;
+use MediaWiki\Auth\ButtonAuthenticationRequest;
+use MediaWiki\Auth\AbstractPrimaryAuthenticationProvider;
+use MediaWiki\Auth\AuthManager;
+use MediaWiki\Auth\AuthenticationResponse;
 
 class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvider {
 
