@@ -41,7 +41,7 @@ abstract class PluggableAuth {
 			'PluggableAuth',
 			'Class name: ' . ( $GLOBALS['wgPluggableAuth_Class'] ?? 'unset' )
 		);
-		if ( !is_null( self::$instance ) ) {
+		if ( self::$instance !== null ) {
 			wfDebugLog( 'PluggableAuth', 'Singleton already exists' );
 			return self::$instance;
 		} elseif ( isset( $GLOBALS['wgPluggableAuth_Class'] ) &&

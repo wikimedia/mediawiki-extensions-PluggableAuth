@@ -29,7 +29,7 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 		if ( $pluggableauth ) {
 			if ( $pluggableauth->authenticate( $id, $username, $realname, $email,
 				$error ) ) {
-				if ( is_null( $id ) ) {
+				if ( $id === null ) {
 					$user->loadDefaults( $username );
 					$user->mName = $username;
 					$user->mRealName = $realname;
@@ -59,7 +59,7 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 				}
 			} else {
 				wfDebugLog( 'PluggableAuth', 'Authentication failure.' );
-				if ( is_null( $error ) ) {
+				if ( $error === null ) {
 					$error = wfMessage( 'pluggableauth-authentication-failure' )->text();
 				} else {
 					if ( !is_string( $error ) ) {
@@ -69,13 +69,13 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 				}
 			}
 		}
-		if ( !is_null( $error ) ) {
+		if ( $error !== null ) {
 			$authManager->setAuthenticationSessionData( self::ERROR_SESSION_KEY,
 				$error );
 		}
 		$returnToUrl = $authManager->getAuthenticationSessionData(
 			self::RETURNTOURL_SESSION_KEY );
-		if ( is_null( $returnToUrl ) || strlen( $returnToUrl ) === 0 ) {
+		if ( $returnToUrl === null || strlen( $returnToUrl ) === 0 ) {
 			wfDebugLog( 'PluggableAuth', 'ERROR: return to URL is null or empty' );
 			$this->getOutput()->wrapWikiMsg( "<div class='error'>\n$1\n</div>",
 				'pluggableauth-fatal-error' );

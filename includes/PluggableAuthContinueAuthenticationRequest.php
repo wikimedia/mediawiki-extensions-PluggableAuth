@@ -22,7 +22,7 @@ class PluggableAuthContinueAuthenticationRequest extends AuthenticationRequest {
 		$authManager = AuthManager::singleton();
 		$error = $authManager->getAuthenticationSessionData(
 			PluggableAuthLogin::ERROR_SESSION_KEY );
-		if ( is_null( $error ) ) {
+		if ( $error === null ) {
 			$this->username = $authManager->getAuthenticationSessionData(
 				PluggableAuthLogin::USERNAME_SESSION_KEY );
 			$authManager->removeAuthenticationSessionData(

@@ -1,10 +1,10 @@
 <?php
 
-use MediaWiki\Auth\AuthenticationRequest;
-use MediaWiki\Auth\ButtonAuthenticationRequest;
 use MediaWiki\Auth\AbstractPrimaryAuthenticationProvider;
-use MediaWiki\Auth\AuthManager;
+use MediaWiki\Auth\AuthenticationRequest;
 use MediaWiki\Auth\AuthenticationResponse;
+use MediaWiki\Auth\AuthManager;
+use MediaWiki\Auth\ButtonAuthenticationRequest;
 
 class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvider {
 
@@ -64,7 +64,7 @@ class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenti
 		}
 		$error = $this->manager->getAuthenticationSessionData(
 			PluggableAuthLogin::ERROR_SESSION_KEY );
-		if ( !is_null( $error ) ) {
+		if ( $error !== null ) {
 			$this->manager->removeAuthenticationSessionData(
 				PluggableAuthLogin::ERROR_SESSION_KEY );
 			return AuthenticationResponse::newFail( new RawMessage( $error ) );
