@@ -20,7 +20,7 @@ class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenti
 		}
 		$extraLoginFields = [];
 		foreach ( $GLOBALS['wgPluggableAuth_ExtraLoginFields'] as $key => $value ) {
-			if ( isset( $request, $key ) ) {
+			if ( isset( $request->$key ) ) {
 				$extraLoginFields[$key] = $request->$key;
 			}
 		}
