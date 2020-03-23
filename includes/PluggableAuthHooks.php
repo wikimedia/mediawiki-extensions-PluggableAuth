@@ -120,9 +120,21 @@ class PluggableAuthHooks {
 		if ( !$out->getUser()->isAnon() ) {
 			return;
 		}
-		if ( !User::isEveryoneAllowed( 'read' ) && $title->userCan( 'read' ) ) {
-			return;
+
+		if ( class_exists( 'MediaWiki\Permissions\PermissionManager' ) ) {
+			// MW 1.33+
+			$pm = \MediaWiki\MediaWikiServices::getInstance()->getPermissionManager();
+			if ( !$pm->isEveryoneAllowed( 'read' ) &&
+				$pm->userCan( 'read', $user, $title )
+			) {
+				return;
+			}
+		} else {
+			if ( !User::isEveryoneAllowed( 'read' ) && $title->userCan( 'read' ) ) {
+				return;
+			}
 		}
+
 		$loginSpecialPages = ExtensionRegistry::getInstance()->getAttribute(
 			'PluggableAuthLoginSpecialPages'
 		);
