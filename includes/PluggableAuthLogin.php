@@ -1,6 +1,7 @@
 <?php
 
 use MediaWiki\Auth\AuthManager;
+use MediaWiki\MediaWikiServices;
 
 class PluggableAuthLogin extends UnlistedSpecialPage {
 
@@ -22,7 +23,12 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 	 */
 	public function execute( $param ) {
 		wfDebugLog( 'PluggableAuth', 'In execute()' );
-		$authManager = AuthManager::singleton();
+		if ( method_exists( MediaWikiServices::class, 'getAuthManager' ) ) {
+			// MediaWiki 1.35+
+			$authManager = MediaWikiServices::getInstance()->getAuthManager();
+		} else {
+			$authManager = AuthManager::singleton();
+		}
 		$user = $this->getUser();
 		$pluggableauth = PluggableAuth::singleton();
 		$error = null;
