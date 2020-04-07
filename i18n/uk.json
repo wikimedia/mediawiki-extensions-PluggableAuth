@@ -1,8 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Ата",
-			"Piramidion"
+			"Piramidion",
+			"Ата"
 		]
 	},
 	"pluggableauth-desc": "Забезпечує основу для змінної автентифікації та авторизації",

@@ -1,9 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Wladek92",
 			"Gomoko",
-			"Urhixidur"
+			"Urhixidur",
+			"Wladek92"
 		]
 	},
 	"pluggableauth-desc": "Fournit le cadre d’application pour les greffons d’authentication et d’autorisation",

@@ -1,9 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"cicalese",
 			"Liuxinyu970226",
-			"Umherirrender"
+			"Umherirrender",
+			"cicalese"
 		]
 	},
 	"pluggableauth-desc": "{{desc|name=Pluggable Auth|url=https://www.mediawiki.org/wiki/Extension:PluggableAuth}}",

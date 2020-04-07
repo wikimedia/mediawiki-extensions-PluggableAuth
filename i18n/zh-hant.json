@@ -1,8 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Liuxinyu970226",
-			"Kly"
+			"Kly",
+			"Liuxinyu970226"
 		]
 	},
 	"pluggableauth-desc": "提供可插入式的驗證與授權框架",
