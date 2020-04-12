@@ -146,10 +146,15 @@ class PluggableAuthHooks {
 
 		$oldTitle = $title;
 		$title = SpecialPage::getTitleFor( 'Userlogin' );
-		header( 'Location: ' . $title->getFullURL( [
+		$url = $title->getFullURL( [
 			'returnto' => $oldTitle,
 			'returntoquery' => $request->getRawQueryString()
-		] ) );
+		] );
+		if ( $url ) {
+			header( 'Location: ' . $url );
+		} else {
+			throw new MWException( "Could not determine URL for Special:Userlogin" );
+		}
 		exit;
 	}
 
