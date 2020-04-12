@@ -1,5 +1,8 @@
 {
 	"name": "mediawiki/pluggable-auth",
+	"extra": {
+		"installer-name": "PluggableAuth"
+	},
 	"license": "MIT",
 	"type": "mediawiki-extension",
 	"homepage": "https://www.mediawiki.org/wiki/Extension:PluggableAuth",
