@@ -161,7 +161,8 @@ class PluggableAuthHooks {
 	/**
 	 * Implements PersonalUrls hook.
 	 * See https://www.mediawiki.org/wiki/Manual:Hooks/PersonalUrls
-	 * Removes logout link from skin if auto login is enabled.
+	 * Removes logout link from skin if auto login is enabled and local login
+	 * is not enabled.
 	 *
 	 * @since 1.0
 	 *
@@ -172,7 +173,8 @@ class PluggableAuthHooks {
 	public static function modifyLoginURLs(
 		array &$personal_urls, Title $title = null, SkinTemplate $skin = null
 	) {
-		if ( $GLOBALS['wgPluggableAuth_EnableAutoLogin'] ) {
+		if ( $GLOBALS['wgPluggableAuth_EnableAutoLogin'] &&
+			!$GLOBALS['wgPluggableAuth_EnableLocalLogin'] ) {
 			unset( $personal_urls['logout'] );
 		}
 	}
