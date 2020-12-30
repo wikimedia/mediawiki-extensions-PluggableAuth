@@ -43,6 +43,7 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 					$user->mEmailAuthenticated = wfTimestamp();
 					$user->mTouched = wfTimestamp();
 					wfDebugLog( 'PluggableAuth', 'Authenticated new user: ' . $username );
+					// PluggableAuthPopulateGroups is called from LocalUserCreated hook
 				} else {
 					$user->mId = $id;
 					$user->loadFromId();
