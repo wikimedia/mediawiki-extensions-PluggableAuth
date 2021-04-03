@@ -29,7 +29,7 @@ class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenti
 			PluggableAuthLogin::RETURNTOURL_SESSION_KEY, $request->returnToUrl );
 		$this->manager->setAuthenticationSessionData(
 			PluggableAuthLogin::EXTRALOGINFIELDS_SESSION_KEY, $extraLoginFields );
-		// @codingStandardsIgnoreStart
+		// phpcs:disable MediaWiki.Usage.SuperGlobalsUsage.SuperGlobals
 		if ( isset( $_GET['returnto'] ) ) {
 			$returnto = $_GET['returnto'];
 		} else {
@@ -42,7 +42,7 @@ class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenti
 		} else {
 			$returntoquery = '';
 		}
-		// @codingStandardsIgnoreEnd
+		// phpcs:enable
 		$this->manager->setAuthenticationSessionData(
 			PluggableAuthLogin::RETURNTOQUERY_SESSION_KEY, $returntoquery );
 
