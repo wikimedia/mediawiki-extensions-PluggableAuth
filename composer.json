@@ -34,11 +34,12 @@
 			"parallel-lint . --exclude vendor --exclude node_modules",
 			"minus-x check .",
 			"phpmd includes text .phpmd.xml || :",
-			"phpcs -p -s"
+			"@phpcs"
 		],
 		"fix": [
 			"minus-x fix .",
 			"phpcbf"
-		]
+		],
+		"phpcs": "phpcs -sp --cache"
 	}
 }
