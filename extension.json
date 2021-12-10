@@ -8,6 +8,9 @@
 	"descriptionmsg": "pluggableauth-desc",
 	"type": "other",
 	"license-name": "MIT",
+	"requires": {
+		"MediaWiki": ">= 1.31.0"
+	},
 	"SpecialPages": {
 		"PluggableAuthLogin": "PluggableAuthLogin"
 	},
