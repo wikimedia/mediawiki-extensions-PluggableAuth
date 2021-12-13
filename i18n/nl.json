@@ -1,9 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
-			"Esketti"
+			"Esketti",
+			"McDutchie"
 		]
 	},
-	"pluggableauth-desc": "Biedt een kader voor pluggable authenticatie en autorisatie",
+	"pluggableauth-desc": "Biedt een raamwerk voor modulaire authenticatie en autorisatie",
 	"pluggableauth-not-authorized": "{{GENDER:$1|Gebruikers}} $1 niet toegestaan."
 }
