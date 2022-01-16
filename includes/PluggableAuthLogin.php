@@ -21,8 +21,8 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
+use MediaWiki\Auth\AuthManager;
 use MediaWiki\Logger\LoggerFactory;
-use MediaWiki\MediaWikiServices;
 use Message;
 use Psr\Log\LoggerInterface;
 use UnlistedSpecialPage;
@@ -40,12 +40,28 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 	const ERROR_SESSION_KEY = 'PluggableAuthLoginError';
 
 	/**
+	 * @var PluggableAuthFactory
+	 */
+	private $pluggableAuthFactory;
+
+	/**
+	 * @var AuthManager
+	 */
+	private $authManager;
+
+	/**
 	 * @var LoggerInterface
 	 */
 	private $logger;
 
-	public function __construct() {
+	/**
+	 * @param PluggableAuthFactory $pluggableAuthFactory
+	 * @param AuthManager $authManager
+	 */
+	public function __construct( PluggableAuthFactory $pluggableAuthFactory, AuthManager $authManager ) {
 		parent::__construct( 'PluggableAuthLogin' );
+		$this->pluggableAuthFactory = $pluggableAuthFactory;
+		$this->authManager = $authManager;
 		$this->logger = LoggerFactory::getInstance( 'PluggableAuth' );
 	}
 
@@ -54,9 +70,8 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 	 */
 	public function execute( $subPage ) {
 		$this->logger->debug( 'In execute()' );
-		$authManager = MediaWikiServices::getInstance()->getAuthManager();
 		$user = $this->getUser();
-		$pluggableauth = PluggableAuth::singleton();
+		$pluggableauth = $this->pluggableAuthFactory->getInstance();
 		$error = null;
 		if ( $pluggableauth ) {
 			if ( $pluggableauth->authenticate( $id, $username, $realname, $email, $error ) ) {
@@ -79,9 +94,9 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 				$authorized = true;
 				$this->getHookContainer()->run( 'PluggableAuthUserAuthorization', [ $user, &$authorized ] );
 				if ( $authorized ) {
-					$authManager->setAuthenticationSessionData( self::USERNAME_SESSION_KEY, $username );
-					$authManager->setAuthenticationSessionData( self::REALNAME_SESSION_KEY, $realname );
-					$authManager->setAuthenticationSessionData( self::EMAIL_SESSION_KEY, $email );
+					$this->authManager->setAuthenticationSessionData( self::USERNAME_SESSION_KEY, $username );
+					$this->authManager->setAuthenticationSessionData( self::REALNAME_SESSION_KEY, $realname );
+					$this->authManager->setAuthenticationSessionData( self::EMAIL_SESSION_KEY, $email );
 					$this->logger->debug( 'User is authorized.' );
 				} else {
 					$this->logger->debug( 'Authorization failure.' );
@@ -100,10 +115,13 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 			}
 		}
 		if ( $error !== null ) {
-			$authManager->setAuthenticationSessionData( self::ERROR_SESSION_KEY, $error );
+			$this->authManager->setAuthenticationSessionData( self::ERROR_SESSION_KEY, $error );
 		}
-		$returnToUrl = $authManager->getAuthenticationSessionData( self::RETURNTOURL_SESSION_KEY );
+		$returnToUrl = $this->authManager->getAuthenticationSessionData( self::RETURNTOURL_SESSION_KEY );
 		if ( $returnToUrl === null || strlen( $returnToUrl ) === 0 ) {
+			// This should never happen unless there is an issue in the authentication plugin, most
+			// likely resulting in session corruption. Since it is unclear if it is safe to continue,
+			// an error message is shown to the user and the authentication flow is terminated.
 			$this->logger->debug( 'ERROR: return to URL is null or empty' );
 			$this->getOutput()->wrapWikiMsg( "<div class='error'>\n$1\n</div>", 'pluggableauth-fatal-error' );
 		} else {

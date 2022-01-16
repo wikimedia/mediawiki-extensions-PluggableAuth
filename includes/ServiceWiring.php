@@ -21,39 +21,29 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
-use User;
+use ExtensionRegistry;
+use MediaWiki\Config\ServiceOptions;
+use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\MediaWikiServices;
 
-abstract class PluggableAuth {
-
-	/**
-	 * @param int|null &$id The user's user ID
-	 * @param string|null &$username The user's username
-	 * @param string|null &$realname The user's real name
-	 * @param string|null &$email The user's email address
-	 * @param string|null &$errorMessage Returns a descriptive message if there's an error
-	 * @return bool true if the user has been authenticated and false otherwise
-	 * @since 1.0
-	 *
-	 */
-	abstract public function authenticate(
-		?int &$id,
-		?string &$username,
-		?string &$realname,
-		?string &$email,
-		?string &$errorMessage
-	): bool;
-
-	/**
-	 * @since 1.0
-	 *
-	 * @param User &$user The user
-	 */
-	abstract public function deauthenticate( User &$user ): void;
-
-	/**
-	 * @since 1.0
-	 *
-	 * @param int $id The user's user ID
-	 */
-	abstract public function saveExtraAttributes( int $id ): void;
-}
+return [
+	'PluggableAuthFactory' =>
+		static function ( MediaWikiServices $services ): PluggableAuthFactory {
+			return new PluggableAuthFactory(
+				$services->getMainConfig(),
+				LoggerFactory::getInstance( 'PluggableAuth' )
+			);
+		},
+	'PluggableAuthService' =>
+		static function ( MediaWikiServices $services ): PluggableAuthService {
+			return new PluggableAuthService(
+				new ServiceOptions( PluggableAuthService::CONSTRUCTOR_OPTIONS, $services->getMainConfig() ),
+				ExtensionRegistry::getInstance(),
+				$services->getUserFactory(),
+				$services->get( 'PluggableAuthFactory' ),
+				$services->getPermissionManager(),
+				$services->getHookContainer(),
+				LoggerFactory::getInstance( 'PluggableAuth' )
+			);
+		},
+];

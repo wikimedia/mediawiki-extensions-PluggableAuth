@@ -14,8 +14,17 @@
 	"AutoloadNamespaces": {
 		"MediaWiki\\Extension\\PluggableAuth\\": "includes/"
 	},
+	"ServiceWiringFiles": [
+		"includes/ServiceWiring.php"
+	],
 	"SpecialPages": {
-		"PluggableAuthLogin": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthLogin"
+		"PluggableAuthLogin": {
+			"class": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthLogin",
+			"services": [
+				"PluggableAuthFactory",
+				"AuthManager"
+			]
+		}
 	},
 	"MessagesDirs": {
 		"PluggableAuth": [
@@ -38,6 +47,11 @@
 		"primaryauth": {
 			"PluggableAuthPrimaryAuthenticationProvider": {
 				"class": "MediaWiki\\Extension\\PluggableAuth\\PrimaryAuthenticationProvider",
+				"services": [
+					"MainConfig",
+					"UserFactory",
+					"PluggableAuthFactory"
+				],
 				"sort": 0
 			}
 		}

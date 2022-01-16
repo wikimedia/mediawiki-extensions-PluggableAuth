@@ -21,39 +21,47 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
-use User;
+use Config;
+use Psr\Log\LoggerInterface;
 
-abstract class PluggableAuth {
+class PluggableAuthFactory {
 
-	/**
-	 * @param int|null &$id The user's user ID
-	 * @param string|null &$username The user's username
-	 * @param string|null &$realname The user's real name
-	 * @param string|null &$email The user's email address
-	 * @param string|null &$errorMessage Returns a descriptive message if there's an error
-	 * @return bool true if the user has been authenticated and false otherwise
-	 * @since 1.0
-	 *
-	 */
-	abstract public function authenticate(
-		?int &$id,
-		?string &$username,
-		?string &$realname,
-		?string &$email,
-		?string &$errorMessage
-	): bool;
+	private $config;
 
 	/**
-	 * @since 1.0
-	 *
-	 * @param User &$user The user
+	 * @var LoggerInterface
 	 */
-	abstract public function deauthenticate( User &$user ): void;
+	private $logger;
 
 	/**
-	 * @since 1.0
-	 *
-	 * @param int $id The user's user ID
+	 * @var PluggableAuth
 	 */
-	abstract public function saveExtraAttributes( int $id ): void;
+	private $instance = null;
+
+	/**
+	 * @param Config $config
+	 * @param LoggerInterface $logger
+	 */
+	public function __construct( Config $config, LoggerInterface $logger ) {
+		$this->config = $config;
+		$this->logger = $logger;
+	}
+
+	/**
+	 * @return PluggableAuth|false a PluggableAuth object
+	 */
+	public function getInstance() {
+		$class = $this->config->get( 'PluggableAuth_Class' );
+		$this->logger->debug( 'Getting PluggableAuth singleton' );
+		$this->logger->debug( 'Class name: ' . $class );
+		if ( $this->instance !== null ) {
+			$this->logger->debug( 'Singleton already exists' );
+			return $this->instance;
+		} elseif ( class_exists( $class ) && is_subclass_of( $class, PluggableAuth::class ) ) {
+			$this->instance = new $class;
+			return $this->instance;
+		}
+		$this->logger->debug( 'Could not get authentication plugin instance.' );
+		return false;
+	}
 }

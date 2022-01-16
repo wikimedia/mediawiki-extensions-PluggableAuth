@@ -21,14 +21,15 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
+use Config;
 use MediaWiki\Auth\AbstractPrimaryAuthenticationProvider;
 use MediaWiki\Auth\AuthenticationRequest;
 use MediaWiki\Auth\AuthenticationResponse;
 use MediaWiki\Auth\AuthManager;
 use MediaWiki\Auth\ButtonAuthenticationRequest;
 use MediaWiki\Config\ServiceOptions;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Permissions\Authority;
+use MediaWiki\User\UserFactory;
 use Message;
 use MWException;
 use RawMessage;
@@ -66,16 +67,34 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 	 */
 	private $enableLocalProperties;
 
-	public function __construct() {
-		$options = new ServiceOptions(
-			self::CONSTRUCTOR_OPTIONS,
-			MediaWikiServices::getInstance()->getMainConfig()
-		);
+	/**
+	 * @var UserFactory
+	 */
+	private $userFactory;
+
+	/**
+	 * @var PluggableAuthFactory
+	 */
+	private $pluggableAuthFactory;
+
+	/**
+	 * @param Config $mainConfig
+	 * @param UserFactory $userFactory
+	 * @param PluggableAuthFactory $pluggableAuthFactory
+	 */
+	public function __construct(
+		Config $mainConfig,
+		UserFactory $userFactory,
+		PluggableAuthFactory $pluggableAuthFactory
+	) {
+		$options = new ServiceOptions( self::CONSTRUCTOR_OPTIONS, $mainConfig );
 		$options->assertRequiredOptions( self::CONSTRUCTOR_OPTIONS );
 		$this->extraLoginFields = $options->get( 'PluggableAuth_ExtraLoginFields' );
 		$this->buttonLabelMessage = $options->get( 'PluggableAuth_ButtonLabelMessage' );
 		$this->buttonLabel = $options->get( 'PluggableAuth_ButtonLabel' );
 		$this->enableLocalProperties = $options->get( 'PluggableAuth_EnableLocalProperties' );
+		$this->userFactory = $userFactory;
+		$this->pluggableAuthFactory = $pluggableAuthFactory;
 	}
 
 	/**
@@ -131,7 +150,7 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 			return AuthenticationResponse::newFail( new RawMessage( $error ) );
 		}
 		$username = $request->username;
-		$user = MediaWikiServices::getInstance()->getUserFactory()->newFromName( $username );
+		$user = $this->userFactory->newFromName( $username );
 		if ( $user && $user->getId() !== 0 ) {
 			$this->updateUserRealnameAndEmail( $user );
 		}
@@ -177,7 +196,7 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 	 */
 	public function autoCreatedAccount( $user, $source ): void {
 		$this->updateUserRealNameAndEmail( $user, true );
-		$pluggableauth = PluggableAuth::singleton();
+		$pluggableauth = $this->pluggableAuthFactory->getInstance();
 		if ( $pluggableauth ) {
 			$pluggableauth->saveExtraAttributes( $user->mId );
 		}

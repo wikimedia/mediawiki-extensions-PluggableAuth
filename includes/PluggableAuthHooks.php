@@ -21,14 +21,10 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
-use ExtensionRegistry;
 use MediaWiki;
-use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
-use MWException;
 use OutputPage;
 use SkinTemplate;
-use SpecialPage;
 use Title;
 use User;
 use WebRequest;
@@ -78,14 +74,8 @@ class PluggableAuthHooks {
 		User $user,
 		bool &$whitelisted
 	) {
-		$loginSpecialPages = ExtensionRegistry::getInstance()->getAttribute(
-			'PluggableAuthLoginSpecialPages' );
-		foreach ( $loginSpecialPages as $page ) {
-			if ( $title->isSpecial( $page ) ) {
-				$whitelisted = true;
-				return;
-			}
-		}
+		$pluggableAuthService = MediaWikiServices::getInstance()->get( 'PluggableAuthService' );
+		$pluggableAuthService->allowLoginPage( $title, $whitelisted );
 	}
 
 	/**
@@ -106,9 +96,8 @@ class PluggableAuthHooks {
 		array &$formDescriptor,
 		string $action
 	) {
-		if ( isset( $formDescriptor['pluggableauthlogin'] ) ) {
-			$formDescriptor['pluggableauthlogin']['weight'] = 101;
-		}
+		$pluggableAuthService = MediaWikiServices::getInstance()->get( 'PluggableAuthService' );
+		$pluggableAuthService->moveLoginButton( $formDescriptor );
 	}
 
 	/**
@@ -126,17 +115,8 @@ class PluggableAuthHooks {
 		string $inject_html,
 		string $old_name
 	) {
-		$old_user = MediaWikiServices::getInstance()->getUserFactory()->newFromName( $old_name );
-		if ( $old_user === null ) {
-			return;
-		}
-		$logger = LoggerFactory::getInstance( 'PluggableAuth' );
-		$logger->debug( 'Deauthenticating ' . $old_name );
-		$pluggableauth = PluggableAuth::singleton();
-		if ( $pluggableauth ) {
-			$pluggableauth->deauthenticate( $old_user );
-		}
-		$logger->debug( 'Deauthenticated ' . $old_name );
+		$pluggableAuthService = MediaWikiServices::getInstance()->get( 'PluggableAuthService' );
+		$pluggableAuthService->deauthenticate( $old_name );
 	}
 
 	/**
@@ -151,7 +131,6 @@ class PluggableAuthHooks {
 	 * @param MediaWiki $mw object
 	 *
 	 * Note that $title has to be passed by ref so we can replace it.
-	 * @throws MWException
 	 */
 	public static function doBeforeInitialize(
 		Title &$title,
@@ -161,42 +140,8 @@ class PluggableAuthHooks {
 		WebRequest $request,
 		MediaWiki $mw
 	) {
-		$config = MediaWikiServices::getInstance()->getMainConfig();
-		if ( !$config->get( 'PluggableAuth_EnableAutoLogin' ) ) {
-			return;
-		}
-		if ( !$out->getUser()->isAnon() ) {
-			return;
-		}
-
-		$pm = MediaWikiServices::getInstance()->getPermissionManager();
-		if ( !$pm->isEveryoneAllowed( 'read' ) &&
-			$pm->userCan( 'read', $user, $title )
-		) {
-			return;
-		}
-
-		$loginSpecialPages = ExtensionRegistry::getInstance()->getAttribute(
-			'PluggableAuthLoginSpecialPages'
-		);
-		foreach ( $loginSpecialPages as $page ) {
-			if ( $title->isSpecial( $page ) ) {
-				return;
-			}
-		}
-
-		$oldTitle = $title;
-		$title = SpecialPage::getTitleFor( 'Userlogin' );
-		$url = $title->getFullURL( [
-			'returnto' => $oldTitle,
-			'returntoquery' => $request->getRawQueryString()
-		] );
-		if ( $url ) {
-			header( 'Location: ' . $url );
-		} else {
-			throw new MWException( "Could not determine URL for Special:Userlogin" );
-		}
-		exit;
+		$pluggableAuthService = MediaWikiServices::getInstance()->get( 'PluggableAuthService' );
+		$pluggableAuthService->autoLogin( $title, $out, $user, $request );
 	}
 
 	/**
@@ -216,10 +161,8 @@ class PluggableAuthHooks {
 		Title $title = null,
 		SkinTemplate $skin = null
 	) {
-		$config = MediaWikiServices::getInstance()->getMainConfig();
-		if ( $config->get( 'PluggableAuth_EnableAutoLogin' ) && !$config->get( 'PluggableAuth_EnableLocalLogin' ) ) {
-			unset( $personal_urls['logout'] );
-		}
+		$pluggableAuthService = MediaWikiServices::getInstance()->get( 'PluggableAuthService' );
+		$pluggableAuthService->removeLogoutLink( $personal_urls );
 	}
 
 	/**
@@ -237,8 +180,7 @@ class PluggableAuthHooks {
 		User $user,
 		bool $autocreated
 	) {
-		if ( $autocreated ) {
-			MediaWikiServices::getInstance()->getHookContainer()->run( 'PluggableAuthPopulateGroups', [ $user ] );
-		}
+		$pluggableAuthService = MediaWikiServices::getInstance()->get( 'PluggableAuthService' );
+		$pluggableAuthService->populateGroups( $user, $autocreated );
 	}
 }
