@@ -18,17 +18,16 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 	}
 
 	/**
-	 * @param string|null $param parameters (ignored)
+	 * @param string|null $subPage parameters (ignored)
 	 */
-	public function execute( $param ) {
+	public function execute( $subPage ) {
 		wfDebugLog( 'PluggableAuth', 'In execute()' );
 		$authManager = MediaWikiServices::getInstance()->getAuthManager();
 		$user = $this->getUser();
 		$pluggableauth = PluggableAuth::singleton();
 		$error = null;
 		if ( $pluggableauth ) {
-			if ( $pluggableauth->authenticate( $id, $username, $realname, $email,
-				$error ) ) {
+			if ( $pluggableauth->authenticate( $id, $username, $realname, $email, $error ) ) {
 				if ( $id === null ) {
 					$user->loadDefaults( $username );
 					$user->mName = $username;

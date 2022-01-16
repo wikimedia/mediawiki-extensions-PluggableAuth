@@ -3,37 +3,42 @@
 abstract class PluggableAuth {
 
 	/**
+	 * @param int|null &$id The user's user ID
+	 * @param string|null &$username The user's username
+	 * @param string|null &$realname The user's real name
+	 * @param string|null &$email The user's email address
+	 * @param string|null &$errorMessage Returns a descriptive message if there's an error
+	 * @return bool true if the user has been authenticated and false otherwise
 	 * @since 1.0
 	 *
-	 * @param int &$id The user's user ID
-	 * @param string &$username The user's user name
-	 * @param string &$realname The user's real name
-	 * @param string &$email The user's email address
-	 * @param string &$errorMessage Returns a descritive message if
-	 *                              there's an error
 	 */
-	abstract public function authenticate( &$id, &$username, &$realname,
-		&$email, &$errorMessage );
+	abstract public function authenticate(
+		?int &$id,
+		?string &$username,
+		?string &$realname,
+		?string &$email,
+		?string &$errorMessage
+	): bool;
 
 	/**
 	 * @since 1.0
 	 *
 	 * @param User &$user The user
 	 */
-	abstract public function deauthenticate( User &$user );
+	abstract public function deauthenticate( User &$user ): void;
 
 	/**
 	 * @since 1.0
 	 *
 	 * @param int $id The user's user ID
 	 */
-	abstract public function saveExtraAttributes( $id );
+	abstract public function saveExtraAttributes( int $id ): void;
 
 	private static $instance = null;
 
 	/**
 	 * @since 2.0
-	 * @return PluggableAuth a PluggableAuth object
+	 * @return PluggableAuth|false a PluggableAuth object
 	 */
 	public static function singleton() {
 		wfDebugLog( 'PluggableAuth', 'Getting PluggableAuth singleton' );

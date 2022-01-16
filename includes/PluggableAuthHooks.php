@@ -40,9 +40,12 @@ class PluggableAuthHooks {
 	 * @param Title $title being checked
 	 * @param User $user Current user
 	 * @param bool &$whitelisted whether this title is whitelisted
+	 *
 	 */
 	public static function onTitleReadWhitelist(
-		Title $title, User $user, &$whitelisted
+		Title $title,
+		User $user,
+		bool &$whitelisted
 	) {
 		$loginSpecialPages = ExtensionRegistry::getInstance()->getAttribute(
 			'PluggableAuthLoginSpecialPages' );
@@ -62,12 +65,15 @@ class PluggableAuthHooks {
 	 * @since 2.0
 	 * @param array $requests AuthenticationRequests the fields are created from
 	 * @param array $fieldInfo union of AuthenticationRequest::getFieldInfo()
-	 * @param HTMLForm &$formDescriptor The special key weight can be set to
+	 * @param array &$formDescriptor The special key weight can be set to
 	 *        change the order of the fields.
-	 * @param int $action one of the AuthManager::ACTION_* constants.
+	 * @param string $action one of the AuthManager::ACTION_* constants.
 	 */
 	public static function onAuthChangeFormFields(
-		array $requests, array $fieldInfo, array &$formDescriptor, $action
+		array $requests,
+		array $fieldInfo,
+		array &$formDescriptor,
+		string $action
 	) {
 		if ( isset( $formDescriptor['pluggableauthlogin'] ) ) {
 			$formDescriptor['pluggableauthlogin']['weight'] = 101;
@@ -85,7 +91,9 @@ class PluggableAuthHooks {
 	 * @param string $old_name The text of the username that just logged out.
 	 */
 	public static function deauthenticate(
-		User $user, $inject_html, $old_name
+		User $user,
+		string $inject_html,
+		string $old_name
 	) {
 		$old_user = MediaWikiServices::getInstance()->getUserFactory()->newFromName( $old_name );
 		if ( $old_user === null ) {
@@ -111,10 +119,15 @@ class PluggableAuthHooks {
 	 * @param MediaWiki $mw object
 	 *
 	 * Note that $title has to be passed by ref so we can replace it.
+	 * @throws MWException
 	 */
 	public static function doBeforeInitialize(
-		Title &$title, $article, OutputPage $out, User $user,
-		WebRequest $request, MediaWiki $mw
+		Title &$title,
+		$article,
+		OutputPage $out,
+		User $user,
+		WebRequest $request,
+		MediaWiki $mw
 	) {
 		if ( !$GLOBALS['wgPluggableAuth_EnableAutoLogin'] ) {
 			return;
@@ -166,7 +179,9 @@ class PluggableAuthHooks {
 	 * @param SkinTemplate|null $skin template for vars
 	 */
 	public static function modifyLoginURLs(
-		array &$personal_urls, Title $title = null, SkinTemplate $skin = null
+		array &$personal_urls,
+		Title $title = null,
+		SkinTemplate $skin = null
 	) {
 		if ( $GLOBALS['wgPluggableAuth_EnableAutoLogin'] &&
 			!$GLOBALS['wgPluggableAuth_EnableLocalLogin'] ) {
@@ -185,7 +200,10 @@ class PluggableAuthHooks {
 	 * @param User $user current user
 	 * @param bool $autocreated whether the user was autocreated
 	 */
-	public static function onLocalUserCreated( User $user, $autocreated ) {
+	public static function onLocalUserCreated(
+		User $user,
+		bool $autocreated
+	) {
 		if ( $autocreated ) {
 			MediaWikiServices::getInstance()->getHookContainer()->run( 'PluggableAuthPopulateGroups', [ $user ] );
 		}

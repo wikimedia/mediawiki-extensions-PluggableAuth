@@ -12,9 +12,11 @@ class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenti
 
 	/**
 	 * Start an authentication flow
-	 * @inheritDoc
+	 * @param array $reqs
+	 * @return AuthenticationResponse
+	 * @throws MWException
 	 */
-	public function beginPrimaryAuthentication( array $reqs ) {
+	public function beginPrimaryAuthentication( array $reqs ): AuthenticationResponse {
 		$request = ButtonAuthenticationRequest::getRequestByName( $reqs,
 			'pluggableauthlogin' );
 		if ( !$request ) {
@@ -47,9 +49,10 @@ class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenti
 
 	/**
 	 * Continue an authentication flow
-	 * @inheritDoc
+	 * @param array $reqs
+	 * @return AuthenticationResponse
 	 */
-	public function continuePrimaryAuthentication( array $reqs ) {
+	public function continuePrimaryAuthentication( array $reqs ): AuthenticationResponse {
 		$request = AuthenticationRequest::getRequestByClass( $reqs,
 			PluggableAuthContinueAuthenticationRequest::class );
 		if ( !$request ) {
@@ -73,13 +76,14 @@ class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenti
 
 	/**
 	 * Determine whether a property can change
-	 * @inheritDoc
+	 * @param string $property
+	 * @return bool
 	 */
-	public function providerAllowsPropertyChange( $property ) {
+	public function providerAllowsPropertyChange( $property ): bool {
 		return $GLOBALS['wgPluggableAuth_EnableLocalProperties'];
 	}
 
-	private function updateUserRealNameAndEmail( $user, $force = false ) {
+	private function updateUserRealNameAndEmail( User $user, bool $force = false ): void {
 		$realname = $this->manager->getAuthenticationSessionData(
 			PluggableAuthLogin::REALNAME_SESSION_KEY );
 		$this->manager->removeAuthenticationSessionData(
@@ -108,9 +112,10 @@ class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenti
 	}
 
 	/**
-	 * @inheritDoc
+	 * @param User $user
+	 * @param string $source
 	 */
-	public function autoCreatedAccount( $user, $source ) {
+	public function autoCreatedAccount( $user, $source ): void {
 		$this->updateUserRealNameAndEmail( $user, true );
 		$pluggableauth = PluggableAuth::singleton();
 		if ( $pluggableauth ) {
@@ -120,48 +125,62 @@ class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenti
 
 	/**
 	 * Test whether the named user exists
-	 * @inheritDoc
+	 * @param string $username MediaWiki username
+	 * @param int $flags Bitfield of User:READ_* constants
+	 * @return bool
 	 */
-	public function testUserExists( $username, $flags = Authority::READ_NORMAL ) {
+	public function testUserExists(
+		$username,
+		$flags = Authority::READ_NORMAL
+	): bool {
 		return false;
 	}
 
 	/**
 	 * Validate a change of authentication data (e.g. passwords)
-	 * @inheritDoc
+	 * @param AuthenticationRequest $req
+	 * @param bool $checkData
+	 * @return StatusValue
 	 */
 	public function providerAllowsAuthenticationDataChange(
-		AuthenticationRequest $req, $checkData = true ) {
+		AuthenticationRequest $req,
+		$checkData = true
+	): StatusValue {
 		return StatusValue::newGood( 'ignored' );
 	}
 
 	/**
 	 * Fetch the account-creation type
-	 * @inheritDoc
+	 * @return string
 	 */
-	public function accountCreationType() {
+	public function accountCreationType(): string {
 		return self::TYPE_LINK;
 	}
 
 	/**
 	 * Start an account creation flow
-	 * @inheritDoc
+	 * @param User $user User being created (not added to the database yet).
+	 * @param User $creator User doing the creation.
+	 * @param AuthenticationRequest[] $reqs
+	 * @return AuthenticationResponse
 	 */
-	public function beginPrimaryAccountCreation( $user, $creator, array $reqs ) {
+	public function beginPrimaryAccountCreation( $user, $creator, array $reqs ): AuthenticationResponse {
 		return AuthenticationResponse::newAbstain();
 	}
 
 	/**
 	 * Change or remove authentication data (e.g. passwords)
-	 * @inheritDoc
+	 * @param AuthenticationRequest $req
 	 */
-	public function providerChangeAuthenticationData( AuthenticationRequest $req ) {
+	public function providerChangeAuthenticationData( AuthenticationRequest $req ): void {
 	}
 
 	/**
-	 * @inheritDoc
+	 * @param string $action
+	 * @param array $options
+	 * @return array|PluggableAuthBeginAuthenticationRequest[]
 	 */
-	public function getAuthenticationRequests( $action, array $options ) {
+	public function getAuthenticationRequests( $action, array $options ): array {
 		switch ( $action ) {
 			case AuthManager::ACTION_LOGIN:
 				return [

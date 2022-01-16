@@ -24,7 +24,7 @@ class PluggableAuthBeginAuthenticationRequest extends ButtonAuthenticationReques
 	 * Returns field information.
 	 * @return array field information
 	 */
-	public function getFieldInfo() {
+	public function getFieldInfo(): array {
 		if ( $this->action !== AuthManager::ACTION_LOGIN ) {
 			return [];
 		}
