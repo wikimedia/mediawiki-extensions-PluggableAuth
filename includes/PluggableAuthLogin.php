@@ -1,4 +1,23 @@
 <?php
+/*
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
 
 namespace MediaWiki\Extension\PluggableAuth;
 
@@ -60,12 +79,9 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 				$authorized = true;
 				$this->getHookContainer()->run( 'PluggableAuthUserAuthorization', [ $user, &$authorized ] );
 				if ( $authorized ) {
-					$authManager->setAuthenticationSessionData(
-						self::USERNAME_SESSION_KEY, $username );
-					$authManager->setAuthenticationSessionData(
-						self::REALNAME_SESSION_KEY, $realname );
-					$authManager->setAuthenticationSessionData(
-						self::EMAIL_SESSION_KEY, $email );
+					$authManager->setAuthenticationSessionData( self::USERNAME_SESSION_KEY, $username );
+					$authManager->setAuthenticationSessionData( self::REALNAME_SESSION_KEY, $realname );
+					$authManager->setAuthenticationSessionData( self::EMAIL_SESSION_KEY, $email );
 					$this->logger->debug( 'User is authorized.' );
 				} else {
 					$this->logger->debug( 'Authorization failure.' );
@@ -84,15 +100,12 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 			}
 		}
 		if ( $error !== null ) {
-			$authManager->setAuthenticationSessionData( self::ERROR_SESSION_KEY,
-				$error );
+			$authManager->setAuthenticationSessionData( self::ERROR_SESSION_KEY, $error );
 		}
-		$returnToUrl = $authManager->getAuthenticationSessionData(
-			self::RETURNTOURL_SESSION_KEY );
+		$returnToUrl = $authManager->getAuthenticationSessionData( self::RETURNTOURL_SESSION_KEY );
 		if ( $returnToUrl === null || strlen( $returnToUrl ) === 0 ) {
 			$this->logger->debug( 'ERROR: return to URL is null or empty' );
-			$this->getOutput()->wrapWikiMsg( "<div class='error'>\n$1\n</div>",
-				'pluggableauth-fatal-error' );
+			$this->getOutput()->wrapWikiMsg( "<div class='error'>\n$1\n</div>", 'pluggableauth-fatal-error' );
 		} else {
 			$this->getOutput()->redirect( $returnToUrl );
 		}

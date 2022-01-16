@@ -1,4 +1,23 @@
 <?php
+/*
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
 
 namespace MediaWiki\Extension\PluggableAuth;
 
@@ -66,8 +85,7 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 	 * @throws MWException
 	 */
 	public function beginPrimaryAuthentication( array $reqs ): AuthenticationResponse {
-		$request = ButtonAuthenticationRequest::getRequestByName( $reqs,
-			'pluggableauthlogin' );
+		$request = ButtonAuthenticationRequest::getRequestByName( $reqs, 'pluggableauthlogin' );
 		if ( !$request ) {
 			return AuthenticationResponse::newAbstain();
 		}
@@ -84,16 +102,16 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 			PluggableAuthLogin::EXTRALOGINFIELDS_SESSION_KEY, $extraLoginFields );
 		// phpcs:disable MediaWiki.Usage.SuperGlobalsUsage.SuperGlobals
 		$returnto = $_GET['returnto'] ?? '';
-		$this->manager->setAuthenticationSessionData(
-			PluggableAuthLogin::RETURNTOPAGE_SESSION_KEY, $returnto );
+		$this->manager->setAuthenticationSessionData( PluggableAuthLogin::RETURNTOPAGE_SESSION_KEY, $returnto );
 		$returntoquery = $_GET['returntoquery'] ?? '';
 		// phpcs:enable
 		$this->manager->setAuthenticationSessionData(
 			PluggableAuthLogin::RETURNTOQUERY_SESSION_KEY, $returntoquery );
 
-		return AuthenticationResponse::newRedirect( [
-			new ContinueAuthenticationRequest()
-		], $url );
+		return AuthenticationResponse::newRedirect(
+			[ new ContinueAuthenticationRequest() ],
+			$url
+		);
 	}
 
 	/**
@@ -102,17 +120,14 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 	 * @return AuthenticationResponse
 	 */
 	public function continuePrimaryAuthentication( array $reqs ): AuthenticationResponse {
-		$request = AuthenticationRequest::getRequestByClass( $reqs,
-			ContinueAuthenticationRequest::class );
+		$request = AuthenticationRequest::getRequestByClass( $reqs, ContinueAuthenticationRequest::class );
 		if ( !$request ) {
 			return AuthenticationResponse::newFail(
 				new Message( 'pluggableauth-authentication-workflow-failure' ) );
 		}
-		$error = $this->manager->getAuthenticationSessionData(
-			PluggableAuthLogin::ERROR_SESSION_KEY );
+		$error = $this->manager->getAuthenticationSessionData( PluggableAuthLogin::ERROR_SESSION_KEY );
 		if ( $error !== null ) {
-			$this->manager->removeAuthenticationSessionData(
-				PluggableAuthLogin::ERROR_SESSION_KEY );
+			$this->manager->removeAuthenticationSessionData( PluggableAuthLogin::ERROR_SESSION_KEY );
 			return AuthenticationResponse::newFail( new RawMessage( $error ) );
 		}
 		$username = $request->username;
@@ -133,14 +148,10 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 	}
 
 	private function updateUserRealNameAndEmail( User $user, bool $force = false ): void {
-		$realname = $this->manager->getAuthenticationSessionData(
-			PluggableAuthLogin::REALNAME_SESSION_KEY );
-		$this->manager->removeAuthenticationSessionData(
-			PluggableAuthLogin::REALNAME_SESSION_KEY );
-		$email = $this->manager->getAuthenticationSessionData(
-			PluggableAuthLogin::EMAIL_SESSION_KEY );
-		$this->manager->removeAuthenticationSessionData(
-			PluggableAuthLogin::EMAIL_SESSION_KEY );
+		$realname = $this->manager->getAuthenticationSessionData( PluggableAuthLogin::REALNAME_SESSION_KEY );
+		$this->manager->removeAuthenticationSessionData( PluggableAuthLogin::REALNAME_SESSION_KEY );
+		$email = $this->manager->getAuthenticationSessionData( PluggableAuthLogin::EMAIL_SESSION_KEY );
+		$this->manager->removeAuthenticationSessionData( PluggableAuthLogin::EMAIL_SESSION_KEY );
 		if ( $user->mRealName != $realname || $user->mEmail != $email ) {
 			if ( $this->enableLocalProperties && !$force ) {
 				$this->logger->debug( 'PluggableAuth: Local properties enabled.' );
