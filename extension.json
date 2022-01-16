@@ -50,6 +50,7 @@
 		"PluggableAuth_EnableAutoLogin": false,
 		"PluggableAuth_EnableLocalLogin": false,
 		"PluggableAuth_EnableLocalProperties": false,
+		"PluggableAuth_ButtonLabelMessage": null,
 		"PluggableAuth_ButtonLabel": null,
 		"PluggableAuth_ExtraLoginFields": []
 	},

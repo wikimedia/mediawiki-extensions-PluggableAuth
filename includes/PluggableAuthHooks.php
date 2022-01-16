@@ -142,7 +142,8 @@ class PluggableAuthHooks {
 		WebRequest $request,
 		MediaWiki $mw
 	) {
-		if ( !$GLOBALS['wgPluggableAuth_EnableAutoLogin'] ) {
+		$config = MediaWikiServices::getInstance()->getMainConfig();
+		if ( !$config->get( 'PluggableAuth_EnableAutoLogin' ) ) {
 			return;
 		}
 		if ( !$out->getUser()->isAnon() ) {
@@ -196,8 +197,8 @@ class PluggableAuthHooks {
 		Title $title = null,
 		SkinTemplate $skin = null
 	) {
-		if ( $GLOBALS['wgPluggableAuth_EnableAutoLogin'] &&
-			!$GLOBALS['wgPluggableAuth_EnableLocalLogin'] ) {
+		$config = MediaWikiServices::getInstance()->getMainConfig();
+		if ( $config->get( 'PluggableAuth_EnableAutoLogin' ) && !$config->get( 'PluggableAuth_EnableLocalLogin' ) ) {
 			unset( $personal_urls['logout'] );
 		}
 	}

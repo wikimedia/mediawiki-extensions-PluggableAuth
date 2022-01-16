@@ -2,7 +2,9 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
+use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\MediaWikiServices;
 use User;
 
 abstract class PluggableAuth {
@@ -46,17 +48,18 @@ abstract class PluggableAuth {
 	 * @return PluggableAuth|false a PluggableAuth object
 	 */
 	public static function singleton() {
+		$requiredOptions = [ 'PluggableAuth_Class' ];
+		$options = new ServiceOptions( $requiredOptions, MediaWikiServices::getInstance()->getMainConfig() );
+		$options->assertRequiredOptions( $requiredOptions );
+		$class = $options->get( 'PluggableAuth_Class' );
 		$logger = LoggerFactory::getInstance( 'PluggableAuth' );
 		$logger->debug( 'Getting PluggableAuth singleton' );
-		$logger->debug( 'Class name: ' . ( $GLOBALS['wgPluggableAuth_Class'] ?? 'unset' ) );
+		$logger->debug( 'Class name: ' . $class );
 		if ( self::$instance !== null ) {
 			$logger->debug( 'Singleton already exists' );
 			return self::$instance;
-		} elseif ( isset( $GLOBALS['wgPluggableAuth_Class'] ) &&
-			class_exists( $GLOBALS['wgPluggableAuth_Class'] ) &&
-			is_subclass_of( $GLOBALS['wgPluggableAuth_Class'], self::class )
-		) {
-			self::$instance = new $GLOBALS['wgPluggableAuth_Class'];
+		} elseif ( class_exists( $class ) && is_subclass_of( $class, self::class ) ) {
+			self::$instance = new $class;
 			return self::$instance;
 		}
 		$logger->debug( 'Could not get authentication plugin instance.' );

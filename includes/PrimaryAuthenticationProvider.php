@@ -7,6 +7,7 @@ use MediaWiki\Auth\AuthenticationRequest;
 use MediaWiki\Auth\AuthenticationResponse;
 use MediaWiki\Auth\AuthManager;
 use MediaWiki\Auth\ButtonAuthenticationRequest;
+use MediaWiki\Config\ServiceOptions;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Permissions\Authority;
 use MWException;
@@ -17,6 +18,45 @@ use StatusValue;
 use User;
 
 class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvider {
+
+	public const CONSTRUCTOR_OPTIONS = [
+		'PluggableAuth_ExtraLoginFields',
+		'PluggableAuth_ButtonLabelMessage',
+		'PluggableAuth_ButtonLabel',
+		'PluggableAuth_EnableLocalProperties'
+	];
+
+	/**
+	 * @var array
+	 */
+	private $extraLoginFields;
+
+	/**
+	 * @var string|null
+	 */
+	private $buttonLabelMessage;
+
+	/**
+	 * @var string|null
+	 */
+	private $buttonLabel;
+
+	/**
+	 * @var bool
+	 */
+	private $enableLocalProperties;
+
+	public function __construct() {
+		$options = new ServiceOptions(
+			self::CONSTRUCTOR_OPTIONS,
+			MediaWikiServices::getInstance()->getMainConfig()
+		);
+		$options->assertRequiredOptions( self::CONSTRUCTOR_OPTIONS );
+		$this->extraLoginFields = $options->get( 'PluggableAuth_ExtraLoginFields' );
+		$this->buttonLabelMessage = $options->get( 'PluggableAuth_ButtonLabelMessage' );
+		$this->buttonLabel = $options->get( 'PluggableAuth_ButtonLabel' );
+		$this->enableLocalProperties = $options->get( 'PluggableAuth_EnableLocalProperties' );
+	}
 
 	/**
 	 * Start an authentication flow
@@ -31,7 +71,7 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 			return AuthenticationResponse::newAbstain();
 		}
 		$extraLoginFields = [];
-		foreach ( $GLOBALS['wgPluggableAuth_ExtraLoginFields'] as $key => $value ) {
+		foreach ( $this->extraLoginFields as $key => $value ) {
 			if ( isset( $request->$key ) ) {
 				$extraLoginFields[$key] = $request->$key;
 			}
@@ -88,7 +128,7 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 	 * @return bool
 	 */
 	public function providerAllowsPropertyChange( $property ): bool {
-		return $GLOBALS['wgPluggableAuth_EnableLocalProperties'];
+		return $this->enableLocalProperties;
 	}
 
 	private function updateUserRealNameAndEmail( User $user, bool $force = false ): void {
@@ -101,7 +141,7 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 		$this->manager->removeAuthenticationSessionData(
 			PluggableAuthLogin::EMAIL_SESSION_KEY );
 		if ( $user->mRealName != $realname || $user->mEmail != $email ) {
-			if ( $GLOBALS['wgPluggableAuth_EnableLocalProperties'] && !$force ) {
+			if ( $this->enableLocalProperties && !$force ) {
 				$this->logger->debug( 'PluggableAuth: Local properties enabled.' );
 				$this->logger->debug( 'PluggableAuth: Did not save updated real name and email address.' );
 			} else {
@@ -192,7 +232,11 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 		switch ( $action ) {
 			case AuthManager::ACTION_LOGIN:
 				return [
-					new BeginAuthenticationRequest()
+					new BeginAuthenticationRequest(
+						$this->extraLoginFields,
+						$this->buttonLabelMessage,
+						$this->buttonLabel
+					)
 				];
 			default:
 				return [];

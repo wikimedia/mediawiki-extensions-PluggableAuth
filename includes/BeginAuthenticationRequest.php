@@ -8,11 +8,22 @@ use RawMessage;
 
 class BeginAuthenticationRequest extends ButtonAuthenticationRequest {
 
-	public function __construct() {
-		if ( isset( $GLOBALS['wgPluggableAuth_ButtonLabelMessage'] ) ) {
-			$label = wfMessage( $GLOBALS['wgPluggableAuth_ButtonLabelMessage'] );
-		} elseif ( $GLOBALS['wgPluggableAuth_ButtonLabel'] ) {
-			$label = new RawMessage( $GLOBALS['wgPluggableAuth_ButtonLabel'] );
+	/**
+	 * @var array
+	 */
+	private $extraLoginFields;
+
+	/**
+	 * @param array $extraLoginFields
+	 * @param ?string $buttonLabelMessage
+	 * @param ?string $buttonLabel
+	 */
+	public function __construct( array $extraLoginFields, ?string $buttonLabelMessage, ?string $buttonLabel ) {
+		$this->extraLoginFields = $extraLoginFields;
+		if ( $buttonLabelMessage ) {
+			$label = wfMessage( $buttonLabelMessage );
+		} elseif ( $buttonLabel ) {
+			$label = new RawMessage( $buttonLabel );
 		} else {
 			$label = wfMessage( 'pluggableauth-loginbutton-label' );
 		}
@@ -31,7 +42,6 @@ class BeginAuthenticationRequest extends ButtonAuthenticationRequest {
 		if ( $this->action !== AuthManager::ACTION_LOGIN ) {
 			return [];
 		}
-		return array_merge( $GLOBALS['wgPluggableAuth_ExtraLoginFields'],
-			parent::getFieldInfo() );
+		return array_merge( $this->extraLoginFields, parent::getFieldInfo() );
 	}
 }
