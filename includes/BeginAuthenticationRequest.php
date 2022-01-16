@@ -4,6 +4,7 @@ namespace MediaWiki\Extension\PluggableAuth;
 
 use MediaWiki\Auth\AuthManager;
 use MediaWiki\Auth\ButtonAuthenticationRequest;
+use Message;
 use RawMessage;
 
 class BeginAuthenticationRequest extends ButtonAuthenticationRequest {
@@ -21,17 +22,13 @@ class BeginAuthenticationRequest extends ButtonAuthenticationRequest {
 	public function __construct( array $extraLoginFields, ?string $buttonLabelMessage, ?string $buttonLabel ) {
 		$this->extraLoginFields = $extraLoginFields;
 		if ( $buttonLabelMessage ) {
-			$label = wfMessage( $buttonLabelMessage );
+			$label = new Message( $buttonLabelMessage );
 		} elseif ( $buttonLabel ) {
 			$label = new RawMessage( $buttonLabel );
 		} else {
-			$label = wfMessage( 'pluggableauth-loginbutton-label' );
+			$label = new Message( 'pluggableauth-loginbutton-label' );
 		}
-		parent::__construct(
-			'pluggableauthlogin',
-			$label,
-			wfMessage( 'pluggableauth-loginbutton-help' ),
-			true );
+		parent::__construct( 'pluggableauthlogin', $label, new Message( 'pluggableauth-loginbutton-help' ), true );
 	}
 
 	/**

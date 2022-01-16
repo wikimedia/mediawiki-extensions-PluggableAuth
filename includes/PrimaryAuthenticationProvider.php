@@ -10,6 +10,7 @@ use MediaWiki\Auth\ButtonAuthenticationRequest;
 use MediaWiki\Config\ServiceOptions;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Permissions\Authority;
+use Message;
 use MWException;
 use RawMessage;
 use Sanitizer;
@@ -105,7 +106,7 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 			ContinueAuthenticationRequest::class );
 		if ( !$request ) {
 			return AuthenticationResponse::newFail(
-				wfMessage( 'pluggableauth-authentication-workflow-failure' ) );
+				new Message( 'pluggableauth-authentication-workflow-failure' ) );
 		}
 		$error = $this->manager->getAuthenticationSessionData(
 			PluggableAuthLogin::ERROR_SESSION_KEY );

@@ -4,8 +4,10 @@ namespace MediaWiki\Extension\PluggableAuth;
 
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use Message;
 use Psr\Log\LoggerInterface;
 use UnlistedSpecialPage;
+use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 class PluggableAuthLogin extends UnlistedSpecialPage {
 
@@ -44,8 +46,9 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 					$user->mName = $username;
 					$user->mRealName = $realname;
 					$user->mEmail = $email;
-					$user->mEmailAuthenticated = wfTimestamp();
-					$user->mTouched = wfTimestamp();
+					$now = ConvertibleTimestamp::now( TS_UNIX );
+					$user->mEmailAuthenticated = $now;
+					$user->mTouched = $now;
 					$this->logger->debug( 'Authenticated new user: ' . $username );
 					// PluggableAuthPopulateGroups is called from LocalUserCreated hook
 				} else {
@@ -66,12 +69,12 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 					$this->logger->debug( 'User is authorized.' );
 				} else {
 					$this->logger->debug( 'Authorization failure.' );
-					$error = wfMessage( 'pluggableauth-not-authorized', $username )->text();
+					$error = ( new Message( 'pluggableauth-not-authorized', [ $username ] ) )->parse();
 				}
 			} else {
 				$this->logger->debug( 'Authentication failure.' );
 				if ( $error === null ) {
-					$error = wfMessage( 'pluggableauth-authentication-failure' )->text();
+					$error = ( new Message( 'pluggableauth-authentication-failure' ) )->text();
 				} else {
 					if ( !is_string( $error ) ) {
 						$error = strval( $error );
