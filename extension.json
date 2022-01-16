@@ -1,6 +1,6 @@
 {
 	"name": "PluggableAuth",
-	"version": "5.7",
+	"version": "6.0-dev",
 	"author": [
 		"[https://www.mediawiki.org/wiki/User:Cindy.cicalese Cindy Cicalese]"
 	],
@@ -9,7 +9,7 @@
 	"type": "other",
 	"license-name": "MIT",
 	"requires": {
-		"MediaWiki": ">= 1.31.0"
+		"MediaWiki": ">= 1.35.0"
 	},
 	"SpecialPages": {
 		"PluggableAuthLogin": "PluggableAuthLogin"

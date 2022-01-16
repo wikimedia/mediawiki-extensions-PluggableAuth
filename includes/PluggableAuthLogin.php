@@ -1,6 +1,5 @@
 <?php
 
-use MediaWiki\Auth\AuthManager;
 use MediaWiki\MediaWikiServices;
 
 class PluggableAuthLogin extends UnlistedSpecialPage {
@@ -23,12 +22,7 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 	 */
 	public function execute( $param ) {
 		wfDebugLog( 'PluggableAuth', 'In execute()' );
-		if ( method_exists( MediaWikiServices::class, 'getAuthManager' ) ) {
-			// MediaWiki 1.35+
-			$authManager = MediaWikiServices::getInstance()->getAuthManager();
-		} else {
-			$authManager = AuthManager::singleton();
-		}
+		$authManager = MediaWikiServices::getInstance()->getAuthManager();
 		$user = $this->getUser();
 		$pluggableauth = PluggableAuth::singleton();
 		$error = null;
@@ -48,10 +42,10 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 					$user->mId = $id;
 					$user->loadFromId();
 					wfDebugLog( 'PluggableAuth', 'Authenticated existing user: ' . $user->mName );
-					Hooks::run( 'PluggableAuthPopulateGroups', [ $user ] );
+					$this->getHookContainer()->run( 'PluggableAuthPopulateGroups', [ $user ] );
 				}
 				$authorized = true;
-				Hooks::run( 'PluggableAuthUserAuthorization', [ $user, &$authorized ] );
+				$this->getHookContainer()->run( 'PluggableAuthUserAuthorization', [ $user, &$authorized ] );
 				if ( $authorized ) {
 					$authManager->setAuthenticationSessionData(
 						self::USERNAME_SESSION_KEY, $username );

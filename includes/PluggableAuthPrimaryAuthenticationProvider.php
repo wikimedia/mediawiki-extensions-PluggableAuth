@@ -5,6 +5,8 @@ use MediaWiki\Auth\AuthenticationRequest;
 use MediaWiki\Auth\AuthenticationResponse;
 use MediaWiki\Auth\AuthManager;
 use MediaWiki\Auth\ButtonAuthenticationRequest;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Permissions\Authority;
 
 class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvider {
 
@@ -30,18 +32,10 @@ class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenti
 		$this->manager->setAuthenticationSessionData(
 			PluggableAuthLogin::EXTRALOGINFIELDS_SESSION_KEY, $extraLoginFields );
 		// phpcs:disable MediaWiki.Usage.SuperGlobalsUsage.SuperGlobals
-		if ( isset( $_GET['returnto'] ) ) {
-			$returnto = $_GET['returnto'];
-		} else {
-			$returnto = '';
-		}
+		$returnto = $_GET['returnto'] ?? '';
 		$this->manager->setAuthenticationSessionData(
 			PluggableAuthLogin::RETURNTOPAGE_SESSION_KEY, $returnto );
-		if ( isset( $_GET['returntoquery'] ) ) {
-			$returntoquery = $_GET['returntoquery'];
-		} else {
-			$returntoquery = '';
-		}
+		$returntoquery = $_GET['returntoquery'] ?? '';
 		// phpcs:enable
 		$this->manager->setAuthenticationSessionData(
 			PluggableAuthLogin::RETURNTOQUERY_SESSION_KEY, $returntoquery );
@@ -70,7 +64,7 @@ class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenti
 			return AuthenticationResponse::newFail( new RawMessage( $error ) );
 		}
 		$username = $request->username;
-		$user = User::newFromName( $username );
+		$user = MediaWikiServices::getInstance()->getUserFactory()->newFromName( $username );
 		if ( $user && $user->getId() !== 0 ) {
 			$this->updateUserRealnameAndEmail( $user );
 		}
@@ -128,7 +122,7 @@ class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenti
 	 * Test whether the named user exists
 	 * @inheritDoc
 	 */
-	public function testUserExists( $username, $flags = User::READ_NORMAL ) {
+	public function testUserExists( $username, $flags = Authority::READ_NORMAL ) {
 		return false;
 	}
 

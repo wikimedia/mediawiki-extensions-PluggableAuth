@@ -1,7 +1,6 @@
 <?php
 
 use MediaWiki\Auth\AuthenticationRequest;
-use MediaWiki\Auth\AuthManager;
 use MediaWiki\MediaWikiServices;
 
 class PluggableAuthContinueAuthenticationRequest extends AuthenticationRequest {
@@ -20,12 +19,7 @@ class PluggableAuthContinueAuthenticationRequest extends AuthenticationRequest {
 	 * @return bool success
 	 */
 	public function loadFromSubmission( array $data ) {
-		if ( method_exists( MediaWikiServices::class, 'getAuthManager' ) ) {
-			// MediaWiki 1.35+
-			$authManager = MediaWikiServices::getInstance()->getAuthManager();
-		} else {
-			$authManager = AuthManager::singleton();
-		}
+		$authManager = MediaWikiServices::getInstance()->getAuthManager();
 		$error = $authManager->getAuthenticationSessionData(
 			PluggableAuthLogin::ERROR_SESSION_KEY );
 		if ( $error === null ) {

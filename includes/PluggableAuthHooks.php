@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 class PluggableAuthHooks {
 
 	/**
@@ -85,8 +87,8 @@ class PluggableAuthHooks {
 	public static function deauthenticate(
 		User $user, $inject_html, $old_name
 	) {
-		$old_user = User::newFromName( $old_name );
-		if ( $old_user === false ) {
+		$old_user = MediaWikiServices::getInstance()->getUserFactory()->newFromName( $old_name );
+		if ( $old_user === null ) {
 			return;
 		}
 		wfDebugLog( 'PluggableAuth', 'Deauthenticating ' . $old_name );
@@ -121,18 +123,11 @@ class PluggableAuthHooks {
 			return;
 		}
 
-		if ( class_exists( 'MediaWiki\Permissions\PermissionManager' ) ) {
-			// MW 1.33+
-			$pm = \MediaWiki\MediaWikiServices::getInstance()->getPermissionManager();
-			if ( !$pm->isEveryoneAllowed( 'read' ) &&
-				$pm->userCan( 'read', $user, $title )
-			) {
-				return;
-			}
-		} else {
-			if ( !User::isEveryoneAllowed( 'read' ) && $title->userCan( 'read' ) ) {
-				return;
-			}
+		$pm = MediaWikiServices::getInstance()->getPermissionManager();
+		if ( !$pm->isEveryoneAllowed( 'read' ) &&
+			$pm->userCan( 'read', $user, $title )
+		) {
+			return;
 		}
 
 		$loginSpecialPages = ExtensionRegistry::getInstance()->getAttribute(
@@ -192,7 +187,7 @@ class PluggableAuthHooks {
 	 */
 	public static function onLocalUserCreated( User $user, $autocreated ) {
 		if ( $autocreated ) {
-			Hooks::run( 'PluggableAuthPopulateGroups', [ $user ] );
+			MediaWikiServices::getInstance()->getHookContainer()->run( 'PluggableAuthPopulateGroups', [ $user ] );
 		}
 	}
 }
