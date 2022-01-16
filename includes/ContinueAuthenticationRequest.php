@@ -1,9 +1,11 @@
 <?php
 
+namespace MediaWiki\Extension\PluggableAuth;
+
 use MediaWiki\Auth\AuthenticationRequest;
 use MediaWiki\MediaWikiServices;
 
-class PluggableAuthContinueAuthenticationRequest extends AuthenticationRequest {
+class ContinueAuthenticationRequest extends AuthenticationRequest {
 
 	/**
 	 * Returns field information.

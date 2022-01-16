@@ -1,5 +1,7 @@
 <?php
 
+namespace MediaWiki\Extension\PluggableAuth;
+
 use MediaWiki\Auth\AbstractPrimaryAuthenticationProvider;
 use MediaWiki\Auth\AuthenticationRequest;
 use MediaWiki\Auth\AuthenticationResponse;
@@ -7,8 +9,14 @@ use MediaWiki\Auth\AuthManager;
 use MediaWiki\Auth\ButtonAuthenticationRequest;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Permissions\Authority;
+use MWException;
+use RawMessage;
+use Sanitizer;
+use SpecialPage;
+use StatusValue;
+use User;
 
-class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvider {
+class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvider {
 
 	/**
 	 * Start an authentication flow
@@ -43,7 +51,7 @@ class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenti
 			PluggableAuthLogin::RETURNTOQUERY_SESSION_KEY, $returntoquery );
 
 		return AuthenticationResponse::newRedirect( [
-			new PluggableAuthContinueAuthenticationRequest()
+			new ContinueAuthenticationRequest()
 		], $url );
 	}
 
@@ -54,7 +62,7 @@ class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenti
 	 */
 	public function continuePrimaryAuthentication( array $reqs ): AuthenticationResponse {
 		$request = AuthenticationRequest::getRequestByClass( $reqs,
-			PluggableAuthContinueAuthenticationRequest::class );
+			ContinueAuthenticationRequest::class );
 		if ( !$request ) {
 			return AuthenticationResponse::newFail(
 				wfMessage( 'pluggableauth-authentication-workflow-failure' ) );
@@ -178,13 +186,13 @@ class PluggableAuthPrimaryAuthenticationProvider extends AbstractPrimaryAuthenti
 	/**
 	 * @param string $action
 	 * @param array $options
-	 * @return array|PluggableAuthBeginAuthenticationRequest[]
+	 * @return array|BeginAuthenticationRequest[]
 	 */
 	public function getAuthenticationRequests( $action, array $options ): array {
 		switch ( $action ) {
 			case AuthManager::ACTION_LOGIN:
 				return [
-					new PluggableAuthBeginAuthenticationRequest()
+					new BeginAuthenticationRequest()
 				];
 			default:
 				return [];

@@ -11,8 +11,11 @@
 	"requires": {
 		"MediaWiki": ">= 1.35.0"
 	},
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\PluggableAuth\\": "includes/"
+	},
 	"SpecialPages": {
-		"PluggableAuthLogin": "PluggableAuthLogin"
+		"PluggableAuthLogin": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthLogin"
 	},
 	"MessagesDirs": {
 		"PluggableAuth": [
@@ -22,27 +25,19 @@
 	"ExtensionMessagesFiles": {
 		"PluggableAuthAlias": "includes/PluggableAuth.alias.php"
 	},
-	"AutoloadClasses": {
-		"PluggableAuth": "includes/PluggableAuth.php",
-		"PluggableAuthHooks": "includes/PluggableAuthHooks.php",
-		"PluggableAuthPrimaryAuthenticationProvider": "includes/PluggableAuthPrimaryAuthenticationProvider.php",
-		"PluggableAuthBeginAuthenticationRequest": "includes/PluggableAuthBeginAuthenticationRequest.php",
-		"PluggableAuthContinueAuthenticationRequest": "includes/PluggableAuthContinueAuthenticationRequest.php",
-		"PluggableAuthLogin": "includes/PluggableAuthLogin.php"
-	},
-	"callback": "PluggableAuthHooks::onRegistration",
+	"callback": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthHooks::onRegistration",
 	"Hooks": {
-		"TitleReadWhitelist": "PluggableAuthHooks::onTitleReadWhitelist",
-		"UserLogoutComplete": "PluggableAuthHooks::deauthenticate",
-		"AuthChangeFormFields": "PluggableAuthHooks::onAuthChangeFormFields",
-		"PersonalUrls": "PluggableAuthHooks::modifyLoginURLs",
-		"BeforeInitialize": "PluggableAuthHooks::doBeforeInitialize",
-		"LocalUserCreated": "PluggableAuthHooks::onLocalUserCreated"
+		"TitleReadWhitelist": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthHooks::onTitleReadWhitelist",
+		"UserLogoutComplete": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthHooks::deauthenticate",
+		"AuthChangeFormFields": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthHooks::onAuthChangeFormFields",
+		"PersonalUrls": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthHooks::modifyLoginURLs",
+		"BeforeInitialize": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthHooks::doBeforeInitialize",
+		"LocalUserCreated": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthHooks::onLocalUserCreated"
 	},
 	"AuthManagerAutoConfig": {
 		"primaryauth": {
 			"PluggableAuthPrimaryAuthenticationProvider": {
-				"class": "PluggableAuthPrimaryAuthenticationProvider",
+				"class": "MediaWiki\\Extension\\PluggableAuth\\PrimaryAuthenticationProvider",
 				"sort": 0
 			}
 		}

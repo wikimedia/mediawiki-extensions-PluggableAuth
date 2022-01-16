@@ -1,6 +1,17 @@
 <?php
 
+namespace MediaWiki\Extension\PluggableAuth;
+
+use ExtensionRegistry;
+use MediaWiki;
 use MediaWiki\MediaWikiServices;
+use MWException;
+use OutputPage;
+use SkinTemplate;
+use SpecialPage;
+use Title;
+use User;
+use WebRequest;
 
 class PluggableAuthHooks {
 

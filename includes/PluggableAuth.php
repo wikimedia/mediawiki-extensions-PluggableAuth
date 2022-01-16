@@ -1,5 +1,9 @@
 <?php
 
+namespace MediaWiki\Extension\PluggableAuth;
+
+use User;
+
 abstract class PluggableAuth {
 
 	/**
@@ -51,8 +55,8 @@ abstract class PluggableAuth {
 			return self::$instance;
 		} elseif ( isset( $GLOBALS['wgPluggableAuth_Class'] ) &&
 			class_exists( $GLOBALS['wgPluggableAuth_Class'] ) &&
-			is_subclass_of( $GLOBALS['wgPluggableAuth_Class'],
-				'PluggableAuth' ) ) {
+			is_subclass_of( $GLOBALS['wgPluggableAuth_Class'], self::class )
+		) {
 			self::$instance = new $GLOBALS['wgPluggableAuth_Class'];
 			return self::$instance;
 		}
