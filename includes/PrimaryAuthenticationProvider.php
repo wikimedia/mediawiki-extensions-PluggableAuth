@@ -102,20 +102,20 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 			PluggableAuthLogin::EMAIL_SESSION_KEY );
 		if ( $user->mRealName != $realname || $user->mEmail != $email ) {
 			if ( $GLOBALS['wgPluggableAuth_EnableLocalProperties'] && !$force ) {
-				wfDebugLog( 'PluggableAuth', 'Local properties enabled.' );
-				wfDebugLog( 'PluggableAuth', 'Did not save updated real name and email address.' );
+				$this->logger->debug( 'PluggableAuth: Local properties enabled.' );
+				$this->logger->debug( 'PluggableAuth: Did not save updated real name and email address.' );
 			} else {
-				wfDebugLog( 'PluggableAuth', 'Local properties disabled or has just been created.' );
+				$this->logger->debug( 'PluggableAuth: Local properties disabled or has just been created.' );
 				$user->mRealName = $realname;
 				if ( $email && Sanitizer::validateEmail( $email ) ) {
 					$user->mEmail = $email;
 					$user->confirmEmail();
 				}
 				$user->saveSettings();
-				wfDebugLog( 'PluggableAuth', 'Saved updated real name and email address.' );
+				$this->logger->debug( 'PluggableAuth: Saved updated real name and email address.' );
 			}
 		} else {
-			wfDebugLog( 'PluggableAuth', 'Real name and email address did not change.' );
+			$this->logger->debug( 'PluggableAuth: Real name and email address did not change.' );
 		}
 	}
 

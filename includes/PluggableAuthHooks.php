@@ -4,6 +4,7 @@ namespace MediaWiki\Extension\PluggableAuth;
 
 use ExtensionRegistry;
 use MediaWiki;
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MWException;
 use OutputPage;
@@ -110,12 +111,13 @@ class PluggableAuthHooks {
 		if ( $old_user === null ) {
 			return;
 		}
-		wfDebugLog( 'PluggableAuth', 'Deauthenticating ' . $old_name );
+		$logger = LoggerFactory::getInstance( 'PluggableAuth' );
+		$logger->debug( 'Deauthenticating ' . $old_name );
 		$pluggableauth = PluggableAuth::singleton();
 		if ( $pluggableauth ) {
 			$pluggableauth->deauthenticate( $old_user );
 		}
-		wfDebugLog( 'PluggableAuth', 'Deauthenticated ' . $old_name );
+		$logger->debug( 'Deauthenticated ' . $old_name );
 	}
 
 	/**

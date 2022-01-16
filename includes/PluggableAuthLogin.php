@@ -2,7 +2,9 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use Psr\Log\LoggerInterface;
 use UnlistedSpecialPage;
 
 class PluggableAuthLogin extends UnlistedSpecialPage {
@@ -16,15 +18,21 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 	const EMAIL_SESSION_KEY = 'PluggableAuthLoginEmail';
 	const ERROR_SESSION_KEY = 'PluggableAuthLoginError';
 
+	/**
+	 * @var LoggerInterface
+	 */
+	private $logger;
+
 	public function __construct() {
 		parent::__construct( 'PluggableAuthLogin' );
+		$this->logger = LoggerFactory::getInstance( 'PluggableAuth' );
 	}
 
 	/**
 	 * @param string|null $subPage parameters (ignored)
 	 */
 	public function execute( $subPage ) {
-		wfDebugLog( 'PluggableAuth', 'In execute()' );
+		$this->logger->debug( 'In execute()' );
 		$authManager = MediaWikiServices::getInstance()->getAuthManager();
 		$user = $this->getUser();
 		$pluggableauth = PluggableAuth::singleton();
@@ -38,12 +46,12 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 					$user->mEmail = $email;
 					$user->mEmailAuthenticated = wfTimestamp();
 					$user->mTouched = wfTimestamp();
-					wfDebugLog( 'PluggableAuth', 'Authenticated new user: ' . $username );
+					$this->logger->debug( 'Authenticated new user: ' . $username );
 					// PluggableAuthPopulateGroups is called from LocalUserCreated hook
 				} else {
 					$user->mId = $id;
 					$user->loadFromId();
-					wfDebugLog( 'PluggableAuth', 'Authenticated existing user: ' . $user->mName );
+					$this->logger->debug( 'Authenticated existing user: ' . $user->mName );
 					$this->getHookContainer()->run( 'PluggableAuthPopulateGroups', [ $user ] );
 				}
 				$authorized = true;
@@ -55,20 +63,20 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 						self::REALNAME_SESSION_KEY, $realname );
 					$authManager->setAuthenticationSessionData(
 						self::EMAIL_SESSION_KEY, $email );
-					wfDebugLog( 'PluggableAuth', 'User is authorized.' );
+					$this->logger->debug( 'User is authorized.' );
 				} else {
-					wfDebugLog( 'PluggableAuth', 'Authorization failure.' );
+					$this->logger->debug( 'Authorization failure.' );
 					$error = wfMessage( 'pluggableauth-not-authorized', $username )->text();
 				}
 			} else {
-				wfDebugLog( 'PluggableAuth', 'Authentication failure.' );
+				$this->logger->debug( 'Authentication failure.' );
 				if ( $error === null ) {
 					$error = wfMessage( 'pluggableauth-authentication-failure' )->text();
 				} else {
 					if ( !is_string( $error ) ) {
 						$error = strval( $error );
 					}
-					wfDebugLog( 'PluggableAuth', 'ERROR: ' . $error );
+					$this->logger->debug( 'ERROR: ' . $error );
 				}
 			}
 		}
@@ -79,7 +87,7 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 		$returnToUrl = $authManager->getAuthenticationSessionData(
 			self::RETURNTOURL_SESSION_KEY );
 		if ( $returnToUrl === null || strlen( $returnToUrl ) === 0 ) {
-			wfDebugLog( 'PluggableAuth', 'ERROR: return to URL is null or empty' );
+			$this->logger->debug( 'ERROR: return to URL is null or empty' );
 			$this->getOutput()->wrapWikiMsg( "<div class='error'>\n$1\n</div>",
 				'pluggableauth-fatal-error' );
 		} else {

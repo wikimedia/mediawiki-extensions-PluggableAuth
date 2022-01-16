@@ -2,6 +2,7 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
+use MediaWiki\Logger\LoggerFactory;
 use User;
 
 abstract class PluggableAuth {
@@ -45,13 +46,11 @@ abstract class PluggableAuth {
 	 * @return PluggableAuth|false a PluggableAuth object
 	 */
 	public static function singleton() {
-		wfDebugLog( 'PluggableAuth', 'Getting PluggableAuth singleton' );
-		wfDebugLog(
-			'PluggableAuth',
-			'Class name: ' . ( $GLOBALS['wgPluggableAuth_Class'] ?? 'unset' )
-		);
+		$logger = LoggerFactory::getInstance( 'PluggableAuth' );
+		$logger->debug( 'Getting PluggableAuth singleton' );
+		$logger->debug( 'Class name: ' . ( $GLOBALS['wgPluggableAuth_Class'] ?? 'unset' ) );
 		if ( self::$instance !== null ) {
-			wfDebugLog( 'PluggableAuth', 'Singleton already exists' );
+			$logger->debug( 'Singleton already exists' );
 			return self::$instance;
 		} elseif ( isset( $GLOBALS['wgPluggableAuth_Class'] ) &&
 			class_exists( $GLOBALS['wgPluggableAuth_Class'] ) &&
@@ -60,7 +59,7 @@ abstract class PluggableAuth {
 			self::$instance = new $GLOBALS['wgPluggableAuth_Class'];
 			return self::$instance;
 		}
-		wfDebugLog( 'PluggableAuth', 'Could not get authentication plugin instance.' );
+		$logger->debug( 'Could not get authentication plugin instance.' );
 		return false;
 	}
 }
