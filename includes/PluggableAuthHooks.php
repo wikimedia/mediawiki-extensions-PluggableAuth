@@ -28,6 +28,7 @@ use MediaWiki\Hook\PersonalUrlsHook;
 use MediaWiki\Hook\UserLogoutCompleteHook;
 use MediaWiki\Permissions\Hook\TitleReadWhitelistHook;
 use MediaWiki\SpecialPage\Hook\AuthChangeFormFieldsHook;
+use MediaWiki\SpecialPage\Hook\SpecialPage_initListHook;
 use MWException;
 use OutputPage;
 use SkinTemplate;
@@ -41,7 +42,8 @@ class PluggableAuthHooks implements
 	UserLogoutCompleteHook,
 	BeforeInitializeHook,
 	PersonalUrlsHook,
-	LocalUserCreatedHook
+	LocalUserCreatedHook,
+	SpecialPage_initListHook
 {
 
 	/**
@@ -147,6 +149,20 @@ class PluggableAuthHooks implements
 	 */
 	public function onLocalUserCreated( $user, $autocreated ) {
 		$this->pluggableAuthService->populateGroups( $user, $autocreated );
+	}
+
+	/**
+	 * Implements SpecialPage_initList hook.
+	 * See https://www.mediawiki.org/wiki/Manual:Hooks/SpecialPage_initList
+	 * Removes CreateAccount special page if local login is not enabled.
+	 *
+	 * @since 6.0
+	 *
+	 * @param array &$list
+	 * @phpcs:disable MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
+	 */
+	public function onSpecialPage_initList( &$list ) {
+		$this->pluggableAuthService->updateSpecialPages( $list );
 	}
 
 	/**

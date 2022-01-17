@@ -235,4 +235,14 @@ class PluggableAuthService {
 			$this->hookContainer->run( 'PluggableAuthPopulateGroups', [ $user ] );
 		}
 	}
+
+	/**
+	 * Removes CreateAccount special page if local login is not enabled.
+	 * @param array &$list
+	 */
+	public function updateSpecialPages( array &$list ) {
+		if ( !$this->enableLocalLogin ) {
+			unset( $list['CreateAccount'] );
+		}
+	}
 }
