@@ -35,13 +35,21 @@
 		"PluggableAuthAlias": "includes/PluggableAuth.alias.php"
 	},
 	"callback": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthHooks::onRegistration",
+	"HookHandlers": {
+		"main": {
+			"class": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthHooks",
+			"services": [
+				"PluggableAuthService"
+			]
+		}
+	},
 	"Hooks": {
-		"TitleReadWhitelist": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthHooks::onTitleReadWhitelist",
-		"UserLogoutComplete": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthHooks::deauthenticate",
-		"AuthChangeFormFields": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthHooks::onAuthChangeFormFields",
-		"PersonalUrls": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthHooks::modifyLoginURLs",
-		"BeforeInitialize": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthHooks::doBeforeInitialize",
-		"LocalUserCreated": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthHooks::onLocalUserCreated"
+		"TitleReadWhitelist": "main",
+		"UserLogoutComplete": "main",
+		"AuthChangeFormFields": "main",
+		"PersonalUrls": "main",
+		"BeforeInitialize": "main",
+		"LocalUserCreated": "main"
 	},
 	"AuthManagerAutoConfig": {
 		"primaryauth": {
