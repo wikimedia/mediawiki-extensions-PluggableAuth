@@ -214,7 +214,8 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 		$username,
 		$flags = Authority::READ_NORMAL
 	): bool {
-		return false;
+		$user = $this->userFactory->newFromName( $username );
+		return $user && $user->isRegistered();
 	}
 
 	/**
