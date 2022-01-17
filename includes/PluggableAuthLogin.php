@@ -113,6 +113,8 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 					$this->logger->debug( 'ERROR: ' . $error );
 				}
 			}
+		} else {
+			$error = ( new Message( 'pluggableauth-authentication-plugin-failure' ) )->text();
 		}
 		if ( $error !== null ) {
 			$this->authManager->setAuthenticationSessionData( self::ERROR_SESSION_KEY, $error );
