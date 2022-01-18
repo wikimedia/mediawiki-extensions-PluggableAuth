@@ -26,6 +26,25 @@ use User;
 abstract class PluggableAuth {
 
 	/**
+	 * @var string
+	 */
+	protected $configId;
+
+	/**
+	 * @param string $configId
+	 */
+	public function __construct( string $configId ) {
+		$this->configId = $configId;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getConfigId(): string {
+		return $this->configId;
+	}
+
+	/**
 	 * @param int|null &$id The user's user ID
 	 * @param string|null &$username The user's username
 	 * @param string|null &$realname The user's real name
@@ -56,4 +75,18 @@ abstract class PluggableAuth {
 	 * @param int $id The user's user ID
 	 */
 	abstract public function saveExtraAttributes( int $id ): void;
+
+	/**
+	 * Return an array of fields to be added to the login form (see documentation at
+	 * AuthenticationRequest::getFieldInfo for the format). Subclasses should override this function
+	 * if they want to add fields to the login form. If multiple fields have the same array index,
+	 * they will be merged into a single field (discarding all but one of the matching fields,
+	 * see AuthenticationRequest::mergeFieldInfo()). If multiple instances of the same
+	 * authentication plugin want to have their own instances of those fields, the static function
+	 * could use a static counter to give them unique array indices.
+	 * @return array
+	 */
+	public static function getExtraLoginFields(): array {
+		return [];
+	}
 }

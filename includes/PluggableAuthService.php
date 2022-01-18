@@ -22,6 +22,7 @@
 namespace MediaWiki\Extension\PluggableAuth;
 
 use ExtensionRegistry;
+use MediaWiki\Auth\AuthManager;
 use MediaWiki\Config\ServiceOptions;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Permissions\PermissionManager;
@@ -77,6 +78,11 @@ class PluggableAuthService {
 	private $hookContainer;
 
 	/**
+	 * @var AuthManager
+	 */
+	private $authManager;
+
+	/**
 	 * @var LoggerInterface
 	 */
 	private $logger;
@@ -88,6 +94,7 @@ class PluggableAuthService {
 	 * @param PluggableAuthFactory $pluggableAuthFactory
 	 * @param PermissionManager $permissionManager
 	 * @param HookContainer $hookContainer
+	 * @param AuthManager $authManager
 	 * @param LoggerInterface $logger
 	 */
 	public function __construct(
@@ -97,6 +104,7 @@ class PluggableAuthService {
 		PluggableAuthFactory $pluggableAuthFactory,
 		PermissionManager $permissionManager,
 		HookContainer $hookContainer,
+		AuthManager $authManager,
 		LoggerInterface $logger
 	) {
 		$options->assertRequiredOptions( self::CONSTRUCTOR_OPTIONS );
@@ -107,6 +115,7 @@ class PluggableAuthService {
 		$this->pluggableAuthFactory = $pluggableAuthFactory;
 		$this->permissionManager = $permissionManager;
 		$this->hookContainer = $hookContainer;
+		$this->authManager = $authManager;
 		$this->logger = $logger;
 	}
 
@@ -136,8 +145,10 @@ class PluggableAuthService {
 	public function moveLoginButton(
 		array &$formDescriptor
 	): void {
-		if ( isset( $formDescriptor['pluggableauthlogin'] ) ) {
-			$formDescriptor['pluggableauthlogin']['weight'] = 101;
+		foreach ( $this->pluggableAuthFactory->getConfig() as $name => $config ) {
+			if ( isset( $formDescriptor[$name] ) ) {
+				$formDescriptor[$name]['weight'] = 101;
+			}
 		}
 	}
 
@@ -156,6 +167,9 @@ class PluggableAuthService {
 		$pluggableauth = $this->pluggableAuthFactory->getInstance();
 		if ( $pluggableauth ) {
 			$pluggableauth->deauthenticate( $old_user );
+			$this->authManager->getRequest()->getSession()->remove(
+				PluggableAuthLogin::AUTHENTICATIONPLUGINNAME_SESSION_KEY
+			);
 		}
 		$this->logger->debug( 'Deauthenticated ' . $old_name );
 	}

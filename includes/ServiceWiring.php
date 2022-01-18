@@ -30,7 +30,9 @@ return [
 	'PluggableAuthFactory' =>
 		static function ( MediaWikiServices $services ): PluggableAuthFactory {
 			return new PluggableAuthFactory(
+				new ServiceOptions( PluggableAuthFactory::CONSTRUCTOR_OPTIONS, $services->getMainConfig() ),
 				$services->getMainConfig(),
+				$services->getAuthManager(),
 				LoggerFactory::getInstance( 'PluggableAuth' )
 			);
 		},
@@ -43,6 +45,7 @@ return [
 				$services->get( 'PluggableAuthFactory' ),
 				$services->getPermissionManager(),
 				$services->getHookContainer(),
+				$services->getAuthManager(),
 				LoggerFactory::getInstance( 'PluggableAuth' )
 			);
 		},

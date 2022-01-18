@@ -34,11 +34,17 @@ class BeginAuthenticationRequest extends ButtonAuthenticationRequest {
 	private $extraLoginFields;
 
 	/**
+	 * @param string $name
 	 * @param array $extraLoginFields
 	 * @param ?string $buttonLabelMessage
 	 * @param ?string $buttonLabel
 	 */
-	public function __construct( array $extraLoginFields, ?string $buttonLabelMessage, ?string $buttonLabel ) {
+	public function __construct(
+		string $name,
+		array $extraLoginFields,
+		?string $buttonLabelMessage,
+		?string $buttonLabel
+	) {
 		$this->extraLoginFields = $extraLoginFields;
 		if ( $buttonLabelMessage ) {
 			$label = new Message( $buttonLabelMessage );
@@ -47,7 +53,21 @@ class BeginAuthenticationRequest extends ButtonAuthenticationRequest {
 		} else {
 			$label = new Message( 'pluggableauth-loginbutton-label' );
 		}
-		parent::__construct( 'pluggableauthlogin', $label, new Message( 'pluggableauth-loginbutton-help' ), true );
+		parent::__construct( $name, $label, new Message( 'pluggableauth-loginbutton-help' ), true );
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getAuthenticationPluginName(): string {
+		return $this->name;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getExtraLoginFields(): array {
+		return $this->extraLoginFields;
 	}
 
 	/**

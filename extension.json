@@ -14,6 +14,9 @@
 	"AutoloadNamespaces": {
 		"MediaWiki\\Extension\\PluggableAuth\\": "includes/"
 	},
+	"TestAutoloadNamespaces": {
+		"MediaWiki\\Extension\\PluggableAuth\\Test\\": "tests/includes/"
+	},
 	"ServiceWiringFiles": [
 		"includes/ServiceWiring.php"
 	],

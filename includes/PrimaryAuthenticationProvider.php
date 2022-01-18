@@ -26,7 +26,6 @@ use MediaWiki\Auth\AbstractPrimaryAuthenticationProvider;
 use MediaWiki\Auth\AuthenticationRequest;
 use MediaWiki\Auth\AuthenticationResponse;
 use MediaWiki\Auth\AuthManager;
-use MediaWiki\Auth\ButtonAuthenticationRequest;
 use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Permissions\Authority;
 use MediaWiki\User\UserFactory;
@@ -41,26 +40,8 @@ use User;
 class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvider {
 
 	public const CONSTRUCTOR_OPTIONS = [
-		'PluggableAuth_ExtraLoginFields',
-		'PluggableAuth_ButtonLabelMessage',
-		'PluggableAuth_ButtonLabel',
 		'PluggableAuth_EnableLocalProperties'
 	];
-
-	/**
-	 * @var array
-	 */
-	private $extraLoginFields;
-
-	/**
-	 * @var string|null
-	 */
-	private $buttonLabelMessage;
-
-	/**
-	 * @var string|null
-	 */
-	private $buttonLabel;
 
 	/**
 	 * @var bool
@@ -89,12 +70,32 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 	) {
 		$options = new ServiceOptions( self::CONSTRUCTOR_OPTIONS, $mainConfig );
 		$options->assertRequiredOptions( self::CONSTRUCTOR_OPTIONS );
-		$this->extraLoginFields = $options->get( 'PluggableAuth_ExtraLoginFields' );
-		$this->buttonLabelMessage = $options->get( 'PluggableAuth_ButtonLabelMessage' );
-		$this->buttonLabel = $options->get( 'PluggableAuth_ButtonLabel' );
 		$this->enableLocalProperties = $options->get( 'PluggableAuth_EnableLocalProperties' );
 		$this->userFactory = $userFactory;
 		$this->pluggableAuthFactory = $pluggableAuthFactory;
+	}
+
+	/**
+	 * @param string $action
+	 * @param array $options
+	 * @return array|BeginAuthenticationRequest[]
+	 */
+	public function getAuthenticationRequests( $action, array $options ): array {
+		switch ( $action ) {
+			case AuthManager::ACTION_LOGIN:
+				$requests = [];
+				foreach ( $this->pluggableAuthFactory->getConfig() as $name => $entry ) {
+					$requests[$name] = new BeginAuthenticationRequest(
+						$name,
+						$entry['extraLoginFields'] ?? [],
+						$entry['buttonLabelMessage'] ?? null,
+						$entry['buttonLabel'] ?? null
+					);
+				}
+				return $requests;
+			default:
+				return [];
+		}
 	}
 
 	/**
@@ -104,12 +105,15 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 	 * @throws MWException
 	 */
 	public function beginPrimaryAuthentication( array $reqs ): AuthenticationResponse {
-		$request = ButtonAuthenticationRequest::getRequestByName( $reqs, 'pluggableauthlogin' );
+		$matches = array_filter( $reqs, static function ( $req ) {
+			return $req instanceof BeginAuthenticationRequest;
+		} );
+		$request = $matches[0] ?? null;
 		if ( !$request ) {
 			return AuthenticationResponse::newAbstain();
 		}
 		$extraLoginFields = [];
-		foreach ( $this->extraLoginFields as $key => $value ) {
+		foreach ( $request->getExtraLoginFields() as $key => $value ) {
 			if ( isset( $request->$key ) ) {
 				$extraLoginFields[$key] = $request->$key;
 			}
@@ -128,7 +132,10 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 			PluggableAuthLogin::RETURNTOQUERY_SESSION_KEY,
 			$queryValues['returntoquery'] ?? ''
 		);
-
+		$this->manager->getRequest()->setSessionData(
+			PluggableAuthLogin::AUTHENTICATIONPLUGINNAME_SESSION_KEY,
+			$request->getAuthenticationPluginName()
+		);
 		return AuthenticationResponse::newRedirect(
 			[ new ContinueAuthenticationRequest() ],
 			$url
@@ -255,25 +262,5 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 	 * @param AuthenticationRequest $req
 	 */
 	public function providerChangeAuthenticationData( AuthenticationRequest $req ): void {
-	}
-
-	/**
-	 * @param string $action
-	 * @param array $options
-	 * @return array|BeginAuthenticationRequest[]
-	 */
-	public function getAuthenticationRequests( $action, array $options ): array {
-		switch ( $action ) {
-			case AuthManager::ACTION_LOGIN:
-				return [
-					new BeginAuthenticationRequest(
-						$this->extraLoginFields,
-						$this->buttonLabelMessage,
-						$this->buttonLabel
-					)
-				];
-			default:
-				return [];
-		}
 	}
 }
