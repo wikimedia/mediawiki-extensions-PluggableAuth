@@ -65,17 +65,33 @@
 			}
 		}
 	},
-	"PluggableAuthLoginSpecialPages": [
-		"PluggableAuthLogin",
-		"Userlogin"
-	],
-	"config": {
-		"PluggableAuth_EnableAutoLogin": false,
-		"PluggableAuth_EnableLocalLogin": false,
-		"PluggableAuth_EnableLocalProperties": false,
-		"PluggableAuth_ButtonLabelMessage": null,
-		"PluggableAuth_ButtonLabel": null,
-		"PluggableAuth_ExtraLoginFields": []
+	"attributes": {
+		"PluggableAuth": {
+			"LoginSpecialPages": [
+				"PluggableAuthLogin",
+				"Userlogin"
+			]
+		}
 	},
-	"manifest_version": 1
+	"config": {
+		"PluggableAuth_EnableAutoLogin": {
+			"value": false
+		},
+		"PluggableAuth_EnableLocalLogin": {
+			"value": false
+		},
+		"PluggableAuth_EnableLocalProperties": {
+			"value": false
+		},
+		"PluggableAuth_ButtonLabelMessage": {
+			"value": null
+		},
+		"PluggableAuth_ButtonLabel": {
+			"value": null
+		},
+		"PluggableAuth_ExtraLoginFields": {
+			"value": []
+		}
+	},
+	"manifest_version": 2
 }
