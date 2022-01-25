@@ -2,12 +2,14 @@
 	"@metadata": {
 		"authors": [
 			"BaRaN6161 TURK",
+			"Can",
 			"MuratTheTurkish"
 		]
 	},
 	"pluggableauth-desc": "Takılabilir kimlik doğrulama ve yetkilendirme için çerçeve sağlar",
 	"pluggableauth-not-authorized": "$1 {{GENDER:$1|kullanıcısı}} yetkili değil.",
 	"pluggableauth-authentication-failure": "Kullanıcı kimliği doğrulanamıyor.",
+	"pluggableauth-authentication-plugin-failure": "Doğrulama eklentisi yüklenemedi",
 	"pluggableauth-authentication-workflow-failure": "Kimlik doğrulama iş akışı hatası.",
 	"pluggableauth-loginbutton-label": "PluggableAuth ile oturum açın",
 	"pluggableauth-loginbutton-help": "PluggableAuth ile sizi doğrular",
