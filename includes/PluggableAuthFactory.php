@@ -22,8 +22,11 @@
 namespace MediaWiki\Extension\PluggableAuth;
 
 use Config;
+use Exception;
+use ExtensionRegistry;
 use MediaWiki\Auth\AuthManager;
 use MediaWiki\Config\ServiceOptions;
+use MediaWiki\Logger\LoggerFactory;
 use Psr\Log\LoggerInterface;
 
 class PluggableAuthFactory {
@@ -50,25 +53,46 @@ class PluggableAuthFactory {
 	private $logger;
 
 	/**
+	 * @var ExtensionRegistry
+	 */
+	private $extensionRegistry;
+
+	/**
 	 * @var PluggableAuth[]
 	 */
 	private $instances = [];
+
+	/**
+	 * @var array
+	 */
+	private $validatedPlugins = [];
+
+	/**
+	 * @var \Wikimedia\ObjectFactory|\Wikimedia\ObjectFactory\ObjectFactory
+	 */
+	private $objectFactory;
 
 	/**
 	 * @param ServiceOptions $options
 	 * @param Config $mainConfig
 	 * @param AuthManager $authManager
 	 * @param LoggerInterface $logger
+	 * @param ExtensionRegistry $extensionRegistry
+	 * @param \Wikimedia\ObjectFactory|\Wikimedia\ObjectFactory\ObjectFactory $objectFactory
 	 */
 	public function __construct(
 		ServiceOptions $options,
 		Config $mainConfig,
 		AuthManager $authManager,
-		LoggerInterface $logger
+		LoggerInterface $logger,
+		ExtensionRegistry $extensionRegistry,
+		$objectFactory
 	) {
 		$this->authManager = $authManager;
 		$this->logger = $logger;
+		$this->extensionRegistry = $extensionRegistry;
 		$this->pluggableAuthConfig = $this->initConfig( $options, $mainConfig );
+		$this->objectFactory = $objectFactory;
 	}
 
 	/**
@@ -90,16 +114,30 @@ class PluggableAuthFactory {
 			$config = $this->pluggableAuthConfig[$name];
 			$class = $config['class'];
 			$this->logger->debug( 'Class name: ' . $class );
-			if ( class_exists( $class ) && is_subclass_of( $class, PluggableAuth::class ) ) {
-				if ( isset( $this->instances[$name] ) ) {
-					$this->logger->debug( 'Instance already exists' );
-				} elseif ( isset( $config['data'] ) ) {
-					$this->instances[$name] = new $class( $config['configId'], $config['data'] );
-				} else {
-					$this->instances[$name] = new $class( $config['configId'] );
+			if ( isset( $this->instances[$name] ) ) {
+				$this->logger->debug( 'Instance already exists' );
+			} else {
+				try {
+					$this->instances[$name] = $this->objectFactory->createObject(
+						[
+							'class' => $class,
+							'services' => $config['services'],
+							'args' => [
+								$config['configId'],
+								$config['data'] ?? null,
+								LoggerFactory::getInstance( $config['plugin'] )
+							]
+						],
+						[
+							'assertClass' => PluggableAuth::class
+						]
+					);
+				} catch ( Exception $e ) {
+					$this->logger->debug( 'Invalid authentication plugin class: ' . $e->getMessage() . PHP_EOL );
+					return false;
 				}
-				return $this->instances[$name];
 			}
+			return $this->instances[$name];
 		}
 		$this->logger->debug( 'Could not get authentication plugin instance.' );
 		return false;
@@ -122,16 +160,16 @@ class PluggableAuthFactory {
 		if ( $mainConfig->has( 'PluggableAuth_Config' ) ) {
 			$this->logger->debug( 'Using $wgPluggableAuth_Config' );
 			return $this->validateConfig( $mainConfig->get( 'PluggableAuth_Config' ) );
-		} elseif ( $mainConfig->has( 'PluggableAuth_Class' ) ) {
-			$this->logger->debug( 'Using legacy config' );
+		} elseif ( $mainConfig->has( 'PluggableAuth_Plugin' ) ) {
+			$this->logger->debug( 'Using PluggableAuth_Plugin' );
 			return $this->validateConfig(
 				[
 					[
-						"class" => $mainConfig->get( 'PluggableAuth_Class' ),
-						"data" => null,
-						"buttonLabelMessage" => $options->get( 'PluggableAuth_ButtonLabelMessage' ),
-						"buttonLabel" => $options->get( 'PluggableAuth_ButtonLabel' ),
-						"extraLoginFields" => $options->get( 'PluggableAuth_ExtraLoginFields' )
+						'plugin' => $mainConfig->get( 'PluggableAuth_Plugin' ),
+						'data' => null,
+						'buttonLabelMessage' => $options->get( 'PluggableAuth_ButtonLabelMessage' ),
+						'buttonLabel' => $options->get( 'PluggableAuth_ButtonLabel' ),
+						'extraLoginFields' => $options->get( 'PluggableAuth_ExtraLoginFields' )
 					]
 				]
 			);
@@ -161,13 +199,17 @@ class PluggableAuthFactory {
 		$validatedConfig = [];
 		$index = 0;
 		foreach ( $config as $configId => $entry ) {
-			if ( isset( $entry['class'] ) ) {
-				$class = $entry['class'];
-				if ( class_exists( $class ) && is_subclass_of( $class, PluggableAuth::class ) ) {
+			if ( isset( $entry['plugin'] ) ) {
+				$plugin = $entry['plugin'];
+				if ( $this->validatePlugin( $plugin ) ) {
+					$pluginDescription = $this->validatedPlugins[$plugin];
+					$class = $pluginDescription['class'];
 					$name = 'pluggableauthlogin' . $index++;
 					$validatedConfig[$name] = [
 						'configId' => $configId,
+						'plugin' => $plugin,
 						'class' => $class,
+						'services' => $pluginDescription['services'] ?? null,
 						'data' => $entry['data'] ?? null,
 						'buttonLabelMessage' => $entry['buttonLabelMessage'] ?? null,
 						'buttonLabel' => $entry['buttonLabel'] ?? null,
@@ -175,8 +217,27 @@ class PluggableAuthFactory {
 					];
 				}
 			}
-
 		}
 		return $validatedConfig;
+	}
+
+	private function validatePlugin( $name ): bool {
+		if ( isset( $this->validatedPlugins[$name] ) ) {
+			return ( $this->pluggableAuthConfig[$name] !== false );
+		}
+		$plugin = $this->extensionRegistry->getAttribute( 'PluggableAuth' . $name );
+		if ( $plugin && isset( $plugin['class'] ) ) {
+			$class = $plugin['class'];
+			if ( class_exists( $class ) && is_subclass_of( $class, PluggableAuth::class ) ) {
+				$this->validatedPlugins[$name] = [
+					'class' => $class,
+					'services' => $plugin['services'] ?? null
+				];
+				return true;
+			} else {
+				$this->validatedPlugins[$name] = false;
+			}
+		}
+		return false;
 	}
 }

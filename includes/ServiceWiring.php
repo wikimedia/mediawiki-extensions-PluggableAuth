@@ -33,7 +33,9 @@ return [
 				new ServiceOptions( PluggableAuthFactory::CONSTRUCTOR_OPTIONS, $services->getMainConfig() ),
 				$services->getMainConfig(),
 				$services->getAuthManager(),
-				LoggerFactory::getInstance( 'PluggableAuth' )
+				LoggerFactory::getInstance( 'PluggableAuth' ),
+				ExtensionRegistry::getInstance(),
+				$services->getObjectFactory()
 			);
 		},
 	'PluggableAuthService' =>

@@ -21,6 +21,7 @@
 
 namespace MediaWiki\Extension\PluggableAuth\Test;
 
+use ExtensionRegistry;
 use FauxRequest;
 use MediaWiki\Extension\PluggableAuth\PluggableAuthLogin;
 use MediaWikiIntegrationTestCase;
@@ -52,11 +53,11 @@ class PluggableAuthTest extends MediaWikiIntegrationTestCase {
 			],
 			'wgPluggableAuth_Config' => [
 				"unauthorized" => [
-					'class' => '\MediaWiki\Extension\PluggableAuth\Test\DummyAuth',
+					'plugin' => 'DummyAuth',
 					'buttonLabel' => 'Unauth'
 				],
 				"authorized" => [
-					'class' => '\MediaWiki\Extension\PluggableAuth\Test\DummyAuth',
+					'plugin' => 'DummyAuth',
 					'data' => [
 						'username' => 'Dummy',
 						'realname' => 'Dummy User',
@@ -84,6 +85,13 @@ class PluggableAuthTest extends MediaWikiIntegrationTestCase {
 	 * @dataProvider provideAuthenticate
 	 */
 	public function testAuthenticate( string $expected, string $buttonName ): void {
+		$callback = ExtensionRegistry::getInstance()->setAttributeForTest(
+			'PluggableAuthDummyAuth',
+			[
+				'class' => '\MediaWiki\Extension\PluggableAuth\Test\DummyAuth'
+			]
+		);
+
 		$this->loginStep( 'login', $buttonName );
 
 		$serviceContainer = $this->getServiceContainer();

@@ -22,6 +22,7 @@
 namespace MediaWiki\Extension\PluggableAuth\Test;
 
 use MediaWiki\Extension\PluggableAuth\PluggableAuth;
+use Psr\Log\LoggerInterface;
 use User;
 
 class DummyAuth extends PluggableAuth {
@@ -54,10 +55,12 @@ class DummyAuth extends PluggableAuth {
 	/**
 	 * @param string $configId
 	 * @param array|null $data
+	 * @param LoggerInterface $logger
 	 */
 	public function __construct(
 		string $configId,
-		array $data = null
+		?array $data,
+		LoggerInterface $logger
 	) {
 		parent::__construct( $configId );
 		if ( $data ) {
