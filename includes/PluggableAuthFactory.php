@@ -63,11 +63,6 @@ class PluggableAuthFactory {
 	private $instances = [];
 
 	/**
-	 * @var array
-	 */
-	private $validatedPlugins = [];
-
-	/**
 	 * @var \Wikimedia\ObjectFactory|\Wikimedia\ObjectFactory\ObjectFactory
 	 */
 	private $objectFactory;
@@ -111,8 +106,9 @@ class PluggableAuthFactory {
 			PluggableAuthLogin::AUTHENTICATIONPLUGINNAME_SESSION_KEY
 		);
 		if ( $name !== null && isset( $this->pluggableAuthConfig[$name] ) ) {
-			$spec = $this->pluggableAuthConfig[$name];
-			$this->logger->debug( 'Plugin name: ' . $spec['plugin'] );
+			$config = $this->pluggableAuthConfig[$name];
+			$spec = $config['spec'];
+			$this->logger->debug( 'Plugin name: ' . $config['plugin'] );
 			if ( isset( $this->instances[$name] ) ) {
 				$this->logger->debug( 'Instance already exists' );
 			} else {
@@ -125,9 +121,9 @@ class PluggableAuthFactory {
 						]
 					);
 
-					$pluginLogger = LoggerFactory::getInstance( $spec['plugin'] );
+					$pluginLogger = LoggerFactory::getInstance( $config['plugin'] );
 					$plugin->setLogger( $pluginLogger );
-					$plugin->init( $spec['configId'], $spec['data'] ?? null );
+					$plugin->init( $config['configId'], $config['data'] );
 
 					$this->instances[$name] = $plugin;
 				} catch ( Exception $e ) {
@@ -185,10 +181,7 @@ class PluggableAuthFactory {
 	 * - buttonLabel (optional): a text string that will be used for the login button label if
 	 *   buttonLabelMessage is not set
 	 * - extraLoginFields (optional): an array of fields to be added to the login form (see
-	 *   documentation at AuthenticationRequest::getFieldInfo for the format). If not set, the
-	 *   value will come from the static getExtraLoginFields() function on the authentication plugin.
-	 *   That function defaults to an empty array (no extra login fields) in the PluggableAuth
-	 *   abstract superclass.
+	 *   documentation at AuthenticationRequest::getFieldInfo for the format).
 	 *
 	 * @param array $config
 	 * @return array
@@ -197,45 +190,34 @@ class PluggableAuthFactory {
 		$validatedConfig = [];
 		$index = 0;
 		foreach ( $config as $configId => $entry ) {
-			if ( isset( $entry['plugin'] ) ) {
-				$plugin = $entry['plugin'];
-				if ( $this->validatePlugin( $plugin ) ) {
-					$pluginDescription = $this->validatedPlugins[$plugin];
-					$class = $pluginDescription['class'];
-					$name = 'pluggableauthlogin' . $index++;
-					$validatedConfig[$name] = [
-						'configId' => $configId,
-						'plugin' => $plugin,
-						'class' => $class,
-						'services' => $pluginDescription['services'] ?? null,
-						'data' => $entry['data'] ?? null,
-						'buttonLabelMessage' => $entry['buttonLabelMessage'] ?? null,
-						'buttonLabel' => $entry['buttonLabel'] ?? null,
-						'extraLoginFields' => $entry['extraLoginFields'] ?? $class::getExtraLoginFields()
-					];
-				}
+			if ( !isset( $entry['plugin'] ) ) {
+				continue;
 			}
-		}
-		return $validatedConfig;
-	}
 
-	private function validatePlugin( $name ): bool {
-		if ( isset( $this->validatedPlugins[$name] ) ) {
-			return ( $this->pluggableAuthConfig[$name] !== false );
-		}
-		$plugin = $this->extensionRegistry->getAttribute( 'PluggableAuth' . $name );
-		if ( $plugin && isset( $plugin['class'] ) ) {
-			$class = $plugin['class'];
-			if ( class_exists( $class ) && is_subclass_of( $class, PluggableAuth::class ) ) {
-				$this->validatedPlugins[$name] = [
-					'class' => $class,
-					'services' => $plugin['services'] ?? null
-				];
-				return true;
-			} else {
-				$this->validatedPlugins[$name] = false;
+			$plugin = $entry['plugin'];
+			$spec = $this->extensionRegistry->getAttribute( 'PluggableAuth' . $plugin );
+			if ( empty( $spec ) ) {
+				continue;
+			}
+
+			$name = 'pluggableauthlogin' . $index++;
+			$validatedConfig[$name] = [
+				'configId' => $configId,
+				'plugin' => $plugin,
+				'spec' => $spec,
+				'data' => $entry['data'] ?? [],
+				'buttonLabelMessage' => $entry['buttonLabelMessage'] ?? null,
+				'buttonLabel' => $entry['buttonLabel'] ?? null,
+				'extraLoginFields' => $entry['extraLoginFields'] ?? []
+			];
+
+			if ( isset( $spec['class'] )
+				&& empty( $validatedConfig[$name]['extraLoginFields'] ) ) {
+					$clazz = $spec['class'];
+					$validatedConfig[$name]['extraLoginFields'] = $clazz::getExtraLoginFields();
 			}
 		}
-		return false;
+
+		return $validatedConfig;
 	}
 }
