@@ -21,20 +21,51 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use User;
 
-abstract class PluggableAuth {
+abstract class PluggableAuth implements LoggerAwareInterface {
 
 	/**
 	 * @var string
 	 */
-	protected $configId;
+	protected $configId = '';
 
 	/**
-	 * @param string $configId
+	 * @var array
 	 */
-	public function __construct( string $configId ) {
+	protected $data = [];
+
+	/**
+	 * @var LoggerInterface
+	 */
+	protected $logger = null;
+
+	/**
+	 * Must only be called by `PluggableAuthFactory`
+	 * @param string $configId
+	 * @param array|null $data
+	 * @return void
+	 */
+	public function init( string $configId, ?array $data ) {
 		$this->configId = $configId;
+		$this->data = $data;
+		if ( $this->data === null ) {
+			$this->data = [];
+		}
+		if ( $this->logger === null ) {
+			$this->logger = new NullLogger();
+		}
+	}
+
+	/**
+	 * @param LoggerInterface $logger
+	 * @return void
+	 */
+	public function setLogger( LoggerInterface $logger ) {
+		$this->logger = $logger;
 	}
 
 	/**
