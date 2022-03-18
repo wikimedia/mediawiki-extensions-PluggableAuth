@@ -111,27 +111,25 @@ class PluggableAuthFactory {
 			PluggableAuthLogin::AUTHENTICATIONPLUGINNAME_SESSION_KEY
 		);
 		if ( $name !== null && isset( $this->pluggableAuthConfig[$name] ) ) {
-			$config = $this->pluggableAuthConfig[$name];
-			$class = $config['class'];
-			$this->logger->debug( 'Class name: ' . $class );
+			$spec = $this->pluggableAuthConfig[$name];
+			$this->logger->debug( 'Plugin name: ' . $spec['plugin'] );
 			if ( isset( $this->instances[$name] ) ) {
 				$this->logger->debug( 'Instance already exists' );
 			} else {
 				try {
-					$this->instances[$name] = $this->objectFactory->createObject(
-						[
-							'class' => $class,
-							'services' => $config['services'],
-							'args' => [
-								$config['configId'],
-								$config['data'] ?? null,
-								LoggerFactory::getInstance( $config['plugin'] )
-							]
-						],
+					/** @var PluggableAuth */
+					$plugin = $this->objectFactory->createObject(
+						$spec,
 						[
 							'assertClass' => PluggableAuth::class
 						]
 					);
+
+					$pluginLogger = LoggerFactory::getInstance( $spec['plugin'] );
+					$plugin->setLogger( $pluginLogger );
+					$plugin->init( $spec['configId'], $spec['data'] ?? null );
+
+					$this->instances[$name] = $plugin;
 				} catch ( Exception $e ) {
 					$this->logger->debug( 'Invalid authentication plugin class: ' . $e->getMessage() . PHP_EOL );
 					return false;
