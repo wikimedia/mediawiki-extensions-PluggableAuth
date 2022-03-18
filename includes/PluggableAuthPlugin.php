@@ -21,52 +21,52 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
+use User;
 
-abstract class PluggableAuth implements PluggableAuthPlugin, LoggerAwareInterface {
+interface PluggableAuthPlugin {
 
 	/**
-	 * @var string
+	 * Must only be called by `PluggableAuthFactory`
+	 * @param string $configId
+	 * @param array|null $data
+	 * @return void
 	 */
-	protected $configId = '';
+	public function init( string $configId, ?array $data );
 
 	/**
-	 * @var array
+	 * @return string
 	 */
-	protected $data = [];
+	public function getConfigId(): string;
 
 	/**
-	 * @var LoggerInterface
+	 * @param int|null &$id The user's user ID
+	 * @param string|null &$username The user's username
+	 * @param string|null &$realname The user's real name
+	 * @param string|null &$email The user's email address
+	 * @param string|null &$errorMessage Returns a descriptive message if there's an error
+	 * @return bool true if the user has been authenticated and false otherwise
+	 * @since 1.0
+	 *
 	 */
-	protected $logger = null;
+	public function authenticate(
+		?int &$id,
+		?string &$username,
+		?string &$realname,
+		?string &$email,
+		?string &$errorMessage
+	): bool;
 
 	/**
-	 * @inheritDoc
+	 * @since 1.0
+	 *
+	 * @param User &$user The user
 	 */
-	public function init( string $configId, ?array $data ) {
-		$this->configId = $configId;
-		$this->data = $data;
-		if ( $this->data === null ) {
-			$this->data = [];
-		}
-		if ( $this->logger === null ) {
-			$this->logger = new NullLogger();
-		}
-	}
+	public function deauthenticate( User &$user ): void;
 
 	/**
-	 * @inheritDoc
+	 * @since 1.0
+	 *
+	 * @param int $id The user's user ID
 	 */
-	public function setLogger( LoggerInterface $logger ) {
-		$this->logger = $logger;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getConfigId(): string {
-		return $this->configId;
-	}
+	public function saveExtraAttributes( int $id ): void;
 }

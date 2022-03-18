@@ -27,6 +27,7 @@ use ExtensionRegistry;
 use MediaWiki\Auth\AuthManager;
 use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Logger\LoggerFactory;
+use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 
 class PluggableAuthFactory {
@@ -57,7 +58,7 @@ class PluggableAuthFactory {
 	private $extensionRegistry;
 
 	/**
-	 * @var PluggableAuth[]
+	 * @var PluggableAuthPlugin[]
 	 */
 	private $instances = [];
 
@@ -97,7 +98,7 @@ class PluggableAuthFactory {
 	}
 
 	/**
-	 * @return PluggableAuth|false a PluggableAuth object
+	 * @return PluggableAuthPlugin|false an object that implements PluggableAuthPlugin
 	 */
 	public function getInstance() {
 		$this->logger->debug( 'Getting PluggableAuth instance' );
@@ -112,16 +113,18 @@ class PluggableAuthFactory {
 				$this->logger->debug( 'Instance already exists' );
 			} else {
 				try {
-					/** @var PluggableAuth */
+					/** @var PluggableAuthPlugin */
 					$plugin = $this->objectFactory->createObject(
 						$spec,
 						[
-							'assertClass' => PluggableAuth::class
+							'assertClass' => PluggableAuthPlugin::class
 						]
 					);
 
-					$pluginLogger = LoggerFactory::getInstance( $config['plugin'] );
-					$plugin->setLogger( $pluginLogger );
+					if ( $plugin instanceof LoggerAwareInterface ) {
+						$pluginLogger = LoggerFactory::getInstance( $config['plugin'] );
+						$plugin->setLogger( $pluginLogger );
+					}
 					$plugin->init( $config['configId'], $config['data'] );
 
 					$this->instances[$name] = $plugin;
