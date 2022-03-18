@@ -99,6 +99,7 @@ class PluggableAuthTest extends MediaWikiIntegrationTestCase {
 			$serviceContainer->getService( 'PluggableAuthFactory' ),
 			$serviceContainer->getAuthManager()
 		);
+		$login->setHookContainer( $serviceContainer->getHookContainer() );
 		$login->execute( null );
 
 		$this->loginStep( 'login-continue', $buttonName );
