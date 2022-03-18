@@ -24,7 +24,6 @@ namespace MediaWiki\Extension\PluggableAuth;
 use ExtensionRegistry;
 use MediaWiki\Auth\AuthManager;
 use MediaWiki\Config\ServiceOptions;
-use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\User\UserFactory;
 use MWException;
@@ -73,9 +72,9 @@ class PluggableAuthService {
 	private $permissionManager;
 
 	/**
-	 * @var HookContainer
+	 * @var HookRunner
 	 */
-	private $hookContainer;
+	private $hookRunner;
 
 	/**
 	 * @var AuthManager
@@ -93,7 +92,7 @@ class PluggableAuthService {
 	 * @param UserFactory $userFactory
 	 * @param PluggableAuthFactory $pluggableAuthFactory
 	 * @param PermissionManager $permissionManager
-	 * @param HookContainer $hookContainer
+	 * @param HookRunner $hookRunner
 	 * @param AuthManager $authManager
 	 * @param LoggerInterface $logger
 	 */
@@ -103,7 +102,7 @@ class PluggableAuthService {
 		UserFactory $userFactory,
 		PluggableAuthFactory $pluggableAuthFactory,
 		PermissionManager $permissionManager,
-		HookContainer $hookContainer,
+		HookRunner $hookRunner,
 		AuthManager $authManager,
 		LoggerInterface $logger
 	) {
@@ -114,7 +113,7 @@ class PluggableAuthService {
 		$this->userFactory = $userFactory;
 		$this->pluggableAuthFactory = $pluggableAuthFactory;
 		$this->permissionManager = $permissionManager;
-		$this->hookContainer = $hookContainer;
+		$this->hookRunner = $hookRunner;
 		$this->authManager = $authManager;
 		$this->logger = $logger;
 	}
@@ -246,7 +245,7 @@ class PluggableAuthService {
 		bool $autocreated
 	) {
 		if ( $autocreated ) {
-			$this->hookContainer->run( 'PluggableAuthPopulateGroups', [ $user ] );
+			$this->hookRunner->onPluggableAuthPopulateGroups( $user );
 		}
 	}
 
