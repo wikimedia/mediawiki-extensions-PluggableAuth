@@ -27,14 +27,15 @@ use ExtensionRegistry;
 use MediaWiki\Auth\AuthManager;
 use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Logger\LoggerFactory;
+use Message;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use RawMessage;
 
 class PluggableAuthFactory {
 
 	public const CONSTRUCTOR_OPTIONS = [
-		'PluggableAuth_ButtonLabelMessage',
-		'PluggableAuth_ButtonLabel',
+		'PluggableAuth_ButtonLabelMessage'
 	];
 
 	/**
@@ -143,7 +144,7 @@ class PluggableAuthFactory {
 	 * Populate and then validate the configuration array. The configuration array is
 	 * populated either from the $wgPluggableAuth_Config configuration variable or, if that is
 	 * not set, from the legacy configuration variables for backward compatibility
-	 * ($wgPluggableAuth_Class, $wgPluggableAuth_ButtonLabelMessage, and $wgPluggableAuth_ButtonLabel
+	 * ($wgPluggableAuth_Class and $wgPluggableAuth_ButtonLabelMessage)
 	 * @param ServiceOptions $options
 	 * @param Config $mainConfig
 	 * @return array
@@ -162,8 +163,7 @@ class PluggableAuthFactory {
 					[
 						'plugin' => $mainConfig->get( 'PluggableAuth_Plugin' ),
 						'data' => null,
-						'buttonLabelMessage' => $options->get( 'PluggableAuth_ButtonLabelMessage' ),
-						'buttonLabel' => $options->get( 'PluggableAuth_ButtonLabel' )
+						'buttonLabelMessage' => $options->get( 'PluggableAuth_ButtonLabelMessage' )
 					]
 				]
 			);
@@ -177,9 +177,8 @@ class PluggableAuthFactory {
 	 *   the authentication plugin
 	 * - data (optional): will be passed to the constructor of the authentication plugin, if set;
 	 *   if no 'data' field is provided, no arguments will be passed to the constructor
-	 * - buttonLabelMessage (optional): a Message that will be used for the login button label
-	 * - buttonLabel (optional): a text string that will be used for the login button label if
-	 *   buttonLabelMessage is not set
+	 * - buttonLabelMessage (optional): a Message that will be used for the login button label; if
+	 *   it is not set, the index into the configuration array will be used
 	 *
 	 * @param array $config
 	 * @return array
@@ -199,13 +198,17 @@ class PluggableAuthFactory {
 			}
 
 			$name = 'pluggableauthlogin' . $index++;
+			if ( isset( $entry['buttonLabelMessage'] ) ) {
+				$label = new Message( $entry['buttonLabelMessage'] );
+			} else {
+				$label = new RawMessage( strval( $configId ) );
+			}
 			$validatedConfig[$name] = [
 				'configId' => $configId,
 				'plugin' => $plugin,
 				'spec' => $spec,
 				'data' => $entry['data'] ?? [],
-				'buttonLabelMessage' => $entry['buttonLabelMessage'] ?? null,
-				'buttonLabel' => $entry['buttonLabel'] ?? null
+				'label' => $label
 			];
 		}
 
