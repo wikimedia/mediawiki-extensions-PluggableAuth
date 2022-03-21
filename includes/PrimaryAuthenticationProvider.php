@@ -87,7 +87,6 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 				foreach ( $this->pluggableAuthFactory->getConfig() as $name => $entry ) {
 					$requests[$name] = new BeginAuthenticationRequest(
 						$name,
-						$entry['extraLoginFields'] ?? [],
 						$entry['buttonLabelMessage'] ?? null,
 						$entry['buttonLabel'] ?? null
 					);
@@ -112,17 +111,10 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 		if ( !$request ) {
 			return AuthenticationResponse::newAbstain();
 		}
-		$extraLoginFields = [];
-		foreach ( $request->getExtraLoginFields() as $key => $value ) {
-			if ( isset( $request->$key ) ) {
-				$extraLoginFields[$key] = $request->$key;
-			}
-		}
+
 		$url = SpecialPage::getTitleFor( 'PluggableAuthLogin' )->getFullURL();
 		$this->manager->setAuthenticationSessionData(
 			PluggableAuthLogin::RETURNTOURL_SESSION_KEY, $request->returnToUrl );
-		$this->manager->setAuthenticationSessionData(
-			PluggableAuthLogin::EXTRALOGINFIELDS_SESSION_KEY, $extraLoginFields );
 		$queryValues = $this->manager->getRequest()->getQueryValues();
 		$this->manager->setAuthenticationSessionData(
 			PluggableAuthLogin::RETURNTOPAGE_SESSION_KEY,

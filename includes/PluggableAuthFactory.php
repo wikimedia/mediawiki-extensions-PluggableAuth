@@ -32,7 +32,6 @@ use Psr\Log\LoggerInterface;
 class PluggableAuthFactory {
 
 	public const CONSTRUCTOR_OPTIONS = [
-		'PluggableAuth_ExtraLoginFields',
 		'PluggableAuth_ButtonLabelMessage',
 		'PluggableAuth_ButtonLabel',
 	];
@@ -141,8 +140,7 @@ class PluggableAuthFactory {
 	 * Populate and then validate the configuration array. The configuration array is
 	 * populated either from the $wgPluggableAuth_Config configuration variable or, if that is
 	 * not set, from the legacy configuration variables for backward compatibility
-	 * ($wgPluggableAuth_Class, $wgPluggableAuth_ButtonLabelMessage, $wgPluggableAuth_ButtonLabel,
-	 * and $wgPluggableAuth_ExtraLoginFields).
+	 * ($wgPluggableAuth_Class, $wgPluggableAuth_ButtonLabelMessage, and $wgPluggableAuth_ButtonLabel
 	 * @param ServiceOptions $options
 	 * @param Config $mainConfig
 	 * @return array
@@ -162,8 +160,7 @@ class PluggableAuthFactory {
 						'plugin' => $mainConfig->get( 'PluggableAuth_Plugin' ),
 						'data' => null,
 						'buttonLabelMessage' => $options->get( 'PluggableAuth_ButtonLabelMessage' ),
-						'buttonLabel' => $options->get( 'PluggableAuth_ButtonLabel' ),
-						'extraLoginFields' => $options->get( 'PluggableAuth_ExtraLoginFields' )
+						'buttonLabel' => $options->get( 'PluggableAuth_ButtonLabel' )
 					]
 				]
 			);
@@ -180,8 +177,6 @@ class PluggableAuthFactory {
 	 * - buttonLabelMessage (optional): a Message that will be used for the login button label
 	 * - buttonLabel (optional): a text string that will be used for the login button label if
 	 *   buttonLabelMessage is not set
-	 * - extraLoginFields (optional): an array of fields to be added to the login form (see
-	 *   documentation at AuthenticationRequest::getFieldInfo for the format).
 	 *
 	 * @param array $config
 	 * @return array
@@ -207,15 +202,8 @@ class PluggableAuthFactory {
 				'spec' => $spec,
 				'data' => $entry['data'] ?? [],
 				'buttonLabelMessage' => $entry['buttonLabelMessage'] ?? null,
-				'buttonLabel' => $entry['buttonLabel'] ?? null,
-				'extraLoginFields' => $entry['extraLoginFields'] ?? []
+				'buttonLabel' => $entry['buttonLabel'] ?? null
 			];
-
-			if ( isset( $spec['class'] )
-				&& empty( $validatedConfig[$name]['extraLoginFields'] ) ) {
-					$clazz = $spec['class'];
-					$validatedConfig[$name]['extraLoginFields'] = $clazz::getExtraLoginFields();
-			}
 		}
 
 		return $validatedConfig;

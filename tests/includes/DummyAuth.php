@@ -104,11 +104,4 @@ class DummyAuth extends PluggableAuth {
 	 */
 	public function saveExtraAttributes( int $id ): void {
 	}
-
-	/**
-	 * @return array
-	 */
-	public static function getExtraLoginFields(): array {
-		return [];
-	}
 }
