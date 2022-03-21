@@ -62,11 +62,4 @@ abstract class PluggableAuth implements PluggableAuthPlugin, LoggerAwareInterfac
 	public function setLogger( LoggerInterface $logger ) {
 		$this->logger = $logger;
 	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getConfigId(): string {
-		return $this->configId;
-	}
 }
