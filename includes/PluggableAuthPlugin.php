@@ -34,11 +34,6 @@ interface PluggableAuthPlugin {
 	public function init( string $configId, ?array $data );
 
 	/**
-	 * @return string
-	 */
-	public function getConfigId(): string;
-
-	/**
 	 * @param int|null &$id The user's user ID
 	 * @param string|null &$username The user's username
 	 * @param string|null &$realname The user's real name
