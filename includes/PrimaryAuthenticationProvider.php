@@ -164,9 +164,9 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 	}
 
 	private function updateUserRealNameAndEmail( User $user, bool $force = false ): void {
-		$realname = $this->manager->getAuthenticationSessionData( PluggableAuthLogin::REALNAME_SESSION_KEY );
+		$realname = $this->manager->getAuthenticationSessionData( PluggableAuthLogin::REALNAME_SESSION_KEY ) ?? '';
 		$this->manager->removeAuthenticationSessionData( PluggableAuthLogin::REALNAME_SESSION_KEY );
-		$email = $this->manager->getAuthenticationSessionData( PluggableAuthLogin::EMAIL_SESSION_KEY );
+		$email = $this->manager->getAuthenticationSessionData( PluggableAuthLogin::EMAIL_SESSION_KEY ) ?? '';
 		$this->manager->removeAuthenticationSessionData( PluggableAuthLogin::EMAIL_SESSION_KEY );
 		if ( $user->mRealName != $realname || $user->mEmail != $email ) {
 			if ( $this->enableLocalProperties && !$force ) {
