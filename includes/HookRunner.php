@@ -56,6 +56,6 @@ class HookRunner implements PluggableAuthPopulateGroups, PluggableAuthUserAuthor
 	 * @return void
 	 */
 	public function onPluggableAuthUserAuthorization( UserIdentity $user, bool &$authorized ): void {
-		$this->container->run( 'PluggableAuthPopulateGroups', [ $user, &$authorized ] );
+		$this->container->run( 'PluggableAuthUserAuthorization', [ $user, &$authorized ] );
 	}
 }
