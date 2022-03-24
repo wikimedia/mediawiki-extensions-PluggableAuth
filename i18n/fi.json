@@ -7,6 +7,5 @@
 	},
 	"pluggableauth-not-authorized": "{{GENDER:$1|Käyttäjää}} $1 ei ole valtuutettu.",
 	"pluggableauth-authentication-failure": "Kirjautuminen epäonnistui.",
-	"pluggableauth-loginbutton-label": "Kirjaudu PluggableAuth:lla.",
 	"pluggableauth-loginbutton-help": "Kirjauduttu PluggableAuth avulla."
 }

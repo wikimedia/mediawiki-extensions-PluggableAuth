@@ -9,7 +9,6 @@
 	"pluggableauth-authentication-failure": "Der Benutzer konnte nicht authentifiziert werden.",
 	"pluggableauth-authentication-plugin-failure": "Authentifizierungs-Plugin konnte nicht geladen werden",
 	"pluggableauth-authentication-workflow-failure": "Authentifikations-Workflow-Fehler.",
-	"pluggableauth-loginbutton-label": "Mit PluggableAuth anmelden",
-	"pluggableauth-loginbutton-help": "Authentifiziert dich mit PluggableAuth",
+	"pluggableauth-loginbutton-help": "Authentifizieren mit PluggableAuth",
 	"pluggableauth-fatal-error": "Fataler Fehler bei der Authentifizierung des Benutzers."
 }

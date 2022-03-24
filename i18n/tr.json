@@ -11,7 +11,6 @@
 	"pluggableauth-authentication-failure": "Kullanıcı kimliği doğrulanamıyor.",
 	"pluggableauth-authentication-plugin-failure": "Doğrulama eklentisi yüklenemedi",
 	"pluggableauth-authentication-workflow-failure": "Kimlik doğrulama iş akışı hatası.",
-	"pluggableauth-loginbutton-label": "PluggableAuth ile oturum açın",
 	"pluggableauth-loginbutton-help": "PluggableAuth ile sizi doğrular",
 	"pluggableauth-fatal-error": "Kullanıcı kimliği doğrulanırken önemli hata."
 }

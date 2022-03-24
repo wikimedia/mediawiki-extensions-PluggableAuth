@@ -9,7 +9,6 @@
 	"pluggableauth-not-authorized": "{{GENDER:$1|使用者}} $1 沒有取得授權。",
 	"pluggableauth-authentication-failure": "使用者無法被驗證。",
 	"pluggableauth-authentication-workflow-failure": "驗證流程失敗。",
-	"pluggableauth-loginbutton-label": "以 PluggableAuth 登入",
 	"pluggableauth-loginbutton-help": "以 PluggableAuth 來驗證您的身份",
 	"pluggableauth-fatal-error": "驗證使用者嚴重錯誤。"
 }
