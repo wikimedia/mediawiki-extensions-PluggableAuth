@@ -22,6 +22,7 @@
 namespace MediaWiki\Extension\PluggableAuth;
 
 use MediaWiki\Auth\AuthManager;
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Logger\LoggerFactory;
 use Message;
 use Psr\Log\LoggerInterface;
@@ -55,6 +56,11 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 	private $logger;
 
 	/**
+	 * @var HookRunner
+	 */
+	private $hookRunner;
+
+	/**
 	 * @param PluggableAuthFactory $pluggableAuthFactory
 	 * @param AuthManager $authManager
 	 */
@@ -63,6 +69,15 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 		$this->pluggableAuthFactory = $pluggableAuthFactory;
 		$this->authManager = $authManager;
 		$this->logger = LoggerFactory::getInstance( 'PluggableAuth' );
+	}
+
+	/**
+	 * Will be called automatically by `MediaWiki\SpecialPage\SpecialPageFactory::getPage`
+	 * @inheritDoc
+	 */
+	public function setHookContainer( HookContainer $hookContainer ) {
+		parent::setHookContainer( $hookContainer );
+		$this->hookRunner = new HookRunner( $hookContainer );
 	}
 
 	/**
@@ -89,10 +104,10 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 					$user->mId = $id;
 					$user->loadFromId();
 					$this->logger->debug( 'Authenticated existing user: ' . $user->mName );
-					$this->getHookContainer()->run( 'PluggableAuthPopulateGroups', [ $user ] );
+					$this->hookRunner->onPluggableAuthPopulateGroups( $user );
 				}
 				$authorized = true;
-				$this->getHookContainer()->run( 'PluggableAuthUserAuthorization', [ $user, &$authorized ] );
+				$this->hookRunner->onPluggableAuthUserAuthorization( $user, $authorized );
 				if ( $authorized ) {
 					$this->authManager->setAuthenticationSessionData( self::USERNAME_SESSION_KEY, $username );
 					$this->authManager->setAuthenticationSessionData( self::REALNAME_SESSION_KEY, $realname );

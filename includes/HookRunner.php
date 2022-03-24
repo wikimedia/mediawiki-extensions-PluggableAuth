@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,34 +22,40 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
-use ExtensionRegistry;
-use MediaWiki\Config\ServiceOptions;
-use MediaWiki\Logger\LoggerFactory;
-use MediaWiki\MediaWikiServices;
+use MediaWiki\Extension\PluggableAuth\Hook\PluggableAuthPopulateGroups;
+use MediaWiki\Extension\PluggableAuth\Hook\PluggableAuthUserAuthorization;
+use MediaWiki\HookContainer\HookContainer;
+use MediaWiki\User\UserIdentity;
 
-return [
-	'PluggableAuthFactory' =>
-		static function ( MediaWikiServices $services ): PluggableAuthFactory {
-			return new PluggableAuthFactory(
-				new ServiceOptions( PluggableAuthFactory::CONSTRUCTOR_OPTIONS, $services->getMainConfig() ),
-				$services->getMainConfig(),
-				$services->getAuthManager(),
-				LoggerFactory::getInstance( 'PluggableAuth' ),
-				ExtensionRegistry::getInstance(),
-				$services->getObjectFactory()
-			);
-		},
-	'PluggableAuthService' =>
-		static function ( MediaWikiServices $services ): PluggableAuthService {
-			return new PluggableAuthService(
-				new ServiceOptions( PluggableAuthService::CONSTRUCTOR_OPTIONS, $services->getMainConfig() ),
-				ExtensionRegistry::getInstance(),
-				$services->getUserFactory(),
-				$services->get( 'PluggableAuthFactory' ),
-				$services->getPermissionManager(),
-				new HookRunner( $services->getHookContainer() ),
-				$services->getAuthManager(),
-				LoggerFactory::getInstance( 'PluggableAuth' )
-			);
-		},
-];
+class HookRunner implements PluggableAuthPopulateGroups, PluggableAuthUserAuthorization {
+
+	/**
+	 *
+	 * @var HookContainer
+	 */
+	private $container = null;
+
+	/**
+	 * @param HookContainer $container
+	 */
+	public function __construct( HookContainer $container ) {
+		$this->container = $container;
+	}
+
+	/**
+	 * @param UserIdentity $user
+	 * @return void
+	 */
+	public function onPluggableAuthPopulateGroups( UserIdentity $user ): void {
+		$this->container->run( 'PluggableAuthPopulateGroups', [ $user ] );
+	}
+
+	/**
+	 * @param UserIdentity $user
+	 * @param bool &$authorized
+	 * @return void
+	 */
+	public function onPluggableAuthUserAuthorization( UserIdentity $user, bool &$authorized ): void {
+		$this->container->run( 'PluggableAuthPopulateGroups', [ $user, &$authorized ] );
+	}
+}
