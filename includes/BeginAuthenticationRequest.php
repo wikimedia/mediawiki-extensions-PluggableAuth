@@ -23,27 +23,17 @@ namespace MediaWiki\Extension\PluggableAuth;
 
 use MediaWiki\Auth\ButtonAuthenticationRequest;
 use Message;
-use RawMessage;
 
 class BeginAuthenticationRequest extends ButtonAuthenticationRequest {
 
 	/**
 	 * @param string $name
-	 * @param ?string $buttonLabelMessage
-	 * @param ?string $buttonLabel
+	 * @param Message $label
 	 */
 	public function __construct(
 		string $name,
-		?string $buttonLabelMessage,
-		?string $buttonLabel
+		Message $label
 	) {
-		if ( $buttonLabelMessage ) {
-			$label = new Message( $buttonLabelMessage );
-		} elseif ( $buttonLabel ) {
-			$label = new RawMessage( $buttonLabel );
-		} else {
-			$label = new Message( 'pluggableauth-loginbutton-label' );
-		}
 		parent::__construct( $name, $label, new Message( 'pluggableauth-loginbutton-help' ), true );
 	}
 

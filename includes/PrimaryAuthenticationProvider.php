@@ -85,11 +85,7 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 			case AuthManager::ACTION_LOGIN:
 				$requests = [];
 				foreach ( $this->pluggableAuthFactory->getConfig() as $name => $entry ) {
-					$requests[$name] = new BeginAuthenticationRequest(
-						$name,
-						$entry['buttonLabelMessage'] ?? null,
-						$entry['buttonLabel'] ?? null
-					);
+					$requests[$name] = new BeginAuthenticationRequest( $name, $entry['label'] );
 				}
 				return $requests;
 			default:
