@@ -31,10 +31,9 @@ return [
 		static function ( MediaWikiServices $services ): PluggableAuthFactory {
 			return new PluggableAuthFactory(
 				new ServiceOptions( PluggableAuthFactory::CONSTRUCTOR_OPTIONS, $services->getMainConfig() ),
-				$services->getMainConfig(),
+				ExtensionRegistry::getInstance(),
 				$services->getAuthManager(),
 				LoggerFactory::getInstance( 'PluggableAuth' ),
-				ExtensionRegistry::getInstance(),
 				$services->getObjectFactory()
 			);
 		},

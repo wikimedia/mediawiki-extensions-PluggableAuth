@@ -21,7 +21,6 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
-use Config;
 use Exception;
 use ExtensionRegistry;
 use MediaWiki\Auth\AuthManager;
@@ -35,13 +34,8 @@ use RawMessage;
 class PluggableAuthFactory {
 
 	public const CONSTRUCTOR_OPTIONS = [
-		'PluggableAuth_ButtonLabelMessage'
+		'PluggableAuth_Config'
 	];
-
-	/**
-	 * @var array
-	 */
-	private $pluggableAuthConfig;
 
 	/**
 	 * @var AuthManager
@@ -54,9 +48,14 @@ class PluggableAuthFactory {
 	private $logger;
 
 	/**
-	 * @var ExtensionRegistry
+	 * @var \Wikimedia\ObjectFactory|\Wikimedia\ObjectFactory\ObjectFactory
 	 */
-	private $extensionRegistry;
+	private $objectFactory;
+
+	/**
+	 * @var array
+	 */
+	private $pluggableAuthConfig = [];
 
 	/**
 	 * @var PluggableAuthPlugin[]
@@ -64,38 +63,85 @@ class PluggableAuthFactory {
 	private $instances = [];
 
 	/**
-	 * @var \Wikimedia\ObjectFactory|\Wikimedia\ObjectFactory\ObjectFactory
-	 */
-	private $objectFactory;
-
-	/**
 	 * @param ServiceOptions $options
-	 * @param Config $mainConfig
+	 * @param ExtensionRegistry $extensionRegistry
 	 * @param AuthManager $authManager
 	 * @param LoggerInterface $logger
-	 * @param ExtensionRegistry $extensionRegistry
 	 * @param \Wikimedia\ObjectFactory|\Wikimedia\ObjectFactory\ObjectFactory $objectFactory
 	 */
 	public function __construct(
 		ServiceOptions $options,
-		Config $mainConfig,
+		ExtensionRegistry $extensionRegistry,
 		AuthManager $authManager,
 		LoggerInterface $logger,
-		ExtensionRegistry $extensionRegistry,
 		$objectFactory
 	) {
+		$options->assertRequiredOptions( self::CONSTRUCTOR_OPTIONS );
+		$this->initConfig( $options->get( 'PluggableAuth_Config' ), $extensionRegistry );
 		$this->authManager = $authManager;
 		$this->logger = $logger;
-		$this->extensionRegistry = $extensionRegistry;
-		$this->pluggableAuthConfig = $this->initConfig( $options, $mainConfig );
 		$this->objectFactory = $objectFactory;
 	}
 
 	/**
+	 * Populate $this->pluggableAuthConfig from $wgPluggableAuth_Config, removing invalid entries.
+	 * @param array $config
+	 * @param ExtensionRegistry $extensionRegistry
+	 */
+	private function initConfig(
+		array $config,
+		ExtensionRegistry $extensionRegistry
+	): void {
+		$index = 0;
+		foreach ( $config as $configId => $entry ) {
+			if ( !isset( $entry['plugin'] ) ) {
+				continue;
+			}
+			$plugin = $entry['plugin'];
+
+			$spec = $extensionRegistry->getAttribute( 'PluggableAuth' . $plugin );
+			if ( empty( $spec ) ) {
+				continue;
+			}
+
+			if ( isset( $entry['buttonLabelMessage'] ) ) {
+				$label = new Message( $entry['buttonLabelMessage'] );
+			} else {
+				$label = new RawMessage( strval( $configId ) );
+			}
+
+			$name = 'pluggableauthlogin' . $index++;
+			$this->pluggableAuthConfig[$name] = [
+				'configId' => $configId,
+				'plugin' => $plugin,
+				'spec' => $spec,
+				'data' => $entry['data'] ?? [],
+				'label' => $label
+			];
+		}
+	}
+
+	/**
+	 * Get the validated configuration array
 	 * @return array
 	 */
 	public function getConfig(): array {
 		return $this->pluggableAuthConfig;
+	}
+
+	/**
+	 * Get the configuration for the plugin currently being used for authentication or null if not in the
+	 * authentication flow
+	 * @return array|null
+	 */
+	public function getCurrentConfig(): ?array {
+		$name = $this->authManager->getRequest()->getSessionData(
+			PluggableAuthLogin::AUTHENTICATIONPLUGINNAME_SESSION_KEY
+		);
+		if ( $name !== null && isset( $this->pluggableAuthConfig[$name] ) ) {
+			return $this->pluggableAuthConfig[$name];
+		}
+		return null;
 	}
 
 	/**
@@ -138,80 +184,5 @@ class PluggableAuthFactory {
 		}
 		$this->logger->debug( 'Could not get authentication plugin instance.' );
 		return false;
-	}
-
-	/**
-	 * Populate and then validate the configuration array. The configuration array is
-	 * populated either from the $wgPluggableAuth_Config configuration variable or, if that is
-	 * not set, from the legacy configuration variables for backward compatibility
-	 * ($wgPluggableAuth_Class and $wgPluggableAuth_ButtonLabelMessage)
-	 * @param ServiceOptions $options
-	 * @param Config $mainConfig
-	 * @return array
-	 */
-	private function initConfig(
-		ServiceOptions $options,
-		Config $mainConfig
-	): array {
-		if ( $mainConfig->has( 'PluggableAuth_Config' ) ) {
-			$this->logger->debug( 'Using $wgPluggableAuth_Config' );
-			return $this->validateConfig( $mainConfig->get( 'PluggableAuth_Config' ) );
-		} elseif ( $mainConfig->has( 'PluggableAuth_Plugin' ) ) {
-			$this->logger->debug( 'Using PluggableAuth_Plugin' );
-			return $this->validateConfig(
-				[
-					[
-						'plugin' => $mainConfig->get( 'PluggableAuth_Plugin' ),
-						'data' => null,
-						'buttonLabelMessage' => $options->get( 'PluggableAuth_ButtonLabelMessage' )
-					]
-				]
-			);
-		}
-		return [];
-	}
-
-	/**
-	 * Validates the configuration array, removing invalid entries. Validation conditions are:
-	 * - class (required): the name of a PluggableAuth subclass that will be used to instantiate
-	 *   the authentication plugin
-	 * - data (optional): will be passed to the constructor of the authentication plugin, if set;
-	 *   if no 'data' field is provided, no arguments will be passed to the constructor
-	 * - buttonLabelMessage (optional): a Message that will be used for the login button label; if
-	 *   it is not set, the index into the configuration array will be used
-	 *
-	 * @param array $config
-	 * @return array
-	 */
-	private function validateConfig( array $config ): array {
-		$validatedConfig = [];
-		$index = 0;
-		foreach ( $config as $configId => $entry ) {
-			if ( !isset( $entry['plugin'] ) ) {
-				continue;
-			}
-
-			$plugin = $entry['plugin'];
-			$spec = $this->extensionRegistry->getAttribute( 'PluggableAuth' . $plugin );
-			if ( empty( $spec ) ) {
-				continue;
-			}
-
-			$name = 'pluggableauthlogin' . $index++;
-			if ( isset( $entry['buttonLabelMessage'] ) ) {
-				$label = new Message( $entry['buttonLabelMessage'] );
-			} else {
-				$label = new RawMessage( strval( $configId ) );
-			}
-			$validatedConfig[$name] = [
-				'configId' => $configId,
-				'plugin' => $plugin,
-				'spec' => $spec,
-				'data' => $entry['data'] ?? [],
-				'label' => $label
-			];
-		}
-
-		return $validatedConfig;
 	}
 }

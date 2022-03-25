@@ -86,13 +86,7 @@
 		"PluggableAuth_EnableLocalProperties": {
 			"value": false
 		},
-		"PluggableAuth_ButtonLabelMessage": {
-			"value": null
-		},
-		"PluggableAuth_ButtonLabel": {
-			"value": null
-		},
-		"PluggableAuth_ExtraLoginFields": {
+		"PluggableAuth_Config": {
 			"value": []
 		}
 	},

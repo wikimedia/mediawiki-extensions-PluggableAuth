@@ -47,10 +47,7 @@ abstract class PluggableAuth implements PluggableAuthPlugin, LoggerAwareInterfac
 	 */
 	public function init( string $configId, ?array $data ) {
 		$this->configId = $configId;
-		$this->data = $data;
-		if ( $this->data === null ) {
-			$this->data = [];
-		}
+		$this->data = $data ?? [];
 		if ( $this->logger === null ) {
 			$this->logger = new NullLogger();
 		}
