@@ -22,7 +22,7 @@
 namespace MediaWiki\Extension\PluggableAuth\Test;
 
 use MediaWiki\Extension\PluggableAuth\PluggableAuth;
-use User;
+use MediaWiki\User\UserIdentity;
 
 class DummyAuth extends PluggableAuth {
 
@@ -96,7 +96,7 @@ class DummyAuth extends PluggableAuth {
 	/**
 	 * @param User &$user
 	 */
-	public function deauthenticate( User &$user ): void {
+	public function deauthenticate( UserIdentity &$user ): void {
 		// Just a test dummy. Do nothing.
 	}
 
