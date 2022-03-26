@@ -21,7 +21,7 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
-use User;
+use MediaWiki\User\UserIdentity;
 
 interface PluggableAuthPlugin {
 
@@ -54,9 +54,9 @@ interface PluggableAuthPlugin {
 	/**
 	 * @since 1.0
 	 *
-	 * @param User &$user The user
+	 * @param UserIdentity &$user The user
 	 */
-	public function deauthenticate( User &$user ): void;
+	public function deauthenticate( UserIdentity &$user ): void;
 
 	/**
 	 * @since 1.0
