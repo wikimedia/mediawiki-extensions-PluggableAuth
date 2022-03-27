@@ -28,7 +28,7 @@ interface PluggableAuthUserAuthorization {
 	/**
 	 * @param UserIdentity $user
 	 * @param bool &$authorized
-	 * @return void
+	 * @return bool
 	 */
-	public function onPluggableAuthUserAuthorization( UserIdentity $user, bool &$authorized ): void;
+	public function onPluggableAuthUserAuthorization( UserIdentity $user, bool &$authorized ): bool;
 }
