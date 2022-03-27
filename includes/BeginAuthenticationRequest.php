@@ -21,20 +21,28 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
+use MediaWiki\Auth\AuthManager;
 use MediaWiki\Auth\ButtonAuthenticationRequest;
 use Message;
 
 class BeginAuthenticationRequest extends ButtonAuthenticationRequest {
+	/**
+	 * @var array
+	 */
+	private $extraLoginFields;
 
 	/**
 	 * @param string $name
 	 * @param Message $label
+	 * @param array $extraLoginFields
 	 */
 	public function __construct(
 		string $name,
-		Message $label
+		Message $label,
+		array $extraLoginFields
 	) {
 		parent::__construct( $name, $label, new Message( 'pluggableauth-loginbutton-help' ), true );
+		$this->extraLoginFields = $extraLoginFields;
 	}
 
 	/**
@@ -44,4 +52,21 @@ class BeginAuthenticationRequest extends ButtonAuthenticationRequest {
 		return $this->name;
 	}
 
+	/**
+	 * @return array
+	 */
+	public function getExtraLoginFields(): array {
+		return $this->extraLoginFields;
+	}
+
+	/**
+	 * Returns field information.
+	 * @return array field information
+	 */
+	public function getFieldInfo(): array {
+		if ( $this->action !== AuthManager::ACTION_LOGIN ) {
+			return [];
+		}
+		return array_merge( $this->extraLoginFields, parent::getFieldInfo() );
+	}
 }

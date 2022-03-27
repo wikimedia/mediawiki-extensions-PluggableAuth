@@ -100,7 +100,7 @@ class PluggableAuthFactory {
 			$plugin = $entry['plugin'];
 
 			$spec = $extensionRegistry->getAttribute( 'PluggableAuth' . $plugin );
-			if ( empty( $spec ) ) {
+			if ( !isset( $spec['class'] ) ) {
 				continue;
 			}
 

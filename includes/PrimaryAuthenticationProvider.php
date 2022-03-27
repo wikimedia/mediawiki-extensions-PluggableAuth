@@ -85,7 +85,12 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 			case AuthManager::ACTION_LOGIN:
 				$requests = [];
 				foreach ( $this->pluggableAuthFactory->getConfig() as $name => $entry ) {
-					$requests[$name] = new BeginAuthenticationRequest( $name, $entry['label'] );
+					if ( method_exists( $entry['spec']['class'], 'getExtraLoginFields' ) ) {
+						$extraLoginFields = $entry['spec']['class']::getExtraLoginFields();
+					} else {
+						$extraLoginFields = [];
+					}
+					$requests[$name] = new BeginAuthenticationRequest( $name, $entry['label'], $extraLoginFields );
 				}
 				return $requests;
 			default:
@@ -111,6 +116,7 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 		$url = SpecialPage::getTitleFor( 'PluggableAuthLogin' )->getFullURL();
 		$this->manager->setAuthenticationSessionData(
 			PluggableAuthLogin::RETURNTOURL_SESSION_KEY, $request->returnToUrl );
+
 		$queryValues = $this->manager->getRequest()->getQueryValues();
 		$this->manager->setAuthenticationSessionData(
 			PluggableAuthLogin::RETURNTOPAGE_SESSION_KEY,
@@ -120,10 +126,21 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 			PluggableAuthLogin::RETURNTOQUERY_SESSION_KEY,
 			$queryValues['returntoquery'] ?? ''
 		);
+
 		$this->manager->getRequest()->setSessionData(
 			PluggableAuthLogin::AUTHENTICATIONPLUGINNAME_SESSION_KEY,
 			$request->getAuthenticationPluginName()
 		);
+
+		$extraLoginFields = [];
+		foreach ( $request->getExtraLoginFields() as $key => $value ) {
+			if ( isset( $request->$key ) ) {
+				$extraLoginFields[$key] = $request->$key;
+			}
+		}
+		$this->manager->setAuthenticationSessionData(
+			PluggableAuthLogin::EXTRALOGINFIELDS_SESSION_KEY, $extraLoginFields );
+
 		return AuthenticationResponse::newRedirect(
 			[ new ContinueAuthenticationRequest() ],
 			$url
