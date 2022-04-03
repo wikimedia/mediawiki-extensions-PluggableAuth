@@ -91,7 +91,7 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 		$error = null;
 		if ( $pluggableauth ) {
 			if ( $pluggableauth->authenticate( $id, $username, $realname, $email, $error ) ) {
-				if ( $id === null ) {
+				if ( !$id ) {
 					$user->loadDefaults( $username );
 					$user->mName = $username;
 					$user->mRealName = $realname;
