@@ -72,11 +72,6 @@ class PluggableAuthService {
 	private $permissionManager;
 
 	/**
-	 * @var HookRunner
-	 */
-	private $hookRunner;
-
-	/**
 	 * @var AuthManager
 	 */
 	private $authManager;
@@ -92,7 +87,6 @@ class PluggableAuthService {
 	 * @param UserFactory $userFactory
 	 * @param PluggableAuthFactory $pluggableAuthFactory
 	 * @param PermissionManager $permissionManager
-	 * @param HookRunner $hookRunner
 	 * @param AuthManager $authManager
 	 * @param LoggerInterface $logger
 	 */
@@ -102,7 +96,6 @@ class PluggableAuthService {
 		UserFactory $userFactory,
 		PluggableAuthFactory $pluggableAuthFactory,
 		PermissionManager $permissionManager,
-		HookRunner $hookRunner,
 		AuthManager $authManager,
 		LoggerInterface $logger
 	) {
@@ -113,7 +106,6 @@ class PluggableAuthService {
 		$this->userFactory = $userFactory;
 		$this->pluggableAuthFactory = $pluggableAuthFactory;
 		$this->permissionManager = $permissionManager;
-		$this->hookRunner = $hookRunner;
 		$this->authManager = $authManager;
 		$this->logger = $logger;
 	}
@@ -244,7 +236,10 @@ class PluggableAuthService {
 		bool $autocreated
 	) {
 		if ( $autocreated ) {
-			$this->hookRunner->onPluggableAuthPopulateGroups( $user );
+			$pluggableauth = $this->pluggableAuthFactory->getInstance();
+			if ( $pluggableauth ) {
+				$pluggableauth->populateGroups( $user );
+			}
 		}
 	}
 
