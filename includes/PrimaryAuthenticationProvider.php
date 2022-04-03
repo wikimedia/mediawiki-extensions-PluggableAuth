@@ -180,6 +180,11 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 		return $this->enableLocalProperties;
 	}
 
+	/**
+	 * @param User $user
+	 * @param bool $force
+	 * @return void
+	 */
 	private function updateUserRealNameAndEmail( User $user, bool $force = false ): void {
 		$realname = $this->manager->getAuthenticationSessionData( PluggableAuthLogin::REALNAME_SESSION_KEY ) ?? '';
 		$this->manager->removeAuthenticationSessionData( PluggableAuthLogin::REALNAME_SESSION_KEY );
