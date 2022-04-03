@@ -22,6 +22,7 @@
 namespace MediaWiki\Extension\PluggableAuth;
 
 use Config;
+use MediaWiki\User\UserIdentity;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -67,6 +68,14 @@ abstract class PluggableAuth implements PluggableAuthPlugin, LoggerAwareInterfac
 	 */
 	public function getConfig(): Config {
 		return $this->config;
+	}
+
+	/**
+	 * @param UserIdentity $user
+	 * @since 7.0
+	 */
+	public function populateGroups( UserIdentity $user ): void {
+		// do nothing (default implementation)
 	}
 
 	/**

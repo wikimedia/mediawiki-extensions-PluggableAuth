@@ -22,32 +22,23 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
-use MediaWiki\Extension\PluggableAuth\Hook\PluggableAuthPopulateGroups;
 use MediaWiki\Extension\PluggableAuth\Hook\PluggableAuthUserAuthorization;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\User\UserIdentity;
 
-class HookRunner implements PluggableAuthPopulateGroups, PluggableAuthUserAuthorization {
+class HookRunner implements PluggableAuthUserAuthorization {
 
 	/**
 	 *
 	 * @var HookContainer
 	 */
-	private $container = null;
+	private $container;
 
 	/**
 	 * @param HookContainer $container
 	 */
 	public function __construct( HookContainer $container ) {
 		$this->container = $container;
-	}
-
-	/**
-	 * @param UserIdentity $user
-	 * @return void
-	 */
-	public function onPluggableAuthPopulateGroups( UserIdentity $user ): void {
-		$this->container->run( 'PluggableAuthPopulateGroups', [ $user ] );
 	}
 
 	/**

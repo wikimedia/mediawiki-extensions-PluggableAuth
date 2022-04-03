@@ -45,7 +45,6 @@ return [
 				$services->getUserFactory(),
 				$services->get( 'PluggableAuthFactory' ),
 				$services->getPermissionManager(),
-				new HookRunner( $services->getHookContainer() ),
 				$services->getAuthManager(),
 				LoggerFactory::getInstance( 'PluggableAuth' )
 			);

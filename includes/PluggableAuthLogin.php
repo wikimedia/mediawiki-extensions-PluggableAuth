@@ -102,12 +102,12 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 					$user->mEmailAuthenticated = $now;
 					$user->mTouched = $now;
 					$this->logger->debug( 'Authenticated new user: ' . $username );
-					// PluggableAuthPopulateGroups is called from LocalUserCreated hook
+					// PluggableAuthPlugin::populateGroups() is called from LocalUserCreated hook
 				} else {
 					$user->mId = $id;
 					$user->loadFromId();
 					$this->logger->debug( 'Authenticated existing user: ' . $user->mName );
-					$this->hookRunner->onPluggableAuthPopulateGroups( $user );
+					$pluggableauth->populateGroups( $user );
 				}
 				$authorized = true;
 				$this->hookRunner->onPluggableAuthUserAuthorization( $user, $authorized );
