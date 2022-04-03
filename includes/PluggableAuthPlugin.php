@@ -65,6 +65,12 @@ interface PluggableAuthPlugin {
 	public function getConfig(): Config;
 
 	/**
+	 * @param UserIdentity $user
+	 * @since 7.0
+	 */
+	public function populateGroups( UserIdentity $user ): void;
+
+	/**
 	 * @param int $id The user's user ID
 	 * @since 1.0
 	 */
