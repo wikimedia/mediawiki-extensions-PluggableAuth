@@ -40,7 +40,8 @@ class PluggableAuthService {
 
 	public const CONSTRUCTOR_OPTIONS = [
 		'PluggableAuth_EnableAutoLogin',
-		'PluggableAuth_EnableLocalLogin'
+		'PluggableAuth_EnableLocalLogin',
+		'PluggableAuth_EnableFastLogout'
 	];
 
 	/**
@@ -52,6 +53,11 @@ class PluggableAuthService {
 	 * @var bool
 	 */
 	private $enableLocalLogin;
+
+	/**
+	 * @var bool
+	 */
+	private $enableFastLogout;
 
 	/**
 	 * @var array
@@ -111,6 +117,7 @@ class PluggableAuthService {
 		$options->assertRequiredOptions( self::CONSTRUCTOR_OPTIONS );
 		$this->enableAutoLogin = $options->get( 'PluggableAuth_EnableAutoLogin' );
 		$this->enableLocalLogin = $options->get( 'PluggableAuth_EnableLocalLogin' );
+		$this->enableFastLogout = $options->get( 'PluggableAuth_EnableFastLogout' );
 		$this->loginSpecialPages = $extensionRegistry->getAttribute( 'PluggableAuthLoginSpecialPages' );
 		$this->userFactory = $userFactory;
 		$this->pluggableAuthFactory = $pluggableAuthFactory;
@@ -229,10 +236,32 @@ class PluggableAuthService {
 	 * Remove logout link from skin if auto login is enabled and local login is not enabled.
 	 * @param array &$links URLs to modify
 	 */
-	public function removeLogoutLink( array &$links ) {
+	public function modifyLogoutLink( array &$links ) {
+		if ( !isset( $links['user-menu']['logout'] ) ) {
+			return;
+		}
+
 		if ( $this->enableAutoLogin && !$this->enableLocalLogin ) {
 			unset( $links['user-menu']['logout'] );
+			return;
 		}
+
+		$pluggableauth = $this->pluggableAuthFactory->getInstance();
+		if ( !$pluggableauth || !$pluggableauth->shouldOverrideDefaultLogout() ) {
+			return;
+		}
+
+		$links['user-menu']['pluggableauth-logout'] = $links['user-menu']['logout'];
+		if ( $this->enableFastLogout ) {
+			$parsedOrigHref = wfParseUrl( wfExpandUrl( $links['user-menu']['pluggableauth-logout']['href'] ) );
+			$query = wfCgiToArray( $parsedOrigHref['query'] );
+			if ( isset( $query['title'] ) ) {
+				unset( $query['title'] );
+			}
+			$pluggableAuthLogout = SpecialPage::getTitleFor( 'PluggableAuthLogout' );
+			$links['user-menu']['pluggableauth-logout']['href'] = $pluggableAuthLogout->getLinkURL( $query );
+		}
+		unset( $links['user-menu']['logout'] );
 	}
 
 	/**
