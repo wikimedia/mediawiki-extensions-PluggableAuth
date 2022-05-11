@@ -88,4 +88,10 @@ interface PluggableAuthPlugin {
 	 * @since 1.0
 	 */
 	public function saveExtraAttributes( int $id ): void;
+
+	/**
+	 * @return bool
+	 * @since 7.0
+	 */
+	public function shouldOverrideDefaultLogout(): bool;
 }
