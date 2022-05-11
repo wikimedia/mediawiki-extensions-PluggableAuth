@@ -122,4 +122,12 @@ abstract class PluggableAuth implements PluggableAuthPlugin, LoggerAwareInterfac
 	public static function getExtraLoginFields(): array {
 		return [];
 	}
+
+	/**
+	 * @return bool
+	 * @since 7.0
+	 */
+	public function shouldOverrideDefaultLogout(): bool {
+		return false;
+	}
 }

@@ -30,4 +30,5 @@ $specialPageAliases = [];
 /** English (English) */
 $specialPageAliases['en'] = [
 	'PluggableAuthLogin' => [ 'PluggableAuthLogin' ],
+	'PluggableAuthLogout' => [ 'PluggableAuthLogout' ],
 ];

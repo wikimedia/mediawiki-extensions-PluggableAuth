@@ -28,6 +28,9 @@
 				"AuthManager",
 				"PluggableAuth.GroupProcessorRunner"
 			]
+		},
+		"PluggableAuthLogout": {
+			"class": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthLogout"
 		}
 	},
 	"MessagesDirs": {
@@ -111,6 +114,9 @@
 			"value": false
 		},
 		"PluggableAuth_EnableLocalProperties": {
+			"value": false
+		},
+		"PluggableAuth_EnableFastLogout": {
 			"value": false
 		},
 		"PluggableAuth_Config": {

@@ -132,7 +132,7 @@ class PluggableAuthHooks implements
 	 * @SuppressWarnings(PHPMD.CamelCaseMethodName)
 	 */
 	public function onSkinTemplateNavigation__Universal( $sktemplate, &$links ): void {
-		$this->pluggableAuthService->removeLogoutLink( $links );
+		$this->pluggableAuthService->modifyLogoutLink( $links );
 	}
 
 	/**
