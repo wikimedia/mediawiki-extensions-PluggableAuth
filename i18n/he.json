@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"Amire80"
+		]
+	},
+	"pluggableauth-desc": "מספקת מסגרת מתחברת לאימות ואישור",
+	"pluggableauth-not-authorized": "{{GENDER:$1|המשתמש $1 אינו מאושר|המשתמשת $1 אינה מאושרת}}.",
+	"pluggableauth-authentication-failure": "לא ניתן לאמת את המשתמש.",
+	"pluggableauth-authentication-workflow-failure": "כישלון בזרם העבודה של האימות.",
+	"pluggableauth-fatal-error": "שגיאה סופנית באימות המשתמש."
+}
