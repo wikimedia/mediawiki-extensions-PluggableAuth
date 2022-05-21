@@ -21,6 +21,7 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
+use Config;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -33,9 +34,9 @@ abstract class PluggableAuth implements PluggableAuthPlugin, LoggerAwareInterfac
 	protected $configId = '';
 
 	/**
-	 * @var array
+	 * @var Config
 	 */
-	protected $data = [];
+	protected $config;
 
 	/**
 	 * @var LoggerInterface
@@ -47,7 +48,7 @@ abstract class PluggableAuth implements PluggableAuthPlugin, LoggerAwareInterfac
 	 */
 	public function init( string $configId, ?array $data ) {
 		$this->configId = $configId;
-		$this->data = $data ?? [];
+		$this->config = new CaseInsensitiveHashConfig( $data ?? [] );
 		if ( $this->logger === null ) {
 			$this->logger = new NullLogger();
 		}
@@ -58,6 +59,14 @@ abstract class PluggableAuth implements PluggableAuthPlugin, LoggerAwareInterfac
 	 */
 	public function setLogger( LoggerInterface $logger ) {
 		$this->logger = $logger;
+	}
+
+	/**
+	 * @return Config
+	 * @since 7.0
+	 */
+	public function getConfig(): Config {
+		return $this->config;
 	}
 
 	/**
