@@ -23,6 +23,8 @@ namespace MediaWiki\Extension\PluggableAuth;
 
 use ExtensionRegistry;
 use MediaWiki\Config\ServiceOptions;
+use MediaWiki\Extension\PluggableAuth\Group\GroupProcessorFactory;
+use MediaWiki\Extension\PluggableAuth\Group\GroupProcessorRunner;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 
@@ -44,9 +46,27 @@ return [
 				ExtensionRegistry::getInstance(),
 				$services->getUserFactory(),
 				$services->get( 'PluggableAuthFactory' ),
+				$services->get( 'PluggableAuth.GroupProcessorRunner' ),
 				$services->getPermissionManager(),
 				$services->getAuthManager(),
 				LoggerFactory::getInstance( 'PluggableAuth' )
 			);
+		},
+	'PluggableAuth.GroupProcessorFactory' =>
+		static function ( MediaWikiServices $services ): GroupProcessorFactory {
+			$factory = new GroupProcessorFactory(
+				ExtensionRegistry::getInstance()->getAttribute( 'PluggableAuthGroupSyncs' ),
+				$services->getObjectFactory()
+			);
+			$factory->setLogger( LoggerFactory::getInstance( 'PluggableAuth' ) );
+			return $factory;
+		},
+	'PluggableAuth.GroupProcessorRunner' =>
+		static function ( MediaWikiServices $services ): GroupProcessorRunner {
+			$factory = new GroupProcessorRunner(
+				$services->getService( 'PluggableAuth.GroupProcessorFactory' )
+			);
+			$factory->setLogger( LoggerFactory::getInstance( 'PluggableAuth' ) );
+			return $factory;
 		},
 ];

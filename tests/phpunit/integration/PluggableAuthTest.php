@@ -88,7 +88,10 @@ class PluggableAuthTest extends MediaWikiIntegrationTestCase {
 		$callback = ExtensionRegistry::getInstance()->setAttributeForTest(
 			'PluggableAuthDummyAuth',
 			[
-				'class' => '\MediaWiki\Extension\PluggableAuth\Test\DummyAuth'
+				'class' => '\MediaWiki\Extension\PluggableAuth\Test\DummyAuth',
+				'services' => [
+					'PluggableAuth.GroupProcessorFactory'
+				]
 			]
 		);
 
@@ -97,7 +100,8 @@ class PluggableAuthTest extends MediaWikiIntegrationTestCase {
 		$serviceContainer = $this->getServiceContainer();
 		$login = new PluggableAuthLogin(
 			$serviceContainer->getService( 'PluggableAuthFactory' ),
-			$serviceContainer->getAuthManager()
+			$serviceContainer->getAuthManager(),
+			$serviceContainer->getService( 'PluggableAuth.GroupProcessorRunner' )
 		);
 		$login->setHookContainer( $serviceContainer->getHookContainer() );
 		$login->execute( null );

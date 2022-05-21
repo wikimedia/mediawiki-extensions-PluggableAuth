@@ -19,40 +19,42 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-namespace MediaWiki\Extension\PluggableAuth;
+namespace MediaWiki\Extension\PluggableAuth\Group;
 
 use Config;
 use MediaWiki\User\UserIdentity;
+use MultiConfig;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-abstract class PluggableAuth implements PluggableAuthPlugin, LoggerAwareInterface {
+abstract class Base implements IGroupProcessor, LoggerAwareInterface {
 
 	/**
-	 * @var string
+	 *
+	 * @var UserIdentity
 	 */
-	protected $configId = '';
+	protected $user = null;
 
 	/**
+	 *
+	 * @var array
+	 */
+	protected $attributes = [];
+
+	/**
+	 *
 	 * @var Config
 	 */
-	protected $config;
+	protected $config = null;
 
 	/**
 	 * @var LoggerInterface
 	 */
 	protected $logger = null;
 
-	/**
-	 * @inheritDoc
-	 */
-	public function init( string $configId, ?array $data ) {
-		$this->configId = $configId;
-		$this->config = new CaseInsensitiveHashConfig( $data ?? [] );
-		if ( $this->logger === null ) {
-			$this->logger = new NullLogger();
-		}
+	public function __construct() {
+		$this->logger = new NullLogger();
 	}
 
 	/**
@@ -63,33 +65,22 @@ abstract class PluggableAuth implements PluggableAuthPlugin, LoggerAwareInterfac
 	}
 
 	/**
+	 * @inheritDoc
+	 */
+	public function run( UserIdentity $user, array $attributes, Config $config ): void {
+		$this->user = $user;
+		$this->attributes = $attributes;
+		$this->config = new MultiConfig( [
+			$config,
+			$this->getDefaultConfig()
+		] );
+		$this->doRun();
+	}
+
+	abstract protected function doRun(): void;
+
+	/**
 	 * @return Config
-	 * @since 7.0
 	 */
-	public function getConfig(): Config {
-		return $this->config;
-	}
-
-	/**
-	 * @param UserIdentity $user
-	 * @return array
-	 * @since 7.0
-	 */
-	public function getAttributes( UserIdentity $user ): array {
-		return [];
-	}
-
-	/**
-	 * Return an array of fields to be added to the login form (see documentation at
-	 * AuthenticationRequest::getFieldInfo for the format). Subclasses should override this function
-	 * if they want to add fields to the login form. If multiple fields have the same array index,
-	 * they will be merged into a single field (discarding all but one of the matching fields,
-	 * see AuthenticationRequest::mergeFieldInfo()). If multiple instances of the same
-	 * authentication plugin want to have their own instances of those fields, the static function
-	 * could use a static counter to give them unique array indices.
-	 * @return array
-	 */
-	public static function getExtraLoginFields(): array {
-		return [];
-	}
+	abstract protected function getDefaultConfig(): Config;
 }
