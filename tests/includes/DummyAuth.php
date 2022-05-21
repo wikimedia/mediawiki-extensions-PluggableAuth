@@ -94,7 +94,7 @@ class DummyAuth extends PluggableAuth {
 	}
 
 	/**
-	 * @param User &$user
+	 * @param UserIdentity &$user
 	 */
 	public function deauthenticate( UserIdentity &$user ): void {
 		// Just a test dummy. Do nothing.

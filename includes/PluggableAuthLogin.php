@@ -22,8 +22,10 @@
 namespace MediaWiki\Extension\PluggableAuth;
 
 use MediaWiki\Auth\AuthManager;
+use MediaWiki\Extension\PluggableAuth\Group\GroupProcessorRunner;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\User\UserIdentityValue;
 use Message;
 use Psr\Log\LoggerInterface;
 use UnlistedSpecialPage;
@@ -52,6 +54,11 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 	private $authManager;
 
 	/**
+	 * @var GroupProcessorRunner
+	 */
+	private $groupProcessorRunner;
+
+	/**
 	 * @var LoggerInterface
 	 */
 	private $logger;
@@ -64,11 +71,14 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 	/**
 	 * @param PluggableAuthFactory $pluggableAuthFactory
 	 * @param AuthManager $authManager
+	 * @param GroupProcessorRunner $groupProcessorRunner
 	 */
-	public function __construct( PluggableAuthFactory $pluggableAuthFactory, AuthManager $authManager ) {
+	public function __construct( PluggableAuthFactory $pluggableAuthFactory, AuthManager $authManager,
+		GroupProcessorRunner $groupProcessorRunner ) {
 		parent::__construct( 'PluggableAuthLogin' );
 		$this->pluggableAuthFactory = $pluggableAuthFactory;
 		$this->authManager = $authManager;
+		$this->groupProcessorRunner = $groupProcessorRunner;
 		$this->logger = LoggerFactory::getInstance( 'PluggableAuth' );
 	}
 
@@ -102,12 +112,13 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 					$user->mEmailAuthenticated = $now;
 					$user->mTouched = $now;
 					$this->logger->debug( 'Authenticated new user: ' . $username );
-					// PluggableAuthPlugin::populateGroups() is called from LocalUserCreated hook
+					// Group sync is done in `LocalUserCreated` hook
 				} else {
 					$user->mId = $id;
 					$user->loadFromId();
 					$this->logger->debug( 'Authenticated existing user: ' . $user->mName );
-					$pluggableauth->populateGroups( $user );
+					$userIdentity = new UserIdentityValue( $user->getId(), $user->getName() );
+					$this->groupProcessorRunner->run( $userIdentity, $pluggableauth );
 				}
 				$authorized = true;
 				$this->hookRunner->onPluggableAuthUserAuthorization( $user, $authorized );

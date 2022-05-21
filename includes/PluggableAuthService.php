@@ -24,8 +24,10 @@ namespace MediaWiki\Extension\PluggableAuth;
 use ExtensionRegistry;
 use MediaWiki\Auth\AuthManager;
 use MediaWiki\Config\ServiceOptions;
+use MediaWiki\Extension\PluggableAuth\Group\GroupProcessorRunner;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\User\UserFactory;
+use MediaWiki\User\UserIdentityValue;
 use MWException;
 use OutputPage;
 use Psr\Log\LoggerInterface;
@@ -67,6 +69,11 @@ class PluggableAuthService {
 	private $pluggableAuthFactory;
 
 	/**
+	 * @var GroupProcessorRunner
+	 */
+	private $groupProcessorRunner;
+
+	/**
 	 * @var PermissionManager
 	 */
 	private $permissionManager;
@@ -86,6 +93,7 @@ class PluggableAuthService {
 	 * @param ExtensionRegistry $extensionRegistry
 	 * @param UserFactory $userFactory
 	 * @param PluggableAuthFactory $pluggableAuthFactory
+	 * @param GroupProcessorRunner $groupProcessorRunner
 	 * @param PermissionManager $permissionManager
 	 * @param AuthManager $authManager
 	 * @param LoggerInterface $logger
@@ -95,6 +103,7 @@ class PluggableAuthService {
 		ExtensionRegistry $extensionRegistry,
 		UserFactory $userFactory,
 		PluggableAuthFactory $pluggableAuthFactory,
+		GroupProcessorRunner $groupProcessorRunner,
 		PermissionManager $permissionManager,
 		AuthManager $authManager,
 		LoggerInterface $logger
@@ -105,6 +114,7 @@ class PluggableAuthService {
 		$this->loginSpecialPages = $extensionRegistry->getAttribute( 'PluggableAuthLoginSpecialPages' );
 		$this->userFactory = $userFactory;
 		$this->pluggableAuthFactory = $pluggableAuthFactory;
+		$this->groupProcessorRunner = $groupProcessorRunner;
 		$this->permissionManager = $permissionManager;
 		$this->authManager = $authManager;
 		$this->logger = $logger;
@@ -238,7 +248,8 @@ class PluggableAuthService {
 		if ( $autocreated ) {
 			$pluggableauth = $this->pluggableAuthFactory->getInstance();
 			if ( $pluggableauth ) {
-				$pluggableauth->populateGroups( $user );
+				$userIdentity = new UserIdentityValue( $user->getId(), $user->getName() );
+				$this->groupProcessorRunner->run( $userIdentity, $pluggableauth );
 			}
 		}
 	}
