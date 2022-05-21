@@ -21,52 +21,34 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
-use Config;
-use MediaWiki\User\UserIdentity;
+use HashConfig;
 
-interface PluggableAuthPlugin {
+class CaseInsensitiveHashConfig extends HashConfig {
+	/**
+	 * @param array $settings
+	 */
+	public function __construct( array $settings = [] ) {
+		parent::__construct( array_change_key_case( $settings, CASE_LOWER ) );
+	}
 
 	/**
-	 * Must only be called by `PluggableAuthFactory`
-	 * @param string $configId
-	 * @param array|null $data
-	 * @return void
-	 * @since 6.0
+	 * @inheritDoc
 	 */
-	public function init( string $configId, ?array $data );
+	public function get( $name ) {
+		return parent::get( strtolower( $name ) );
+	}
 
 	/**
-	 * @param int|null &$id The user's user ID
-	 * @param string|null &$username The user's username
-	 * @param string|null &$realname The user's real name
-	 * @param string|null &$email The user's email address
-	 * @param string|null &$errorMessage Returns a descriptive message if there's an error
-	 * @return bool true if the user has been authenticated and false otherwise
-	 * @since 1.0
+	 * @inheritDoc
 	 */
-	public function authenticate(
-		?int &$id,
-		?string &$username,
-		?string &$realname,
-		?string &$email,
-		?string &$errorMessage
-	): bool;
+	public function has( $name ): bool {
+		return parent::has( strtolower( $name ) );
+	}
 
 	/**
-	 * @param UserIdentity &$user The user
-	 * @since 1.0
+	 * @inheritDoc
 	 */
-	public function deauthenticate( UserIdentity &$user ): void;
-
-	/**
-	 * @return Config
-	 * @since 7.0
-	 */
-	public function getConfig(): Config;
-
-	/**
-	 * @param int $id The user's user ID
-	 * @since 1.0
-	 */
-	public function saveExtraAttributes( int $id ): void;
+	public function set( $name, $value ): void {
+		parent::set( strtolower( $name ), $value );
+	}
 }
