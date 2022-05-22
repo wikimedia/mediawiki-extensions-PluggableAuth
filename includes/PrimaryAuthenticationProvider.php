@@ -22,12 +22,12 @@
 namespace MediaWiki\Extension\PluggableAuth;
 
 use Config;
+use IDBAccessObject;
 use MediaWiki\Auth\AbstractPrimaryAuthenticationProvider;
 use MediaWiki\Auth\AuthenticationRequest;
 use MediaWiki\Auth\AuthenticationResponse;
 use MediaWiki\Auth\AuthManager;
 use MediaWiki\Config\ServiceOptions;
-use MediaWiki\Permissions\Authority;
 use MediaWiki\User\UserFactory;
 use Message;
 use MWException;
@@ -219,12 +219,13 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 	/**
 	 * Test whether the named user exists
 	 * @param string $username MediaWiki username
-	 * @param int $flags Bitfield of User:READ_* constants
+	 * @param int $flags Bitfield of IDBAccessObject:READ_* constants
+	 * TODO: change default to Authority::READ_NORMAL once support for MW 1.35 is dropped
 	 * @return bool
 	 */
 	public function testUserExists(
 		$username,
-		$flags = Authority::READ_NORMAL
+		$flags = IDBAccessObject::READ_NORMAL
 	): bool {
 		$user = $this->userFactory->newFromName( $username );
 		return $user && $user->isRegistered();
