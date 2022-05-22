@@ -30,6 +30,7 @@ interface PluggableAuthPlugin {
 	 * @param string $configId
 	 * @param array|null $data
 	 * @return void
+	 * @since 6.0
 	 */
 	public function init( string $configId, ?array $data );
 
@@ -41,7 +42,6 @@ interface PluggableAuthPlugin {
 	 * @param string|null &$errorMessage Returns a descriptive message if there's an error
 	 * @return bool true if the user has been authenticated and false otherwise
 	 * @since 1.0
-	 *
 	 */
 	public function authenticate(
 		?int &$id,
@@ -52,16 +52,14 @@ interface PluggableAuthPlugin {
 	): bool;
 
 	/**
-	 * @since 1.0
-	 *
 	 * @param UserIdentity &$user The user
+	 * @since 1.0
 	 */
 	public function deauthenticate( UserIdentity &$user ): void;
 
 	/**
-	 * @since 1.0
-	 *
 	 * @param int $id The user's user ID
+	 * @since 1.0
 	 */
 	public function saveExtraAttributes( int $id ): void;
 }
