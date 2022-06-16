@@ -190,13 +190,13 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 		$this->manager->removeAuthenticationSessionData( PluggableAuthLogin::REALNAME_SESSION_KEY );
 		$email = $this->manager->getAuthenticationSessionData( PluggableAuthLogin::EMAIL_SESSION_KEY ) ?? '';
 		$this->manager->removeAuthenticationSessionData( PluggableAuthLogin::EMAIL_SESSION_KEY );
-		if ( $user->mRealName != $realname || $user->mEmail != $email ) {
+		if ( $user->getRealName() != $realname || $user->mEmail != $email ) {
 			if ( $this->enableLocalProperties && !$force ) {
 				$this->logger->debug( 'PluggableAuth: Local properties enabled.' );
 				$this->logger->debug( 'PluggableAuth: Did not save updated real name and email address.' );
 			} else {
 				$this->logger->debug( 'PluggableAuth: Local properties disabled or has just been created.' );
-				$user->mRealName = $realname;
+				$user->setRealName( $realname );
 				if ( $email && Sanitizer::validateEmail( $email ) ) {
 					$user->mEmail = $email;
 					$user->confirmEmail();
