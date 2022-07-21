@@ -8,6 +8,7 @@
 	"pluggableauth-desc": "提供可插入式的驗證與授權框架",
 	"pluggableauth-not-authorized": "{{GENDER:$1|使用者}} $1 沒有取得授權。",
 	"pluggableauth-authentication-failure": "使用者無法被驗證。",
+	"pluggableauth-authentication-plugin-failure": "無法載入驗證套件",
 	"pluggableauth-authentication-workflow-failure": "驗證流程失敗。",
 	"pluggableauth-loginbutton-help": "以 PluggableAuth 來驗證您的身份",
 	"pluggableauth-fatal-error": "驗證使用者嚴重錯誤。"
