@@ -24,14 +24,13 @@ namespace MediaWiki\Extension\PluggableAuth;
 use MediaWiki;
 use MediaWiki\Auth\Hook\LocalUserCreatedHook;
 use MediaWiki\Hook\BeforeInitializeHook;
-use MediaWiki\Hook\PersonalUrlsHook;
+use MediaWiki\Hook\SkinTemplateNavigation__UniversalHook;
 use MediaWiki\Hook\UserLogoutCompleteHook;
 use MediaWiki\Permissions\Hook\TitleReadWhitelistHook;
 use MediaWiki\SpecialPage\Hook\AuthChangeFormFieldsHook;
 use MediaWiki\SpecialPage\Hook\SpecialPage_initListHook;
 use MWException;
 use OutputPage;
-use SkinTemplate;
 use Title;
 use User;
 use WebRequest;
@@ -41,7 +40,7 @@ class PluggableAuthHooks implements
 	AuthChangeFormFieldsHook,
 	UserLogoutCompleteHook,
 	BeforeInitializeHook,
-	PersonalUrlsHook,
+	SkinTemplateNavigation__UniversalHook,
 	LocalUserCreatedHook,
 	SpecialPage_initListHook
 {
@@ -120,20 +119,20 @@ class PluggableAuthHooks implements
 		$this->pluggableAuthService->autoLogin( $title, $output, $user, $request );
 	}
 
+	// phpcs:disable MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
+	// phpcs:disable MediaWiki.Commenting.FunctionAnnotations.UnrecognizedAnnotation
+
 	/**
-	 * Implements PersonalUrls hook.
-	 * See https://www.mediawiki.org/wiki/Manual:Hooks/PersonalUrls
+	 * Implements SkinTemplateNavigation::Universal hook.
+	 * See https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation::Universal
 	 * Removes logout link from skin if auto login is enabled and local login
 	 * is not enabled.
 	 *
-	 * @since 1.0
-	 *
-	 * @param array &$personal_urls urls sto modify
-	 * @param Title &$title current title
-	 * @param SkinTemplate $skin template for vars
+	 * @inheritDoc
+	 * @SuppressWarnings(PHPMD.CamelCaseMethodName)
 	 */
-	public function onPersonalUrls( &$personal_urls, &$title, $skin ): void {
-		$this->pluggableAuthService->removeLogoutLink( $personal_urls );
+	public function onSkinTemplateNavigation__Universal( $sktemplate, &$links ): void {
+		$this->pluggableAuthService->removeLogoutLink( $links );
 	}
 
 	/**

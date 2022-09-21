@@ -50,7 +50,7 @@
 		"TitleReadWhitelist": "main",
 		"UserLogoutComplete": "main",
 		"AuthChangeFormFields": "main",
-		"PersonalUrls": "main",
+		"SkinTemplateNavigation::Universal": "main",
 		"BeforeInitialize": "main",
 		"LocalUserCreated": "main",
 		"SpecialPage_initList": "main"
