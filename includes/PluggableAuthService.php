@@ -224,13 +224,11 @@ class PluggableAuthService {
 
 	/**
 	 * Remove logout link from skin if auto login is enabled and local login is not enabled.
-	 * @param array &$personal_urls urls sto modify
+	 * @param array &$links URLs to modify
 	 */
-	public function removeLogoutLink(
-		array &$personal_urls
-	) {
+	public function removeLogoutLink( array &$links ) {
 		if ( $this->enableAutoLogin && !$this->enableLocalLogin ) {
-			unset( $personal_urls['logout'] );
+			unset( $links['user-menu']['logout'] );
 		}
 	}
 
