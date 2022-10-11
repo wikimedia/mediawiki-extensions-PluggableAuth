@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"McDutchie"
+		]
+	},
+	"pluggableauth-desc": "Forni un infrastructura pro authentication e autorisation modular",
+	"pluggableauth-not-authorized": "{{GENDER:$1|Usator}} $1 non autorisate.",
+	"pluggableauth-authentication-failure": "Le usator non pote esser authenticate.",
+	"pluggableauth-authentication-workflow-failure": "Fallimento in le processo de authentication.",
+	"pluggableauth-fatal-error": "Error fatal durante le authentication del usator."
+}
