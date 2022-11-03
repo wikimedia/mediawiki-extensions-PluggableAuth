@@ -8,7 +8,8 @@
 	"pluggableauth-desc": "يوفر إطارا للتوثيق والتخويل القابل للتوصيل",
 	"pluggableauth-not-authorized": "{{GENDER:$1|المستخدم غير مخول|المستخدمة غير مخولة}} $1.",
 	"pluggableauth-authentication-failure": "لا يمكن مصادقة المستخدم.",
+	"pluggableauth-authentication-plugin-failure": "تعذر تحميل المكون الإضافي للمصادقة",
 	"pluggableauth-authentication-workflow-failure": "فشل سير عمل المصادقة.",
-	"pluggableauth-loginbutton-help": "يصادق عليك باستخدام PluggableAuth",
+	"pluggableauth-loginbutton-help": "المصادقة باستخدام PluggableAuth",
 	"pluggableauth-fatal-error": "خطأ قاتل عند التحقق من هوية المستخدم."
 }
