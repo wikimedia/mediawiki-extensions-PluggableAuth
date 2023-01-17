@@ -2,13 +2,15 @@
 	"@metadata": {
 		"authors": [
 			"Eduardo Addad de Oliveira",
-			"Eduardoaddad"
+			"Eduardoaddad",
+			"Fúlvio"
 		]
 	},
 	"pluggableauth-desc": "Fornece uma estrutura para autenticação e autorização modulares",
 	"pluggableauth-not-authorized": "{{GENDER:$1|Usuário $1 não autorizado|Usuária $1 não autorizada}}.",
 	"pluggableauth-authentication-failure": "O usuário não pode ser autenticado.",
+	"pluggableauth-authentication-plugin-failure": "Não foi possível carregar o plugin de autenticação",
 	"pluggableauth-authentication-workflow-failure": "Falha no processo de autenticação.",
-	"pluggableauth-loginbutton-help": "Faz a sua autenticação com PluggableAuth",
+	"pluggableauth-loginbutton-help": "Autenticar com PluggableAuth",
 	"pluggableauth-fatal-error": "Erro fatal na autenticação do usuário."
 }
