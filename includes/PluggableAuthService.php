@@ -159,7 +159,8 @@ class PluggableAuthService {
 		string $old_name
 	) {
 		$old_user = $this->userFactory->newFromName( $old_name );
-		if ( $old_user === null ) {
+		// If $old_name is not a user, newFromName returns false for MW 1.35 but null for MW 1.36
+		if ( $old_user === null || $old_user === false ) {
 			return;
 		}
 		$this->logger->debug( 'Deauthenticating ' . $old_name );
