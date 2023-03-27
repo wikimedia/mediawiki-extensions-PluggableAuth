@@ -1,6 +1,6 @@
 {
 	"name": "PluggableAuth",
-	"version": "7.3.0",
+	"version": "7.4.0",
 	"author": [
 		"[https://www.mediawiki.org/wiki/User:Cindy.cicalese Cindy Cicalese]"
 	],
@@ -60,6 +60,16 @@
 		"SpecialPage_initList": "main",
 		"LoginFormValidErrorMessages": "main"
 	},
+	"RestRoutes": [
+		{
+			"path": "/pluggableauth/v1/logout",
+			"method": "POST",
+			"class": "MediaWiki\\Extension\\PluggableAuth\\Rest\\LogoutHandler",
+			"services": [
+				"PluggableAuthFactory"
+			]
+		}
+	],
 	"AuthManagerAutoConfig": {
 		"primaryauth": {
 			"PluggableAuthPrimaryAuthenticationProvider": {
