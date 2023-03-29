@@ -108,6 +108,9 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 		$matches = array_filter( $reqs, static function ( $req ) {
 			return $req instanceof BeginAuthenticationRequest;
 		} );
+		// Reset array indexes
+		$matches = array_values( $matches );
+
 		$request = $matches[0] ?? null;
 		if ( !$request ) {
 			return AuthenticationResponse::newAbstain();
