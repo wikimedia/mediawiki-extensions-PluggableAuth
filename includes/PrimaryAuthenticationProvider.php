@@ -222,6 +222,16 @@ class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvide
 	}
 
 	/**
+	 * @inheritDoc
+	 */
+	public function testUserCanAuthenticate( $username ) {
+		// Additionally check if specified username is not reserved for system users
+		$isUsable = $this->userNameUtils->isUsable( $username );
+
+		return $isUsable && $this->testUserExists( $username );
+	}
+
+	/**
 	 * Test whether the named user exists
 	 * @param string $username MediaWiki username
 	 * @param int $flags Bitfield of IDBAccessObject:READ_* constants
