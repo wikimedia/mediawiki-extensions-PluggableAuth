@@ -93,10 +93,10 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 			if ( $pluggableauth->authenticate( $id, $username, $realname, $email, $error ) ) {
 				if ( !$id ) {
 					$user->loadDefaults( $username );
-					$user->mName = $username;
 					if ( $realname !== null ) {
 						$user->setRealName( $realname );
 					}
+					$user->mName = $username;
 					$user->mEmail = $email;
 					$now = ConvertibleTimestamp::now( TS_UNIX );
 					$user->mEmailAuthenticated = $now;
