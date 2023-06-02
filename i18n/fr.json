@@ -3,14 +3,15 @@
 		"authors": [
 			"Gomoko",
 			"Urhixidur",
+			"Verdy p",
 			"Wladek92"
 		]
 	},
-	"pluggableauth-desc": "Fournit le cadre d’application pour les greffons d’authentication et d’autorisation",
+	"pluggableauth-desc": "Fournit un cadre pour les greffons d’authentication et d’autorisation",
 	"pluggableauth-not-authorized": "Utilisat{{GENDER:$1|eur|rice}} $1 non autorisé{{GENDER:$1||e}}.",
 	"pluggableauth-authentication-failure": "L’utilisateur n’a pas pu être authentifié.",
 	"pluggableauth-authentication-plugin-failure": "Impossible de charger le module d’authentification",
 	"pluggableauth-authentication-workflow-failure": "Échec du processus d’authentification.",
 	"pluggableauth-loginbutton-help": "S’authentifier avec PluggableAuth",
-	"pluggableauth-fatal-error": "Erreur fatale durant l'authentification de l'utilisateur."
+	"pluggableauth-fatal-error": "Erreur fatale durant l’authentification de l’utilisateur."
 }
