@@ -53,10 +53,11 @@ class DummyAuth extends PluggableAuth {
 
 	/**
 	 * @param string $configId
-	 * @param array|null $data
+	 * @param array|null $config
 	 */
-	public function init( string $configId, ?array $data ) {
-		parent::init( $configId, $data );
+	public function init( string $configId, ?array $config ) {
+		parent::init( $configId, $config );
+		$data = $config['data'] ?? null;
 		if ( $data ) {
 			$this->auth = true;
 			$this->id = $data['id'] ?? null;

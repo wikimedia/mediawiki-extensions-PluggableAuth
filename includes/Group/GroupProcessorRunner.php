@@ -43,12 +43,7 @@ class GroupProcessorRunner implements LoggerAwareInterface {
 	 * @return void
 	 */
 	public function run( UserIdentity $user, PluggableAuthPlugin $pluggableauth ) {
-		$pluginConfig = $pluggableauth->getConfig();
-		if ( !$pluginConfig->has( 'groupsyncs' ) ) {
-			$this->logger->debug( "No groupsync set." );
-			return;
-		}
-		$groupSyncs = $pluginConfig->get( 'groupsyncs' );
+		$groupSyncs = $pluggableauth->getGroupSyncs();
 		if ( empty( $groupSyncs ) ) {
 			$this->logger->debug( "No groupsync set." );
 			return;

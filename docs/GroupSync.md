@@ -19,18 +19,18 @@ Currently there are two implementations for group sync:
 They have been derived from the existing implementations in the plugins and are as compatible as possible.
 
 ## Configuration
-Each plugin may define _one or more_ group sync mechanisms. Each mechanism is configured in the `groupsyncs` section of the plugins `data` configuration.
+Each plugin may define _one or more_ group sync mechanisms. Each mechanism is configured in the `groupsyncs` section of the plugin's configuration at the same level as the plugin-specific `data` item.
 
 ```php
 $wgPluggableAuth_Config['<plugin-identifier>'] = [
-	'class' => '<plugin-classname>',
+	'plugin' => '<plugin-name>',
 	'data' => [
 		// ...
-		'groupsyncs' => [
-			'<groupsync-identifier>' => [
-				'type' => '<groupsync-type>',
-				// ...
-			]
+	],
+	'groupsyncs' => [
+		'<groupsync-identifier>' => [
+			'type' => '<groupsync-type>',
+			// ...
 		]
 	]
 ];
@@ -54,12 +54,12 @@ The "Sync all" mechanism will take the definitive list of groups from the plugin
 ### Basic example
 ```php
 $wgPluggableAuth_Config['example'] = [
-	'class' => 'ExampleAuthPlugin',
+	'plugin' => 'ExampleAuthPlugin',
 	'data' => [
 		// ...
-		'groupsyncs' => [
-			'default' => [ 'type' => 'syncall' ]
-		]
+	],
+	'groupsyncs' => [
+		'default' => [ 'type' => 'syncall' ]
 	]
 ];
 ```
@@ -70,17 +70,17 @@ The "Mapped" mechanism will take a mapping of group names to attributes and thei
 ### Basic example
 ```php
 $wgPluggableAuth_Config['example'] = [
-	'class' => 'ExampleAuthPlugin',
+	'plugin' => 'ExampleAuthPlugin',
 	'data' => [
 		// ...
-		'groupsyncs' => [
-			'default' => [
-				'type' => 'mapped'
-				'map' => [
-					'group1' => [ 'groupAttr' => 'value1' ],
-					'group2' => [ 'groupAttr' => 'value2' ],
-					'group3' => [ 'groupAttr' => 'value3' ]
-				]
+	],
+	'groupsyncs' => [
+		'default' => [
+			'type' => 'mapped'
+			'map' => [
+				'group1' => [ 'groupAttr' => 'value1' ],
+				'group2' => [ 'groupAttr' => 'value2' ],
+				'group3' => [ 'groupAttr' => 'value3' ]
 			]
 		]
 	]
@@ -150,20 +150,20 @@ Resulting wiki groups: `oidc_globaladmin`, `oidc_globaljedi_master`, `oidc_edito
 In the new configuration, the very same thing can be achived by
 ```php
 $wgPluggableAuth_Config['Log in with OIDC'] = [
-	'class' => 'OpenIDConnectClient',
+	'plugin' => 'OpenIDConnect',
 	'data' => [
 		// ...
-		'groupsyncs' => [
-			'mysync' => [
-				'type' => 'syncall',
-				'filterPrefix' => 'oidc_'
-				'groupAttributeName' => [
-					[
-						'path' => ['realm_access', 'roles']
-					],
-					[
-						'path' => ['resource_access', 'wiki', 'roles']
-					]
+	],
+	'groupsyncs' => [
+		'mysync' => [
+			'type' => 'syncall',
+			'filterPrefix' => 'oidc_'
+			'groupAttributeName' => [
+				[
+					'path' => ['realm_access', 'roles']
+				],
+				[
+					'path' => ['resource_access', 'wiki', 'roles']
 				]
 			]
 		]
@@ -175,14 +175,23 @@ $wgPluggableAuth_Config['Log in with OIDC'] = [
 
 ## Extension:WSOAuth
 
-The legacy implementation contained two things:
+The implementation contains two things:
 1. Exposing a hook `WSOAuthBeforeAutoPopulateGroups` that allowed access to the user object
-2. Adding (**no removing**) of groups specified in the configuration variable `wgOAuthAutoPopulateGroups`
-
-TBD
-
-The configuration variable `wgOAuthAutoPopulateGroups` has been removed. The same functionality can be achieved by using the "Sync all" group sync mechanism.
+2. Adding (**no removing**) of groups specified in the configuration variable `wgOAuthAutoPopulateGroups` or the `autopopulategroups` data element
 
 ```php
-
+$wgPluggableAuth_Config["WSOAuth Log In"] = [
+	'plugin' => 'WSOAuth',
+	'data' => [
+		// ...
+		'autopopulategroups' => [ 'roles' => [ '<group1>', '<group2>', '<etc>' ] ]
+	],
+	'groupsyncs' => [
+		'sync' => [
+			'type' => 'syncall',
+			'groupattributename' => 'roles'
+		]
+	]
+];
+````
 TBD
