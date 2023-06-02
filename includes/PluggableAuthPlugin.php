@@ -29,11 +29,11 @@ interface PluggableAuthPlugin {
 	/**
 	 * Must only be called by `PluggableAuthFactory`
 	 * @param string $configId
-	 * @param array|null $data
+	 * @param array $config
 	 * @return void
 	 * @since 6.0
 	 */
-	public function init( string $configId, ?array $data );
+	public function init( string $configId, array $config );
 
 	/**
 	 * @param int|null &$id The user's user ID
@@ -59,10 +59,22 @@ interface PluggableAuthPlugin {
 	public function deauthenticate( UserIdentity &$user ): void;
 
 	/**
+	 * @return string
+	 * @since 7.0
+	 */
+	public function getConfigId(): string;
+
+	/**
 	 * @return Config
 	 * @since 7.0
 	 */
-	public function getConfig(): Config;
+	public function getData(): Config;
+
+	/**
+	 * @return array
+	 * @since 7.0
+	 */
+	public function getGroupSyncs(): array;
 
 	/**
 	 * @param UserIdentity $user
