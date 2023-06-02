@@ -116,6 +116,7 @@ class PluggableAuthFactory {
 				'plugin' => $plugin,
 				'spec' => $spec,
 				'data' => $entry['data'] ?? [],
+				'groupsync' => $entry['groupsync'] ?? [],
 				'label' => $label
 			];
 		}
@@ -206,7 +207,10 @@ class PluggableAuthFactory {
 						$pluginLogger = LoggerFactory::getInstance( $config['plugin'] );
 						$plugin->setLogger( $pluginLogger );
 					}
-					$plugin->init( $config['configId'], $config['data'] );
+					$plugin->init( $config['configId'], [
+						'data' => $config['data'] ?? [],
+						'groupsync' => $config['groupsync'] ?? []
+					] );
 
 					$this->instances[$name] = $plugin;
 				} catch ( Exception $e ) {

@@ -32,27 +32,57 @@ abstract class PluggableAuth implements PluggableAuthPlugin, LoggerAwareInterfac
 	/**
 	 * @var string
 	 */
-	protected $configId = '';
+	private $configId = '';
 
 	/**
 	 * @var Config
 	 */
-	protected $config;
+	private $data;
+
+	/**
+	 * @var Config
+	 */
+	private $groupsyncs;
 
 	/**
 	 * @var LoggerInterface
 	 */
-	protected $logger = null;
+	private $logger = null;
 
 	/**
 	 * @inheritDoc
 	 */
-	public function init( string $configId, ?array $data ) {
+	public function init( string $configId, array $config ) {
 		$this->configId = $configId;
-		$this->config = new CaseInsensitiveHashConfig( $data ?? [] );
+		$this->data = new CaseInsensitiveHashConfig( $config['data'] ?? [] );
+		$this->groupsyncs = $config['groupsyncs'] ?? [];
 		if ( $this->logger === null ) {
 			$this->logger = new NullLogger();
 		}
+	}
+
+	/**
+	 * @return string
+	 * @since 7.0
+	 */
+	public function getConfigId(): string {
+		return $this->configId;
+	}
+
+	/**
+	 * @return Config
+	 * @since 7.0
+	 */
+	public function getData(): Config {
+		return $this->data;
+	}
+
+	/**
+	 * @return Config
+	 * @since 7.0
+	 */
+	public function getGroupSyncs(): array {
+		return $this->groupsyncs;
 	}
 
 	/**
@@ -63,11 +93,11 @@ abstract class PluggableAuth implements PluggableAuthPlugin, LoggerAwareInterfac
 	}
 
 	/**
-	 * @return Config
+	 * @return LoggerInterface
 	 * @since 7.0
 	 */
-	public function getConfig(): Config {
-		return $this->config;
+	public function getLogger(): LoggerInterface {
+		return $this->logger;
 	}
 
 	/**
