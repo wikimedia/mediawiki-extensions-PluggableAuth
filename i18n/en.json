@@ -10,5 +10,6 @@
 	"pluggableauth-authentication-plugin-failure": "Could not load authentication plugin",
 	"pluggableauth-authentication-workflow-failure": "Authentication workflow failure.",
 	"pluggableauth-loginbutton-help": "Authenticate with PluggableAuth",
-	"pluggableauth-fatal-error": "Fatal error authenticating user."
+	"pluggableauth-fatal-error": "Fatal error authenticating user.",
+	"pluggableauthlogout": "Log out"
 }

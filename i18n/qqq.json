@@ -12,5 +12,6 @@
 	"pluggableauth-authentication-plugin-failure": "Failure message when an authentication plugin cannot be instantiated",
 	"pluggableauth-authentication-workflow-failure": "Failure message when there is an error in authentication workflow, such as an AuthenticationRequest being received in the wrong action.",
 	"pluggableauth-loginbutton-help": "Help message used for the Login with PluggableAuth button on [[Special:UserLogin]].",
-	"pluggableauth-fatal-error": "Fatal error message."
+	"pluggableauth-fatal-error": "Fatal error message.",
+	"pluggableauthlogout": "Special page title"
 }
