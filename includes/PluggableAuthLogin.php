@@ -34,8 +34,6 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
 class PluggableAuthLogin extends UnlistedSpecialPage {
 
 	const RETURNTOURL_SESSION_KEY = 'PluggableAuthLoginReturnToUrl';
-	const RETURNTOPAGE_SESSION_KEY = 'PluggableAuthLoginReturnToPage';
-	const RETURNTOQUERY_SESSION_KEY = 'PluggableAuthLoginReturnToQuery';
 	const EXTRALOGINFIELDS_SESSION_KEY = 'PluggableAuthLoginExtraLoginFields';
 	const AUTHENTICATIONPLUGINNAME_SESSION_KEY = 'PluggableAuthLoginAuthenticationPluginIndex';
 	const USERNAME_SESSION_KEY = 'PluggableAuthLoginUsername';
@@ -148,7 +146,7 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 		if ( $error !== null ) {
 			$this->authManager->setAuthenticationSessionData( self::ERROR_SESSION_KEY, $error );
 		}
-		$returnToUrl = $this->authManager->getAuthenticationSessionData( self::RETURNTOURL_SESSION_KEY );
+		$returnToUrl = $this->authManager->getRequest()->getSessionData( self::RETURNTOURL_SESSION_KEY );
 		if ( $returnToUrl === null || strlen( $returnToUrl ) === 0 ) {
 			// This should never happen unless there is an issue in the authentication plugin, most
 			// likely resulting in session corruption. Since it is unclear if it is safe to continue,
