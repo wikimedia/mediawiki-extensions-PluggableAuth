@@ -116,7 +116,7 @@ class PluggableAuthFactory {
 				'plugin' => $plugin,
 				'spec' => $spec,
 				'data' => $entry['data'] ?? [],
-				'groupsync' => $entry['groupsync'] ?? [],
+				'groupsyncs' => $entry['groupsyncs'] ?? [],
 				'label' => $label
 			];
 		}
@@ -209,7 +209,7 @@ class PluggableAuthFactory {
 					}
 					$plugin->init( $config['configId'], [
 						'data' => $config['data'] ?? [],
-						'groupsync' => $config['groupsync'] ?? []
+						'groupsyncs' => $config['groupsyncs'] ?? []
 					] );
 
 					$this->instances[$name] = $plugin;

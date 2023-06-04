@@ -84,24 +84,13 @@
 					"class": "MediaWiki\\Extension\\PluggableAuth\\Group\\SyncAllGroups",
 					"services": [
 						"UserGroupManager"
-					],
-					"config": {
-						"GroupAttributeNames": "groups",
-						"LocallyManagedGroups": [
-							"sysop"
-						],
-						"GroupNameModificationCallback": null
-					}
+					]
 				},
 				"mapped": {
 					"class": "MediaWiki\\Extension\\PluggableAuth\\Group\\MapGroups",
 					"services": [
 						"UserGroupManager"
-					],
-					"config": {
-						"map": [],
-						"addOnlyGroups": []
-					}
+					]
 				}
 			}
 		}
