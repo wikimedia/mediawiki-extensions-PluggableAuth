@@ -145,6 +145,31 @@ class PluggableAuthFactory {
 	}
 
 	/**
+	 * @return PluggableAuthPlugin[]
+	 */
+	public function getInstances(): array {
+		$this->initInstances();
+		return $this->instances;
+	}
+
+	/**
+	 * @var bool
+	 */
+	private $instancesInited = false;
+
+	private function initInstances() {
+		if ( $this->instancesInited ) {
+			return;
+		}
+
+		$pluginConfigNames = array_keys( $this->pluggableAuthConfig );
+		foreach ( $pluginConfigNames as $name ) {
+			$this->getInstanceByName( $name );
+		}
+		$this->instancesInited = true;
+	}
+
+	/**
 	 * @return PluggableAuthPlugin|false an object that implements PluggableAuthPlugin
 	 */
 	public function getInstance() {
@@ -152,6 +177,15 @@ class PluggableAuthFactory {
 		$name = $this->authManager->getRequest()->getSessionData(
 			PluggableAuthLogin::AUTHENTICATIONPLUGINNAME_SESSION_KEY
 		);
+
+		return $this->getInstanceByName( $name ) ?? false;
+	}
+
+	/**
+	 * @param string|null $name
+	 * @return PluggableAuthPlugin|null an object that implements PluggableAuthPlugin
+	 */
+	private function getInstanceByName( ?string $name ): ?PluggableAuthPlugin {
 		if ( $name !== null && isset( $this->pluggableAuthConfig[$name] ) ) {
 			$config = $this->pluggableAuthConfig[$name];
 			$spec = $config['spec'];
@@ -177,12 +211,12 @@ class PluggableAuthFactory {
 					$this->instances[$name] = $plugin;
 				} catch ( Exception $e ) {
 					$this->logger->debug( 'Invalid authentication plugin class: ' . $e->getMessage() . PHP_EOL );
-					return false;
+					return null;
 				}
 			}
 			return $this->instances[$name];
 		}
 		$this->logger->debug( 'Could not get authentication plugin instance.' );
-		return false;
+		return null;
 	}
 }
