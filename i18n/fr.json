@@ -13,5 +13,6 @@
 	"pluggableauth-authentication-plugin-failure": "Impossible de charger le module d’authentification",
 	"pluggableauth-authentication-workflow-failure": "Échec du processus d’authentification.",
 	"pluggableauth-loginbutton-help": "S’authentifier avec PluggableAuth",
-	"pluggableauth-fatal-error": "Erreur fatale durant l’authentification de l’utilisateur."
+	"pluggableauth-fatal-error": "Erreur fatale durant l’authentification de l’utilisateur.",
+	"pluggableauthlogout": "Se déconnecter"
 }
