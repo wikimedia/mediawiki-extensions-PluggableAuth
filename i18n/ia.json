@@ -10,5 +10,6 @@
 	"pluggableauth-authentication-plugin-failure": "Non poteva cargar le modulo de authentication",
 	"pluggableauth-authentication-workflow-failure": "Fallimento in le processo de authentication.",
 	"pluggableauth-loginbutton-help": "Authenticar con PluggableAuth",
-	"pluggableauth-fatal-error": "Error fatal durante le authentication del usator."
+	"pluggableauth-fatal-error": "Error fatal durante le authentication del usator.",
+	"pluggableauthlogout": "Clauder session"
 }
