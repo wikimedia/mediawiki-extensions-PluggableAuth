@@ -4,5 +4,6 @@
 			"আফতাবুজ্জামান"
 		]
 	},
-	"pluggableauth-fatal-error": "ব্যবহারকারী অনুমোদনের সময় মারাত্মক ত্রুটি।"
+	"pluggableauth-fatal-error": "ব্যবহারকারী অনুমোদনের সময় মারাত্মক ত্রুটি।",
+	"pluggableauthlogout": "প্রস্থান করুন"
 }

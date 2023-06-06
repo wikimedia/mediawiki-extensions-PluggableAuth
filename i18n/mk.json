@@ -10,5 +10,6 @@
 	"pluggableauth-authentication-plugin-failure": "Не можев да го вчитам додатокот за заверка",
 	"pluggableauth-authentication-workflow-failure": "Неупех во работниот тек на заверката.",
 	"pluggableauth-loginbutton-help": "Заверка со PluggableAuth",
-	"pluggableauth-fatal-error": "Се појави кобна грешка при заверката на корисникот."
+	"pluggableauth-fatal-error": "Се појави кобна грешка при заверката на корисникот.",
+	"pluggableauthlogout": "Одјава"
 }
