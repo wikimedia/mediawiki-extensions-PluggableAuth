@@ -10,5 +10,6 @@
 	"pluggableauth-authentication-plugin-failure": "Avtentikacijskega vtičnika ni bilo mogoče naložiti",
 	"pluggableauth-authentication-workflow-failure": "Neuspešen delovni tok avtentikacije.",
 	"pluggableauth-loginbutton-help": "Avtentikacija s PluggableAuth",
-	"pluggableauth-fatal-error": "Usodna napaka pri avtentikaciji uporabnika."
+	"pluggableauth-fatal-error": "Usodna napaka pri avtentikaciji uporabnika.",
+	"pluggableauthlogout": "Odjava"
 }
