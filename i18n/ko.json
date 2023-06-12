@@ -9,5 +9,6 @@
 	"pluggableauth-not-authorized": "$1 {{GENDER:$1|사용자}}가 인증되지 않았습니다.",
 	"pluggableauth-authentication-failure": "사용자를 인증할 수 없습니다.",
 	"pluggableauth-loginbutton-help": "PluggableAuth로 인증",
-	"pluggableauth-fatal-error": "사용자 인증 도중 치명적인 오류가 발생했습니다."
+	"pluggableauth-fatal-error": "사용자 인증 도중 치명적인 오류가 발생했습니다.",
+	"pluggableauthlogout": "로그아웃"
 }
