@@ -47,7 +47,7 @@ abstract class PluggableAuth implements PluggableAuthPlugin, LoggerAwareInterfac
 	/**
 	 * @var LoggerInterface
 	 */
-	protected $logger = null;
+	private $logger = null;
 
 	/**
 	 * @inheritDoc
