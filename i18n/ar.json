@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Meno25",
-			"ديفيد"
+			"ديفيد",
+			"Asma"
 		]
 	},
 	"pluggableauth-desc": "يوفر إطارا للتوثيق والتخويل القابل للتوصيل",
@@ -11,5 +12,6 @@
 	"pluggableauth-authentication-plugin-failure": "تعذر تحميل المكون الإضافي للمصادقة",
 	"pluggableauth-authentication-workflow-failure": "فشل سير عمل المصادقة.",
 	"pluggableauth-loginbutton-help": "المصادقة باستخدام PluggableAuth",
-	"pluggableauth-fatal-error": "خطأ قاتل عند التحقق من هوية المستخدم."
+	"pluggableauth-fatal-error": "خطأ قاتل عند التحقق من هوية المستخدم.",
+	"pluggableauthlogout": "تسجيل الخروج"
 }

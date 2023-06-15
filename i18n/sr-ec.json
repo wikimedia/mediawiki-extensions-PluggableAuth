@@ -1,8 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
-			"BadDog"
+			"BadDog",
+			"Milicevic01"
 		]
 	},
-	"pluggableauth-fatal-error": "Неотклоњива грешка при потврди идентитета корисника/це."
+	"pluggableauth-fatal-error": "Неотклоњива грешка при потврди идентитета корисника/це.",
+	"pluggableauthlogout": "Одјава"
 }
