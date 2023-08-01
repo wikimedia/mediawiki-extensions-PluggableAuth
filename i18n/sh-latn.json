@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Winston Sung"
+		]
+	},
+	"pluggableauth-not-authorized": "{{GENDER:$1|Korisnik}} $1 nije ovlašten."
+}
