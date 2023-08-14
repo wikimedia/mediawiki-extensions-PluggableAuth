@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Nokeoo"
+		]
+	},
+	"pluggableauth-authentication-failure": "Naudotojas negali būti autentifikuotas.",
+	"pluggableauth-authentication-workflow-failure": "Autentifikavimo darbo srauto klaida.",
+	"pluggableauth-fatal-error": "Kritinė klaida autentifikuojant naudotoją."
+}
