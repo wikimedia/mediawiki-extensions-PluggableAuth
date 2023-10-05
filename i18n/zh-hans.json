@@ -3,12 +3,14 @@
 		"authors": [
 			"A Chinese Wikipedian",
 			"GuoPC",
+			"LittlePaw365",
 			"Liuxinyu970226"
 		]
 	},
 	"pluggableauth-desc": "提供框架用于插接式身份认证和授权",
 	"pluggableauth-not-authorized": "{{GENDER:$1|用户}}$1未获授权。",
 	"pluggableauth-authentication-failure": "用户身份不能被验证。",
+	"pluggableauth-authentication-plugin-failure": "无法加载身份验证插件",
 	"pluggableauth-authentication-workflow-failure": "身份验证工作流失败。",
 	"pluggableauth-loginbutton-help": "使用PluggableAuth验证",
 	"pluggableauth-fatal-error": "验证用户的致命错误。"
