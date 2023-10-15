@@ -7,6 +7,9 @@ use MediaWiki\Extension\PluggableAuth\Group\MapGroups;
 use MediaWikiIntegrationTestCase;
 use TestUserRegistry;
 
+/**
+ * @group Database
+ */
 class MapGroupsTest extends MediaWikiIntegrationTestCase {
 
 	/**
