@@ -7,6 +7,9 @@ use MediaWiki\Extension\PluggableAuth\Group\SyncAllGroups;
 use MediaWikiIntegrationTestCase;
 use TestUserRegistry;
 
+/**
+ * @group Database
+ */
 class SyncAllGroupsTest extends MediaWikiIntegrationTestCase {
 
 	/**
