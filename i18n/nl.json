@@ -6,5 +6,11 @@
 		]
 	},
 	"pluggableauth-desc": "Biedt een raamwerk voor modulaire authenticatie en autorisatie",
-	"pluggableauth-not-authorized": "{{GENDER:$1|Gebruikers}} $1 niet toegestaan."
+	"pluggableauth-not-authorized": "{{GENDER:$1|Gebruikers}} $1 niet toegestaan.",
+	"pluggableauth-authentication-failure": "De gebruiker kan niet geauthenticeerd worden.",
+	"pluggableauth-authentication-plugin-failure": "Kan authenticatieplug-in niet laden",
+	"pluggableauth-authentication-workflow-failure": "Authenticatie-werkstroom mislukt.",
+	"pluggableauth-loginbutton-help": "Authenticeren met PluggableAuth",
+	"pluggableauth-fatal-error": "Fatale fout bij het authenticeren van de gebruiker.",
+	"pluggableauthlogout": "Afmelden"
 }
