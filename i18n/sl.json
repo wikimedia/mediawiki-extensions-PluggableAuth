@@ -1,11 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Eleassar"
+			"Eleassar",
+			"Upwinxp"
 		]
 	},
 	"pluggableauth-desc": "Zagotavlja ogrodje za avtentikacijo in avtorizacijo z vtičnikom",
-	"pluggableauth-not-authorized": "{{GENDER:$1|Uporabnik|Uporabnica|Uporabnik_ca}} $1 ni {{GENDER:$1|avtoriziran|avtorizirana|avtoriziran_a}}.",
+	"pluggableauth-not-authorized": "{{GENDER:$1|Uporabnik|Uporabnica|Uporabnik/ca}} $1 ni {{GENDER:$1|avtoriziran|avtorizirana|avtoriziran/a}}.",
 	"pluggableauth-authentication-failure": "Uporabnika ni mogoče avtenticirati.",
 	"pluggableauth-authentication-workflow-failure": "Neuspešen delovni tok avtentikacije.",
 	"pluggableauth-fatal-error": "Usodna napaka pri avtentikaciji uporabnika."
