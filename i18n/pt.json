@@ -11,5 +11,6 @@
 	"pluggableauth-authentication-plugin-failure": "Não foi possível carregar o ''plug-in'' de autenticação",
 	"pluggableauth-authentication-workflow-failure": "Falha no processo de autenticação.",
 	"pluggableauth-loginbutton-help": "Autenticar-se usando PluggableAuth",
-	"pluggableauth-fatal-error": "Erro fatal na autenticação do utilizador."
+	"pluggableauth-fatal-error": "Erro fatal na autenticação do utilizador.",
+	"pluggableauthlogout": "Sair"
 }
