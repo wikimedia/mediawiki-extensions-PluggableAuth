@@ -7,7 +7,9 @@
 	"pluggableauth-desc": "Dèje 'nu framework pe attaccà autendicaziune e autorizzazziune",
 	"pluggableauth-not-authorized": "{{GENDER:$1|Utende}} $1 none autorizzate.",
 	"pluggableauth-authentication-failure": "L'utende non ge pò essere autendicate.",
+	"pluggableauth-authentication-plugin-failure": "'Mbossibbele carecà 'u plugin de l'autendicazione",
 	"pluggableauth-authentication-workflow-failure": "'U flusse de autendicazione ave fallite.",
 	"pluggableauth-loginbutton-help": "Autendicate cu PluggableAuth",
-	"pluggableauth-fatal-error": "Errore fatale sus a l'autendicazione de l'utende."
+	"pluggableauth-fatal-error": "Errore fatale sus a l'autendicazione de l'utende.",
+	"pluggableauthlogout": "Isse"
 }
