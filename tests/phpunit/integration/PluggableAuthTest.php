@@ -30,6 +30,7 @@ use SpecialUserLogin;
 
 /**
  * @covers \MediaWiki\Extension\PluggableAuth\PluggableAuthLogin::execute()
+ * @group Database
  */
 class PluggableAuthTest extends MediaWikiIntegrationTestCase {
 
