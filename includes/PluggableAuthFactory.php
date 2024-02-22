@@ -119,6 +119,10 @@ class PluggableAuthFactory {
 				'groupsyncs' => $entry['groupsyncs'] ?? [],
 				'label' => $label
 			];
+
+			if ( isset( $entry['weight'] ) ) {
+				$this->pluggableAuthConfig[$name]['weight'] = $entry['weight'];
+			}
 		}
 	}
 
