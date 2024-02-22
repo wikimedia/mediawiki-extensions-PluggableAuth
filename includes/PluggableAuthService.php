@@ -146,7 +146,8 @@ class PluggableAuthService {
 	}
 
 	/**
-	 * Moves login button to bottom of form.
+	 * Locates login button and extra login fields based on weight parameter in config.
+	 * Defaults to below default fields if weight is not specified.
 	 * @param array &$formDescriptor The special key weight can be set to
 	 *        change the order of the fields.
 	 */
@@ -154,8 +155,19 @@ class PluggableAuthService {
 		array &$formDescriptor
 	): void {
 		foreach ( $this->pluggableAuthFactory->getConfig() as $name => $config ) {
+			if ( isset( $config['weight'] ) ) {
+				$weight = $config['weight'];
+			} else {
+				$weight = 101;
+			}
 			if ( isset( $formDescriptor[$name] ) ) {
-				$formDescriptor[$name]['weight'] = 101;
+				$formDescriptor[$name]['weight'] = $weight;
+			}
+			$extraLoginFields = $config['spec']['class']::getExtraLoginFields();
+			foreach ( $extraLoginFields as $fieldname => $field ) {
+				if ( isset( $formDescriptor[$fieldname] ) ) {
+					$formDescriptor[$fieldname]['weight'] = $weight;
+				}
 			}
 		}
 	}
