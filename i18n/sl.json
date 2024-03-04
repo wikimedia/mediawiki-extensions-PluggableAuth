@@ -5,7 +5,7 @@
 			"Upwinxp"
 		]
 	},
-	"pluggableauth-desc": "Zagotavlja ogrodje za avtentikacijo in avtorizacijo z vtičnikom",
+	"pluggableauth-desc": "Zagotavlja ogrodje za avtentikacijo in pooblastitev z vtičnikom",
 	"pluggableauth-not-authorized": "{{GENDER:$1|Uporabnik|Uporabnica|Uporabnik_ca}} $1 ni {{GENDER:$1|avtoriziran|avtorizirana|avtoriziran_a}}.",
 	"pluggableauth-authentication-failure": "Uporabnika ni mogoče avtenticirati.",
 	"pluggableauth-authentication-plugin-failure": "Avtentikacijskega vtičnika ni bilo mogoče naložiti",
