@@ -24,6 +24,7 @@ namespace MediaWiki\Extension\PluggableAuth;
 use MediaWiki;
 use MediaWiki\Auth\Hook\LocalUserCreatedHook;
 use MediaWiki\Hook\BeforeInitializeHook;
+use MediaWiki\Hook\LoginFormValidErrorMessagesHook;
 use MediaWiki\Hook\SkinTemplateNavigation__UniversalHook;
 use MediaWiki\Hook\UserLogoutCompleteHook;
 use MediaWiki\Permissions\Hook\TitleReadWhitelistHook;
@@ -42,7 +43,8 @@ class PluggableAuthHooks implements
 	BeforeInitializeHook,
 	SkinTemplateNavigation__UniversalHook,
 	LocalUserCreatedHook,
-	SpecialPage_initListHook
+	SpecialPage_initListHook,
+	LoginFormValidErrorMessagesHook
 {
 
 	/**
@@ -189,5 +191,16 @@ class PluggableAuthHooks implements
 				}
 			}
 		}
+	}
+
+	/**
+	 * @param array &$messages
+	 * @return void
+	 *
+	 * @since 7.3.0
+	 *
+	 */
+	public function onLoginFormValidErrorMessages( array &$messages ) {
+		$messages[] = 'pluggableauth-fatal-error';
 	}
 }
