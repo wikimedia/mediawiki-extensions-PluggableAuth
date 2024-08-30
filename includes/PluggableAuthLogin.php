@@ -28,6 +28,7 @@ use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\User\UserIdentityValue;
 use Message;
 use Psr\Log\LoggerInterface;
+use SpecialPage;
 use UnlistedSpecialPage;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
@@ -171,13 +172,13 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 		}
 		$returnToUrl = $this->authManager->getRequest()->getSessionData( self::RETURNTOURL_SESSION_KEY );
 		if ( $returnToUrl === null || strlen( $returnToUrl ) === 0 ) {
-			// This should never happen unless there is an issue in the authentication plugin, most
-			// likely resulting in session corruption. Since it is unclear if it is safe to continue,
-			// an error message is shown to the user and the authentication flow is terminated.
+			// This can happen if we've lost session data or the user has a session cookie whose corresponding session
+			// has been culled. In this case, we'll send them back to the login page.
 			$this->logger->debug( 'ERROR: return to URL is null or empty' );
-			$this->getOutput()->wrapWikiMsg( "<div class='error'>\n$1\n</div>", 'pluggableauth-fatal-error' );
-		} else {
-			$this->getOutput()->redirect( $returnToUrl );
+			$returnToUrl = SpecialPage::getTitleFor( 'Userlogin' )->getFullURL( [
+				'error' => 'pluggableauth-fatal-error'
+			] );
 		}
+		$this->getOutput()->redirect( $returnToUrl );
 	}
 }
