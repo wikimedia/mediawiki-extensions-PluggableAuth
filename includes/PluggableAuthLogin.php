@@ -98,36 +98,59 @@ class PluggableAuthLogin extends UnlistedSpecialPage {
 		$pluggableauth = $this->pluggableAuthFactory->getInstance();
 		$error = null;
 		if ( $pluggableauth ) {
+			$id = $username = $realname = $email = null;
 			if ( $pluggableauth->authenticate( $id, $username, $realname, $email, $error ) ) {
 				if ( !$id ) {
-					$user->loadDefaults( $username );
-					if ( $realname !== null ) {
-						$user->setRealName( $realname );
+					if ( $username === null ) {
+						$this->logger->debug( 'Missing username for new user' );
+						$error = ( new Message( 'pluggableauth-no-username' ) )->text();
+					} else {
+						$user->loadDefaults( $username );
+						if ( $realname === null ) {
+							$realname = $user->mRealName;
+						} else {
+							$user->mRealName = $realname;
+						}
+						$now = ConvertibleTimestamp::now( TS_UNIX );
+						if ( $email === null ) {
+							$email = $user->mEmail;
+						} else {
+							$user->mEmail = $email;
+							$user->mEmailAuthenticated = $now;
+						}
+						$user->mTouched = $now;
+						$this->logger->debug( 'Authenticated new user: ' . $username );
+						// Group sync is done in `LocalUserCreated` hook
 					}
-					$user->mName = $username;
-					$user->mEmail = $email;
-					$now = ConvertibleTimestamp::now( TS_UNIX );
-					$user->mEmailAuthenticated = $now;
-					$user->mTouched = $now;
-					$this->logger->debug( 'Authenticated new user: ' . $username );
-					// Group sync is done in `LocalUserCreated` hook
 				} else {
 					$user->mId = $id;
 					$user->loadFromId();
 					$this->logger->debug( 'Authenticated existing user: ' . $user->mName );
 					$userIdentity = new UserIdentityValue( $user->getId(), $user->getName() );
 					$this->groupProcessorRunner->run( $userIdentity, $pluggableauth );
+					// ignore username returned from plugin for existing users
+					$username = $user->mName;
+					// if real name is not set by plugin, get it from existing user
+					if ( $realname === null ) {
+						$realname = $user->mRealName;
+					}
+					// if email is not set by plugin, get it from existing user
+					if ( $email === null ) {
+						$email = $user->mEmail;
+					}
 				}
-				$authorized = true;
-				$this->hookRunner->onPluggableAuthUserAuthorization( $user, $authorized );
-				if ( $authorized ) {
-					$this->authManager->setAuthenticationSessionData( self::USERNAME_SESSION_KEY, $username );
-					$this->authManager->setAuthenticationSessionData( self::REALNAME_SESSION_KEY, $realname );
-					$this->authManager->setAuthenticationSessionData( self::EMAIL_SESSION_KEY, $email );
-					$this->logger->debug( 'User is authorized.' );
-				} else {
-					$this->logger->debug( 'Authorization failure.' );
-					$error = ( new Message( 'pluggableauth-not-authorized', [ $username ] ) )->parse();
+				if ( $error === null ) {
+					$authorized = true;
+					$this->hookRunner->onPluggableAuthUserAuthorization( $user, $authorized );
+					if ( $authorized ) {
+						$this->authManager->setAuthenticationSessionData( self::USERNAME_SESSION_KEY, $username );
+						$this->authManager->setAuthenticationSessionData( self::REALNAME_SESSION_KEY, $realname );
+						$this->authManager->setAuthenticationSessionData( self::EMAIL_SESSION_KEY, $email );
+						$this->logger->debug( 'User is authorized.' );
+					} else {
+						$this->logger->debug( 'Authorization failure.' );
+						$error = ( new Message( 'pluggableauth-not-authorized', [ $username ] ) )->parse();
+					}
 				}
 			} else {
 				$this->logger->debug( 'Authentication failure.' );
