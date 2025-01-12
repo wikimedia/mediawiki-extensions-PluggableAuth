@@ -7,6 +7,7 @@
 		]
 	},
 	"pluggableauth-desc": "{{desc|name=Pluggable Auth|url=https://www.mediawiki.org/wiki/Extension:PluggableAuth}}",
+	"pluggableauth-no-username": "Failure message when username is missing for new user.",
 	"pluggableauth-not-authorized": "Text to display when an authorization plugin indicates that the user is not authorized to log in. Parameters:\n* $1 - a username with GENDER support.",
 	"pluggableauth-authentication-failure": "Failure message when there is an authentication or authorization failure (e.g. User not authorized).",
 	"pluggableauth-authentication-plugin-failure": "Failure message when an authentication plugin cannot be instantiated",

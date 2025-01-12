@@ -5,6 +5,7 @@
 		]
 	},
 	"pluggableauth-desc": "Provides framework for pluggable authentication and authorization",
+	"pluggableauth-no-username": "Missing username for new user.",
 	"pluggableauth-not-authorized": "{{GENDER:$1|User}} $1 not authorized.",
 	"pluggableauth-authentication-failure": "User cannot be authenticated.",
 	"pluggableauth-authentication-plugin-failure": "Could not load authentication plugin",
