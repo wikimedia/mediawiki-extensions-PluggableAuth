@@ -4,7 +4,8 @@
 			"Beta16"
 		]
 	},
+	"pluggableauth-no-username": "Manca il nome utente per un nuovo utente.",
 	"pluggableauth-not-authorized": "Utente $1 non {{GENDER:$1|autorizzato|autorizzata|autorizzato/a}}.",
 	"pluggableauth-loginbutton-help": "Autenticati con PluggableAuth",
-	"pluggableauth-fatal-error": "Errore irreversibile durante l'autenticazione dell'utente."
+	"pluggableauth-fatal-error": "Errore durante l'autenticazione dell'utente. Riprova o contatta l'amministratore di sistema."
 }
