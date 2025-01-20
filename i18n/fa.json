@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jeeputer"
+		]
+	},
+	"pluggableauth-no-username": "نام کاربری ناموجود برای کاربر جدید.",
+	"pluggableauth-fatal-error": "قطا در اعتبارسنجی کاربر. لطفاً دوباره تلاش کنید یا با مدیر سامانهٔ خود تماس بگیرید."
+}
