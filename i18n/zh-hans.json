@@ -13,6 +13,6 @@
 	"pluggableauth-authentication-plugin-failure": "无法加载身份验证插件",
 	"pluggableauth-authentication-workflow-failure": "身份验证工作流失败。",
 	"pluggableauth-loginbutton-help": "用PluggableAuth验证身份",
-	"pluggableauth-fatal-error": "验证用户身份时出现致命错误。",
+	"pluggableauth-fatal-error": "验证用户身份时出错。请重试或联系您的系统管理员。",
 	"pluggableauthlogout": "退出登录"
 }
