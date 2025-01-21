@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Nesuprachy"
+		]
+	},
+	"pluggableauth-no-username": "Chybí uživatelské jméno pro nového uživatele.",
+	"pluggableauth-fatal-error": "Chyba při ověřování uživatele. Zkuste to znovu nebo se obraťte na správce systému."
+}

@@ -5,11 +5,12 @@
 		]
 	},
 	"pluggableauth-desc": "Ergänzt ein Framework zur Authentifikation und Autorisierung",
+	"pluggableauth-no-username": "Für den neuen Benutzer fehlt der Benutzername.",
 	"pluggableauth-not-authorized": "{{GENDER:$1|Der Benutzer|Die Benutzerin}} $1 ist nicht berechtigt.",
 	"pluggableauth-authentication-failure": "Der Benutzer konnte nicht authentifiziert werden.",
 	"pluggableauth-authentication-plugin-failure": "Authentifizierungs-Plugin konnte nicht geladen werden",
 	"pluggableauth-authentication-workflow-failure": "Authentifikations-Workflow-Fehler.",
 	"pluggableauth-loginbutton-help": "Authentifizieren mit PluggableAuth",
-	"pluggableauth-fatal-error": "Fataler Fehler bei der Authentifizierung des Benutzers.",
+	"pluggableauth-fatal-error": "Fehler bei der Benutzerauthentifizierung. Bitte versuche es erneut oder wende dich an deinen Systemadministrator.",
 	"pluggableauthlogout": "Abmelden"
 }
