@@ -11,6 +11,6 @@
 	"pluggableauth-authentication-plugin-failure": "Kan authenticatieplug-in niet laden",
 	"pluggableauth-authentication-workflow-failure": "Authenticatie-werkstroom mislukt.",
 	"pluggableauth-loginbutton-help": "Authenticeren met PluggableAuth",
-	"pluggableauth-fatal-error": "Fatale fout bij het authenticeren van de gebruiker.",
+	"pluggableauth-fatal-error": "Fout bij het authenticeren van de gebruiker. Probeer het opnieuw of neem contact op met uw systeembeheerder.",
 	"pluggableauthlogout": "Afmelden"
 }
