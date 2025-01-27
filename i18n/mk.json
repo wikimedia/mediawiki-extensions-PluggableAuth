@@ -5,11 +5,12 @@
 		]
 	},
 	"pluggableauth-desc": "Дава рамка за приклучна заверка и овластување",
+	"pluggableauth-no-username": "Недостасува корисничко име за новиот корисник.",
 	"pluggableauth-not-authorized": "{{GENDER:$1|Корисникот}} $1 не е овластен.",
 	"pluggableauth-authentication-failure": "Не можев да го заверам корисникот.",
 	"pluggableauth-authentication-plugin-failure": "Не можев да го вчитам додатокот за заверка",
 	"pluggableauth-authentication-workflow-failure": "Неупех во работниот тек на заверката.",
 	"pluggableauth-loginbutton-help": "Заверка со PluggableAuth",
-	"pluggableauth-fatal-error": "Се појави кобна грешка при заверката на корисникот.",
+	"pluggableauth-fatal-error": "Грешка при заверката на корисникот. Обидете се повторно или обратете се на администратор.",
 	"pluggableauthlogout": "Одјава"
 }
