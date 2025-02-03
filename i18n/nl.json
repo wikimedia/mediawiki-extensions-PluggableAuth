@@ -6,6 +6,7 @@
 		]
 	},
 	"pluggableauth-desc": "Biedt een raamwerk voor modulaire authenticatie en autorisatie",
+	"pluggableauth-no-username": "De gebruikersnaam voor de nieuwe gebruiker ontbreekt.",
 	"pluggableauth-not-authorized": "{{GENDER:$1|Gebruikers}} $1 niet toegestaan.",
 	"pluggableauth-authentication-failure": "De gebruiker kan niet geauthenticeerd worden.",
 	"pluggableauth-authentication-plugin-failure": "Kan authenticatieplug-in niet laden",
