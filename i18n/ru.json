@@ -2,9 +2,10 @@
 	"@metadata": {
 		"authors": [
 			"Kareyac",
-			"Vlad5250"
+			"Vlad5250",
+			"Okras"
 		]
 	},
 	"pluggableauth-authentication-failure": "Пользователь не может быть аутентифицирован.",
-	"pluggableauth-fatal-error": "Произошла фатальная ошибка при аутентификации участника."
+	"pluggableauth-fatal-error": "Ошибка аутентификации пользователя. Попробуйте ещё раз или обратитесь к системному администратору."
 }
