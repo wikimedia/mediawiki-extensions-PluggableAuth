@@ -1,6 +1,6 @@
 {
 	"name": "PluggableAuth",
-	"version": "7.4.0",
+	"version": "7.5.0",
 	"author": [
 		"[https://www.mediawiki.org/wiki/User:Cindy.cicalese Cindy Cicalese]"
 	],
@@ -46,7 +46,8 @@
 		"main": {
 			"class": "MediaWiki\\Extension\\PluggableAuth\\PluggableAuthHooks",
 			"services": [
-				"PluggableAuthService"
+				"PluggableAuthService",
+				"UrlUtils"
 			]
 		}
 	},
@@ -58,7 +59,10 @@
 		"BeforeInitialize": "main",
 		"LocalUserCreated": "main",
 		"SpecialPage_initList": "main",
-		"LoginFormValidErrorMessages": "main"
+		"LoginFormValidErrorMessages": "main",
+		"ImgAuthBeforeStream": "main",
+		"AuthPreserveQueryParams": "main",
+		"PostLoginRedirect": "main"
 	},
 	"RestRoutes": [
 		{

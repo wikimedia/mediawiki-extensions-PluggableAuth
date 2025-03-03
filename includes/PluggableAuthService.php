@@ -35,6 +35,7 @@ use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserIdentityValue;
 use MWException;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 
 class PluggableAuthService {
 
@@ -211,19 +212,9 @@ class PluggableAuthService {
 		User $user,
 		WebRequest $request
 	) {
-		if ( !$this->enableAutoLogin ) {
+		if ( !$this->shouldRedirectToLogin( $title, $user ) ) {
 			return;
 		}
-		if ( !$out->getUser()->isAnon() ) {
-			return;
-		}
-
-		if ( !$this->permissionManager->isEveryoneAllowed( 'read' ) &&
-			$this->permissionManager->userCan( 'read', $user, $title )
-		) {
-			return;
-		}
-
 		foreach ( $this->loginSpecialPages as $page ) {
 			if ( $title->isSpecial( $page ) ) {
 				return;
@@ -242,6 +233,42 @@ class PluggableAuthService {
 			throw new MWException( "Could not determine URL for Special:Userlogin" );
 		}
 		exit;
+	}
+
+	/**
+	 * @param Title $title
+	 * @param User $user
+	 * @param string $url
+	 * @return void
+	 */
+	public function autoLoginOnImgAuth( Title $title, User $user, string $url ) {
+		if ( !$this->shouldRedirectToLogin( $title, $user ) ) {
+			return;
+		}
+		$title = SpecialPage::getTitleFor( 'Userlogin' );
+		$url = $title->getFullURL( [
+			'returntourl' => $url,
+			// Flag
+			'auth_for' => 'img_auth'
+		] );
+		if ( $url ) {
+			header( 'Location: ' . $url );
+		} else {
+			throw new RuntimeException( "Could not determine URL for Special:Userlogin" );
+		}
+		exit;
+	}
+
+	/**
+	 * @param Title $title
+	 * @param User $user
+	 * @return bool
+	 */
+	private function shouldRedirectToLogin( Title $title, User $user ): bool {
+		return $this->enableAutoLogin &&
+			!$user->isRegistered() &&
+			!$this->permissionManager->isEveryoneAllowed( 'read' ) &&
+			!$this->permissionManager->userCan( 'read', $user, $title );
 	}
 
 	/**
