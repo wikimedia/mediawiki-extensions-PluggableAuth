@@ -23,7 +23,7 @@ namespace MediaWiki\Extension\PluggableAuth;
 
 use MediaWiki\Auth\AuthManager;
 use MediaWiki\Auth\ButtonAuthenticationRequest;
-use Message;
+use MediaWiki\Message\Message;
 
 class BeginAuthenticationRequest extends ButtonAuthenticationRequest {
 	/**

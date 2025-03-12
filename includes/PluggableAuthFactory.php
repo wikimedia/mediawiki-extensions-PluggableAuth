@@ -22,14 +22,14 @@
 namespace MediaWiki\Extension\PluggableAuth;
 
 use Exception;
-use ExtensionRegistry;
 use MediaWiki\Auth\AuthManager;
 use MediaWiki\Config\ServiceOptions;
+use MediaWiki\Language\RawMessage;
 use MediaWiki\Logger\LoggerFactory;
-use Message;
+use MediaWiki\Message\Message;
+use MediaWiki\Registration\ExtensionRegistry;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
-use RawMessage;
 
 class PluggableAuthFactory {
 

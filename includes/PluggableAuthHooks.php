@@ -27,14 +27,14 @@ use MediaWiki\Hook\BeforeInitializeHook;
 use MediaWiki\Hook\LoginFormValidErrorMessagesHook;
 use MediaWiki\Hook\SkinTemplateNavigation__UniversalHook;
 use MediaWiki\Hook\UserLogoutCompleteHook;
+use MediaWiki\Output\OutputPage;
 use MediaWiki\Permissions\Hook\TitleReadWhitelistHook;
+use MediaWiki\Request\WebRequest;
 use MediaWiki\SpecialPage\Hook\AuthChangeFormFieldsHook;
 use MediaWiki\SpecialPage\Hook\SpecialPage_initListHook;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use MWException;
-use OutputPage;
-use Title;
-use User;
-use WebRequest;
 
 class PluggableAuthHooks implements
 	TitleReadWhitelistHook,

@@ -9,7 +9,7 @@
 	"type": "other",
 	"license-name": "MIT",
 	"requires": {
-		"MediaWiki": ">= 1.35.0"
+		"MediaWiki": ">= 1.40.0"
 	},
 	"AutoloadNamespaces": {
 		"MediaWiki\\Extension\\PluggableAuth\\": "includes/"

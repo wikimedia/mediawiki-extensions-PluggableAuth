@@ -21,21 +21,21 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
-use Config;
-use IDBAccessObject;
 use MediaWiki\Auth\AbstractPrimaryAuthenticationProvider;
 use MediaWiki\Auth\AuthenticationRequest;
 use MediaWiki\Auth\AuthenticationResponse;
 use MediaWiki\Auth\AuthManager;
+use MediaWiki\Config\Config;
 use MediaWiki\Config\ServiceOptions;
+use MediaWiki\Language\RawMessage;
+use MediaWiki\Message\Message;
+use MediaWiki\Parser\Sanitizer;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\User\User;
 use MediaWiki\User\UserFactory;
-use Message;
 use MWException;
-use RawMessage;
-use Sanitizer;
-use SpecialPage;
 use StatusValue;
-use User;
+use Wikimedia\Rdbms\IDBAccessObject;
 
 class PrimaryAuthenticationProvider extends AbstractPrimaryAuthenticationProvider {
 

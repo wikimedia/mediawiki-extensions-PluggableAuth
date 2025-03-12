@@ -21,20 +21,20 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
-use ExtensionRegistry;
 use MediaWiki\Auth\AuthManager;
 use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Extension\PluggableAuth\Group\GroupProcessorRunner;
+use MediaWiki\Output\OutputPage;
 use MediaWiki\Permissions\PermissionManager;
+use MediaWiki\Registration\ExtensionRegistry;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserIdentityValue;
 use MWException;
-use OutputPage;
 use Psr\Log\LoggerInterface;
-use SpecialPage;
-use Title;
-use User;
-use WebRequest;
 
 class PluggableAuthService {
 
