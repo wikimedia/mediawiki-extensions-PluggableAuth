@@ -25,11 +25,11 @@ use MediaWiki\Auth\AuthManager;
 use MediaWiki\Extension\PluggableAuth\Group\GroupProcessorRunner;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\Message\Message;
 use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\SpecialPage\UnlistedSpecialPage;
 use MediaWiki\User\UserIdentityValue;
-use Message;
 use Psr\Log\LoggerInterface;
-use UnlistedSpecialPage;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 class PluggableAuthLogin extends UnlistedSpecialPage {
