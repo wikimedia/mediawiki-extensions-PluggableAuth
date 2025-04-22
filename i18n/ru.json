@@ -3,9 +3,17 @@
 		"authors": [
 			"Kareyac",
 			"Vlad5250",
-			"Okras"
+			"Okras",
+			"MidnightLG"
 		]
 	},
+	"pluggableauth-desc": "Предоставляет средства для встраиваемой аутентификации и авторизации",
+	"pluggableauth-no-username": "Не указано имя пользователя для нового пользователя.",
+	"pluggableauth-not-authorized": "{{GENDER:$1|Участник $1 не авторизован|Участница $1 не авторизована}}.",
 	"pluggableauth-authentication-failure": "Пользователь не может быть аутентифицирован.",
-	"pluggableauth-fatal-error": "Ошибка аутентификации пользователя. Попробуйте ещё раз или обратитесь к системному администратору."
+	"pluggableauth-authentication-plugin-failure": "Не удалось загрузить плагин аутентификации",
+	"pluggableauth-authentication-workflow-failure": "Нарушен порядок аутентификации.",
+	"pluggableauth-loginbutton-help": "Войти с помощью PluggableAuth",
+	"pluggableauth-fatal-error": "Ошибка аутентификации пользователя. Попробуйте ещё раз или обратитесь к системному администратору.",
+	"pluggableauthlogout": "Выйти"
 }
