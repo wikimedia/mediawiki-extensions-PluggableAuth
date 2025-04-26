@@ -21,10 +21,15 @@
 
 namespace MediaWiki\Extension\PluggableAuth;
 
+use Exception;
 use MediaWiki;
+use MediaWiki\Auth\Hook\AuthPreserveQueryParamsHook;
 use MediaWiki\Auth\Hook\LocalUserCreatedHook;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\Hook\BeforeInitializeHook;
+use MediaWiki\Hook\ImgAuthBeforeStreamHook;
 use MediaWiki\Hook\LoginFormValidErrorMessagesHook;
+use MediaWiki\Hook\PostLoginRedirectHook;
 use MediaWiki\Hook\SkinTemplateNavigation__UniversalHook;
 use MediaWiki\Hook\UserLogoutCompleteHook;
 use MediaWiki\Output\OutputPage;
@@ -34,6 +39,7 @@ use MediaWiki\SpecialPage\Hook\AuthChangeFormFieldsHook;
 use MediaWiki\SpecialPage\Hook\SpecialPage_initListHook;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
+use MediaWiki\Utils\UrlUtils;
 use MWException;
 
 class PluggableAuthHooks implements
@@ -44,7 +50,10 @@ class PluggableAuthHooks implements
 	SkinTemplateNavigation__UniversalHook,
 	LocalUserCreatedHook,
 	SpecialPage_initListHook,
-	LoginFormValidErrorMessagesHook
+	LoginFormValidErrorMessagesHook,
+	ImgAuthBeforeStreamHook,
+	AuthPreserveQueryParamsHook,
+	PostLoginRedirectHook
 {
 
 	/**
@@ -53,10 +62,17 @@ class PluggableAuthHooks implements
 	private $pluggableAuthService;
 
 	/**
-	 * @param PluggableAuthService $pluggableAuthService
+	 * @var MediaWiki\Utils\UrlUtils
 	 */
-	public function __construct( PluggableAuthService $pluggableAuthService ) {
+	private $urlUtils;
+
+	/**
+	 * @param PluggableAuthService $pluggableAuthService
+	 * @param UrlUtils $urlUtils
+	 */
+	public function __construct( PluggableAuthService $pluggableAuthService, MediaWiki\Utils\UrlUtils $urlUtils ) {
 		$this->pluggableAuthService = $pluggableAuthService;
+		$this->urlUtils = $urlUtils;
 	}
 
 	/**
@@ -119,6 +135,77 @@ class PluggableAuthHooks implements
 	 */
 	public function onBeforeInitialize( $title, $unused, $output, $user, $request, $mediaWiki ) {
 		$this->pluggableAuthService->autoLogin( $title, $output, $user, $request );
+	}
+
+	/**
+	 * Try to authenticate if the user is trying to view an image
+	 * Step 1: Check if the user is trying to view an image redirect to login if necessary
+	 *
+	 * @param Title &$title
+	 * @param string &$path
+	 * @param string &$name
+	 * @param array &$result
+	 * @return void
+	 */
+	public function onImgAuthBeforeStream( &$title, &$path, &$name, &$result ) {
+		$context = RequestContext::getMain();
+		$url = $context->getRequest()->getFullRequestURL();
+		$user = $context->getUser();
+		$this->pluggableAuthService->autoLoginOnImgAuth( $title, $user, $url );
+	}
+
+	/**
+	 * Step 2: Make sure full return URL is preserved, so we can redirect after login
+	 *
+	 * @param array &$params
+	 * @param array $options
+	 * @return void
+	 */
+	public function onAuthPreserveQueryParams( array &$params, array $options ) {
+		$returnToUrl = $this->maybeGetReturnToUrl();
+		if ( !$returnToUrl ) {
+			return;
+		}
+		$params['returntourl'] = $returnToUrl;
+		$params['auth_for'] = 'img_auth';
+	}
+
+	/**
+	 * Step 3: Redirect to the return URL after login
+	 * @param string &$returnTo
+	 * @param string &$returnToQuery
+	 * @param string &$type
+	 * @return void
+	 */
+	public function onPostLoginRedirect( &$returnTo, &$returnToQuery, &$type ) {
+		$returnToUrl = $this->maybeGetReturnToUrl();
+		if ( !$returnToUrl ) {
+			return;
+		}
+		header( 'Location: ' . $returnToUrl );
+		exit;
+	}
+
+	/**
+	 * Related to img_auth authentication, check if env flags are set and try to retrieve returntourl
+	 * @return string|null
+	 */
+	private function maybeGetReturnToUrl(): ?string {
+		try {
+			$url = RequestContext::getMain()->getRequest()->getFullRequestURL();
+		} catch ( Exception $e ) {
+			return null;
+		}
+
+		$parsed = $this->urlUtils->parse( $url );
+		$queryParams = wfCgiToArray( $parsed['query'] );
+		if ( !isset( $queryParams['auth_for'] ) || $queryParams['auth_for'] !== 'img_auth' ) {
+			return null;
+		}
+		if ( !isset( $queryParams['returntourl'] ) ) {
+			return null;
+		}
+		return $queryParams['returntourl'];
 	}
 
 	// phpcs:disable MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
