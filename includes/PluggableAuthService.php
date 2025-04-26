@@ -155,17 +155,14 @@ class PluggableAuthService {
 		array &$formDescriptor
 	): void {
 		foreach ( $this->pluggableAuthFactory->getConfig() as $name => $config ) {
-			if ( isset( $config['weight'] ) ) {
-				$weight = $config['weight'];
-			} else {
-				$weight = 101;
-			}
 			if ( isset( $formDescriptor[$name] ) ) {
+				$weight = $config['weight'] ?? ( $formDescriptor[$name]['weight'] ?? 101 );
 				$formDescriptor[$name]['weight'] = $weight;
 			}
 			$extraLoginFields = $config['spec']['class']::getExtraLoginFields();
 			foreach ( $extraLoginFields as $fieldname => $field ) {
 				if ( isset( $formDescriptor[$fieldname] ) ) {
+					$weight = $config['weight'] ?? ( $formDescriptor[$fieldname]['weight'] ?? 101 );
 					$formDescriptor[$fieldname]['weight'] = $weight;
 				}
 			}
