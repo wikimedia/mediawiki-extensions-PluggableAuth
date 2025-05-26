@@ -2,5 +2,6 @@
 	"@metadata": {
 		"authors": []
 	},
-	"pluggableauth-fatal-error": "Neotklonjiva greška pri potvrdi identiteta korisnika/ce."
+	"pluggableauth-fatal-error": "Došlo je do greške pri autentifikaciji. Molimo probajte ponovo ili kontaktirajte sistem administratora.",
+	"pluggableauthlogout": "Odjava"
 }
