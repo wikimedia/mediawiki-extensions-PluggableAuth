@@ -7,10 +7,12 @@
 		]
 	},
 	"pluggableauth-desc": "Fornece uma estrutura para autenticação e autorização modulares",
+	"pluggableauth-no-username": "Nome de usuário ausente para novo usuário.",
 	"pluggableauth-not-authorized": "{{GENDER:$1|Usuário $1 não autorizado|Usuária $1 não autorizada}}.",
 	"pluggableauth-authentication-failure": "O usuário não pode ser autenticado.",
 	"pluggableauth-authentication-plugin-failure": "Não foi possível carregar o plugin de autenticação",
 	"pluggableauth-authentication-workflow-failure": "Falha no processo de autenticação.",
 	"pluggableauth-loginbutton-help": "Autenticar com PluggableAuth",
-	"pluggableauth-fatal-error": "Erro fatal na autenticação do usuário."
+	"pluggableauth-fatal-error": "Erro ao autenticar o usuário. Tente novamente ou entre em contato com o administrador do sistema.",
+	"pluggableauthlogout": "Sair"
 }
