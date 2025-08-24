@@ -51,7 +51,8 @@ class PluggableAuthServiceTest extends MediaWikiIntegrationTestCase {
 			$groupProcessorRunner,
 			$permissionManager,
 			$authManager,
-			$logger
+			$logger,
+			$this->getServiceContainer()->getUrlUtils()
 		);
 
 		$service->modifyLogoutLink( $links );

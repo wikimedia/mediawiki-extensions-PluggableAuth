@@ -33,6 +33,7 @@ use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserIdentityValue;
+use MediaWiki\Utils\UrlUtils;
 use MWException;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -95,6 +96,8 @@ class PluggableAuthService {
 	 */
 	private $logger;
 
+	private UrlUtils $urlUtils;
+
 	/**
 	 * @param ServiceOptions $options
 	 * @param ExtensionRegistry $extensionRegistry
@@ -104,6 +107,7 @@ class PluggableAuthService {
 	 * @param PermissionManager $permissionManager
 	 * @param AuthManager $authManager
 	 * @param LoggerInterface $logger
+	 * @param UrlUtils $urlUtils
 	 */
 	public function __construct(
 		ServiceOptions $options,
@@ -113,7 +117,8 @@ class PluggableAuthService {
 		GroupProcessorRunner $groupProcessorRunner,
 		PermissionManager $permissionManager,
 		AuthManager $authManager,
-		LoggerInterface $logger
+		LoggerInterface $logger,
+		UrlUtils $urlUtils
 	) {
 		$options->assertRequiredOptions( self::CONSTRUCTOR_OPTIONS );
 		$this->enableAutoLogin = $options->get( 'PluggableAuth_EnableAutoLogin' );
@@ -126,6 +131,7 @@ class PluggableAuthService {
 		$this->permissionManager = $permissionManager;
 		$this->authManager = $authManager;
 		$this->logger = $logger;
+		$this->urlUtils = $urlUtils;
 	}
 
 	/**
@@ -289,7 +295,9 @@ class PluggableAuthService {
 
 		$links['user-menu']['pluggableauth-logout'] = $links['user-menu']['logout'];
 		if ( $this->enableFastLogout ) {
-			$parsedOrigHref = wfParseUrl( wfExpandUrl( $links['user-menu']['pluggableauth-logout']['href'] ) );
+			$parsedOrigHref = $this->urlUtils->parse(
+				$this->urlUtils->expand( $links['user-menu']['pluggableauth-logout']['href'] )
+			);
 			$query = wfCgiToArray( $parsedOrigHref['query'] );
 			if ( isset( $query['title'] ) ) {
 				unset( $query['title'] );

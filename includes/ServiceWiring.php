@@ -49,7 +49,8 @@ return [
 				$services->get( 'PluggableAuth.GroupProcessorRunner' ),
 				$services->getPermissionManager(),
 				$services->getAuthManager(),
-				LoggerFactory::getInstance( 'PluggableAuth' )
+				LoggerFactory::getInstance( 'PluggableAuth' ),
+				$services->getUrlUtils()
 			);
 		},
 	'PluggableAuth.GroupProcessorFactory' =>
