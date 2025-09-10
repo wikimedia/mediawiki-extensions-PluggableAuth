@@ -76,7 +76,6 @@ class DummyAuth extends PluggableAuth {
 	 * @param string|null &$email
 	 * @param string|null &$errorMessage
 	 * @return bool true if user is authenticated, false otherwise
-	 *
 	 */
 	public function authenticate(
 		?int &$id,

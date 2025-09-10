@@ -17,7 +17,6 @@ use Psr\Log\LoggerInterface;
 class PluggableAuthServiceTest extends MediaWikiIntegrationTestCase {
 
 	/**
-	 *
 	 * @param array $links
 	 * @param array $expectedLinks
 	 * @param array $options

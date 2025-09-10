@@ -29,7 +29,6 @@ use MediaWiki\User\UserIdentity;
 class HookRunner implements PluggableAuthUserAuthorization {
 
 	/**
-	 *
 	 * @var HookContainer
 	 */
 	private $container;

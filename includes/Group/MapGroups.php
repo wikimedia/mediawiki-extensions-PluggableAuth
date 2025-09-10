@@ -41,7 +41,6 @@ class MapGroups extends GroupProcessorBase {
 	}
 
 	/**
-	 *
 	 * @var array
 	 */
 	protected $groupMap = [];

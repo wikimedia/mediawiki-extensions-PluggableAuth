@@ -138,7 +138,6 @@ class PluggableAuthService {
 	 * Adds PluggableAuth login special pages to allowed list.
 	 * @param Title $title being checked
 	 * @param bool &$whitelisted whether this title is whitelisted
-	 *
 	 */
 	public function allowLoginPage(
 		Title $title,

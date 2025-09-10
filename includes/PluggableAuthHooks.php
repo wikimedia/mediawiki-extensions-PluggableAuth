@@ -259,7 +259,6 @@ class PluggableAuthHooks implements
 	 * Removes password providers if local login is not enabled.
 	 *
 	 * @since 2.0
-	 *
 	 */
 	public static function onRegistration() {
 		if ( $GLOBALS['wgPluggableAuth_EnableLocalLogin'] ) {
@@ -285,7 +284,6 @@ class PluggableAuthHooks implements
 	 * @return void
 	 *
 	 * @since 7.3.0
-	 *
 	 */
 	public function onLoginFormValidErrorMessages( array &$messages ) {
 		$messages[] = 'pluggableauth-fatal-error';

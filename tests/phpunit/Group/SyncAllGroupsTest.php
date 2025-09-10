@@ -13,7 +13,6 @@ use TestUserRegistry;
 class SyncAllGroupsTest extends MediaWikiIntegrationTestCase {
 
 	/**
-	 *
 	 * @param array $attributes
 	 * @param array $configArray
 	 * @param array $initialGroups
@@ -47,7 +46,6 @@ class SyncAllGroupsTest extends MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 *
 	 * @return array
 	 */
 	public function provideRunData() {

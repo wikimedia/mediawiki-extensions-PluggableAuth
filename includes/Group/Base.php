@@ -31,19 +31,16 @@ use Psr\Log\NullLogger;
 abstract class Base implements IGroupProcessor, LoggerAwareInterface {
 
 	/**
-	 *
 	 * @var UserIdentity
 	 */
 	protected $user = null;
 
 	/**
-	 *
 	 * @var array
 	 */
 	protected $attributes = [];
 
 	/**
-	 *
 	 * @var Config
 	 */
 	protected $config = null;

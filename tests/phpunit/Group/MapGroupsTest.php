@@ -13,7 +13,6 @@ use TestUserRegistry;
 class MapGroupsTest extends MediaWikiIntegrationTestCase {
 
 	/**
-	 *
 	 * @param array $attributes
 	 * @param array $configArray
 	 * @param array $initialGroups
@@ -43,7 +42,6 @@ class MapGroupsTest extends MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 *
 	 * @return array
 	 */
 	public function provideRunData() {
