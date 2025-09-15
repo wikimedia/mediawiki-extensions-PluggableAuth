@@ -12,6 +12,6 @@
 	"pluggableauth-authentication-plugin-failure": "Authentifizierungs-Plugin konnte nicht geladen werden",
 	"pluggableauth-authentication-workflow-failure": "Authentifikations-Workflow-Fehler.",
 	"pluggableauth-loginbutton-help": "Authentifizieren mit PluggableAuth",
-	"pluggableauth-fatal-error": "Fehler vom Authentifizierungsanbieter bei der Benutzerauthentifizierung. Bitte versuche es erneut oder wende dich an den Systemadministrator.",
+	"pluggableauth-fatal-error": "Fehler vom Authentifizierungsanbieter bei der Benutzerauthentifizierung. Bitte {{#FORMAL:versuche|versuchen Sie}} es erneut oder {{#FORMAL:wende dich|wenden Sie sich}} an {{#FORMAL:den|Ihren}} Systemadministrator.",
 	"pluggableauthlogout": "Abmelden"
 }
