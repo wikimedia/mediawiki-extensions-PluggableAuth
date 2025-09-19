@@ -1,8 +1,0 @@
-{
-	"@metadata": {
-		"authors": [
-			"Kghbln"
-		]
-	},
-	"pluggableauth-fatal-error": "Fehler vom Authentifizierungsanbieter bei der Benutzerauthentifizierung. Bitte versuchen Sie es erneut oder wenden Sie sich an Ihren Systemadministrator."
-}
