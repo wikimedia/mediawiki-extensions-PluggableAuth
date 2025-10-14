@@ -1,12 +1,17 @@
 {
 	"@metadata": {
 		"authors": [
-			"Elisardojm"
+			"Elisardojm",
+			"Toliño"
 		]
 	},
-	"pluggableauth-desc": "Proporciona o marco para anexar autenticación e autorización",
+	"pluggableauth-desc": "Proporciona un marco para anexar a autenticación e a autorización",
+	"pluggableauth-no-username": "Falta o nome de usuario para o usuario novo.",
 	"pluggableauth-not-authorized": "{{GENDER:$1|O usuario|A usuaria}} $1 non está {{GENDER:$1|autorizado|autorizada}}.",
 	"pluggableauth-authentication-failure": "O usuario non pode autenticarse.",
+	"pluggableauth-authentication-plugin-failure": "Non se puido cargar o complemento de autenticación",
 	"pluggableauth-authentication-workflow-failure": "Fallo no proceso de autenticación.",
-	"pluggableauth-loginbutton-help": "Autentícao con PluggableAuth"
+	"pluggableauth-loginbutton-help": "Autenticación con PluggableAuth",
+	"pluggableauth-fatal-error": "Produciuse un erro ao autenticar o usuario. Inténtao de novo ou ponte en contacto coa administración do sistema.",
+	"pluggableauthlogout": "Saír"
 }
