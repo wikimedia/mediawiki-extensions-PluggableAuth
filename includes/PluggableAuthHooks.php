@@ -198,7 +198,7 @@ class PluggableAuthHooks implements
 		}
 
 		$parsed = $this->urlUtils->parse( $url );
-		$queryParams = wfCgiToArray( $parsed['query'] );
+		$queryParams = wfCgiToArray( $parsed['query'] ?? '' );
 		if ( !isset( $queryParams['auth_for'] ) || $queryParams['auth_for'] !== 'img_auth' ) {
 			return null;
 		}
