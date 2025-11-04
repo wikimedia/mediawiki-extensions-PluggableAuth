@@ -3,7 +3,8 @@
 		"authors": [
 			"BaRaN6161 TURK",
 			"Can",
-			"MuratTheTurkish"
+			"MuratTheTurkish",
+			"SaldırganSincap"
 		]
 	},
 	"pluggableauth-desc": "Takılabilir kimlik doğrulama ve yetkilendirme için çerçeve sağlar",
@@ -12,5 +13,5 @@
 	"pluggableauth-authentication-plugin-failure": "Doğrulama eklentisi yüklenemedi",
 	"pluggableauth-authentication-workflow-failure": "Kimlik doğrulama iş akışı hatası.",
 	"pluggableauth-loginbutton-help": "PluggableAuth ile sizi doğrular",
-	"pluggableauth-fatal-error": "Kullanıcı kimliği doğrulanırken önemli hata."
+	"pluggableauth-fatal-error": "Kullanıcı kimliği doğrulanırken hata oluştu. Lütfen tekrar deneyin veya sistem hizmetliyle iletişime geçin."
 }
