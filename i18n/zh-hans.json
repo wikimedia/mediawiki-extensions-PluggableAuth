@@ -4,10 +4,12 @@
 			"A Chinese Wikipedian",
 			"GuoPC",
 			"LittlePaw365",
-			"Liuxinyu970226"
+			"Liuxinyu970226",
+			"Peterxy12"
 		]
 	},
 	"pluggableauth-desc": "提供可插拔的身份验证和授权框架",
+	"pluggableauth-no-username": "缺少新用户的用户名。",
 	"pluggableauth-not-authorized": "{{GENDER:$1|用户}}$1未获授权。",
 	"pluggableauth-authentication-failure": "无法验证用户身份。",
 	"pluggableauth-authentication-plugin-failure": "无法加载身份验证插件",
