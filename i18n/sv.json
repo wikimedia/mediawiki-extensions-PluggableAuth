@@ -2,8 +2,17 @@
 	"@metadata": {
 		"authors": [
 			"Lokal Profil",
-			"WikiPhoenix"
+			"WikiPhoenix",
+			"Stefan2255"
 		]
 	},
-	"pluggableauth-not-authorized": "{{GENDER:$1|Användare}} $1 är inte auktoriserad."
+	"pluggableauth-desc": "Tillhandahåller ramverk för pluggbar autentisering och auktorisering",
+	"pluggableauth-no-username": "Användarnamn saknas för ny användare.",
+	"pluggableauth-not-authorized": "{{GENDER:$1|Användare}} $1 är inte auktoriserad.",
+	"pluggableauth-authentication-failure": "Användaren kan inte autentiseras.",
+	"pluggableauth-authentication-plugin-failure": "Kunde inte ladda autentiseringspluginet",
+	"pluggableauth-authentication-workflow-failure": "Fel i autentiseringsarbetsflödet.",
+	"pluggableauth-loginbutton-help": "Autentisera med PluggableAuth",
+	"pluggableauth-fatal-error": "Fel vid autentisering av användaren. Försök igen eller kontakta systemadministratören.",
+	"pluggableauthlogout": "Logga ut"
 }
