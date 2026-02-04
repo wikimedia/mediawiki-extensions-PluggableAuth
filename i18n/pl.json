@@ -1,8 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
-			"Chrumps"
+			"Chrumps",
+			"Woytecr"
 		]
 	},
-	"pluggableauth-authentication-failure": "Użytkownik nie może być uwierzytelniony."
+	"pluggableauth-authentication-failure": "Użytkownik nie może być uwierzytelniony.",
+	"pluggableauthlogout": "Wyloguj się"
 }
