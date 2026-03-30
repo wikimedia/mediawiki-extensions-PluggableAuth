@@ -148,10 +148,37 @@ class PluggableAuthHooks implements
 	 * @return void
 	 */
 	public function onImgAuthBeforeStream( &$title, &$path, &$name, &$result ) {
+		if ( $this->isImageWhitelisted( $title ) ) {
+			return;
+		}
 		$context = RequestContext::getMain();
 		$url = $context->getRequest()->getFullRequestURL();
 		$user = $context->getUser();
 		$this->pluggableAuthService->autoLoginOnImgAuth( $title, $user, $url );
+	}
+
+	/**
+	 * @param Title $title
+	 * @return bool
+	 */
+	private function isImageWhitelisted( Title $title ): bool {
+		$config = RequestContext::getMain()->getConfig();
+		$list = $config->get( 'WhitelistRead' ) ?: [];
+		$regExpressions = $config->get( 'WhitelistReadRegexp' ) ?: [];
+
+		foreach ( $list as $whitelistedTitle ) {
+			if ( $title->getPrefixedText() === $whitelistedTitle ) {
+				return true;
+			}
+		}
+
+		foreach ( $regExpressions as $regExp ) {
+			if ( preg_match( $regExp, $title->getPrefixedText() ) === 1 ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
