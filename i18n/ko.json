@@ -2,13 +2,17 @@
 	"@metadata": {
 		"authors": [
 			"Revi",
-			"Ykhwong"
+			"Ykhwong",
+			"Tensama0415"
 		]
 	},
 	"pluggableauth-desc": "플러그 가능한 식별과 인증을 위한 프레임워크 제공",
+	"pluggableauth-no-username": "새 사용자에 대한 사용자 이름이 누락되었습니다.",
 	"pluggableauth-not-authorized": "$1 {{GENDER:$1|사용자}}가 인증되지 않았습니다.",
 	"pluggableauth-authentication-failure": "사용자를 인증할 수 없습니다.",
+	"pluggableauth-authentication-plugin-failure": "인증 플러그인을 로드할 수 없습니다",
+	"pluggableauth-authentication-workflow-failure": "인증 워크플로 실패.",
 	"pluggableauth-loginbutton-help": "PluggableAuth로 인증",
-	"pluggableauth-fatal-error": "사용자 인증 도중 치명적인 오류가 발생했습니다.",
+	"pluggableauth-fatal-error": "사용자 인증 도중 치명적인 오류가 발생했습니다. 다시 시도하거나 시스템 관리자에게 문의하세요.",
 	"pluggableauthlogout": "로그아웃"
 }
