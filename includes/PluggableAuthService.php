@@ -297,7 +297,7 @@ class PluggableAuthService {
 			$parsedOrigHref = $this->urlUtils->parse(
 				$this->urlUtils->expand( $links['user-menu']['pluggableauth-logout']['href'] )
 			);
-			$query = wfCgiToArray( $parsedOrigHref['query'] );
+			$query = wfCgiToArray( $parsedOrigHref['query'] ?? '' );
 			if ( isset( $query['title'] ) ) {
 				unset( $query['title'] );
 			}
