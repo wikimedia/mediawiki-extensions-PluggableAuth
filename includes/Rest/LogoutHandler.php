@@ -6,15 +6,17 @@ use Exception;
 use MediaWiki\Extension\PluggableAuth\BackchannelLogoutAwarePlugin;
 use MediaWiki\Extension\PluggableAuth\PluggableAuthFactory;
 use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Rest\RequestInterface;
 use MediaWiki\Rest\SimpleHandler;
 use MediaWiki\Session\SessionManager;
+use MediaWiki\Session\SessionManagerInterface;
 use Psr\Log\LoggerInterface;
 
 class LogoutHandler extends SimpleHandler {
 
 	/**
-	 * @var SessionManager
+	 * @var SessionManagerInterface
 	 */
 	private $sessionManager = null;
 
@@ -32,7 +34,12 @@ class LogoutHandler extends SimpleHandler {
 	 * @param PluggableAuthFactory $pluggableAuthFactory
 	 */
 	public function __construct( PluggableAuthFactory $pluggableAuthFactory ) {
-		$this->sessionManager = SessionManager::singleton();
+		if ( method_exists( MediaWikiServices::class, 'getSessionManager' ) ) {
+			// MW 1.44+
+			$this->sessionManager = MediaWikiServices::getInstance()->getSessionManager();
+		} else {
+			$this->sessionManager = SessionManager::singleton();
+		}
 		$this->pluggableAuthFactory = $pluggableAuthFactory;
 		$this->logger = LoggerFactory::getInstance( 'PluggableAuth' );
 	}
