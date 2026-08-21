@@ -1,0 +1,16 @@
+{
+	"@metadata": {
+		"authors": [
+			"Wizzard"
+		]
+	},
+	"pluggableauth-desc": "Poskytuje rámec pre modulárne overovanie a autorizáciu",
+	"pluggableauth-no-username": "Novému používateľovi chýba používateľské meno.",
+	"pluggableauth-not-authorized": "{{GENDER:$1|Používateľ}} $1 nie je autorizovaný.",
+	"pluggableauth-authentication-failure": "Používateľa nemožno overiť.",
+	"pluggableauth-authentication-plugin-failure": "Nepodarilo sa načítať overovací zásuvný modul",
+	"pluggableauth-authentication-workflow-failure": "Zlyhanie postupu overovania.",
+	"pluggableauth-loginbutton-help": "Overiť sa cez PluggableAuth",
+	"pluggableauth-fatal-error": "Chyba pri overovaní používateľa. Skúste to, prosím, znova alebo sa obráťte na správcu systému.",
+	"pluggableauthlogout": "Odhlásiť sa"
+}
