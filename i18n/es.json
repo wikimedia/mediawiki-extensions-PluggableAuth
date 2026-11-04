@@ -3,13 +3,17 @@
 		"authors": [
 			"DiegoAmbrocio",
 			"Josuert",
-			"Macofe"
+			"Macofe",
+			"Ajuntament de Benicarló - correu.informatica@benicarlo.org"
 		]
 	},
 	"pluggableauth-desc": "Proporciona el marco para anexar autenticación y autorización",
 	"pluggableauth-not-authorized": "{{GENDER:$1|El usuario|La usuaria}} $1 no está {{GENDER:$1|autorizado|autorizada}}.",
 	"pluggableauth-authentication-failure": "El usuario no puede autenticarse.",
 	"pluggableauth-authentication-plugin-failure": "No se ha podido cargar el plugin de autenticación",
+	"pluggableauth-authentication-workflow-failure": "Error en el flujo de autenticación.",
 	"pluggableauth-loginbutton-help": "Autenticar con PluggableAuth",
-	"pluggableauth-fatal-error": "Error fatal en la autentificación del usuario."
+	"pluggableauth-fatal-error": "Error fatal en la autentificación del usuario.",
+	"pluggableauthlogout": "Cerrar sesión"
+
 }
